@@ -92,6 +92,7 @@ const SCENES: { text: string; chat?: boolean; run: (c: Ctx) => Promise<void> }[]
     run: async (c) => { c.api.goStep(c.api.xrayStep); c.api.setInventory(true); await c.wait(3800); } },
   { text: "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요", chat: true,
     run: async (c) => {
+      c.api.goStep(c.api.xrayStep); // 6단계 나무못 수정이라 그 단계에서 시작(적용 뒤에도 6단계)
       chatCommand({ type: "reset" }); chatOpened = true; await c.wait(400, 1);
       chatCommand({ type: "preset", id: "hardware_qty" });
       await chatDone(c);

@@ -1,27 +1,30 @@
-import { useMemo, useState } from "react";
-import type { Scene } from "./types";
+import { useEffect, useMemo } from "react";
+import { HardwareThumb, PanelThumb } from "./PartThumb";
+import type { HardwareSpec, Panel, Scene } from "./types";
 
-// 가구 뷰어 부품 카드의 '현황' 보기: 지금 단계까지 쓴 부품과 남은 부품을 수량으로 보여 준다.
+// 부품 현황 팝업: 지금 단계까지 쓴 부품과 아직 남은 부품을 좌우로 나눠, IKEA 설명서 부품 페이지처럼
+// 그림 · 수량(N x) · 이름 · 부품 번호를 카드로 보여 준다.
 // 공구(육각 렌치)는 소모되지 않으므로 합산하지 않고 한 번만 센다.
 
 interface Item {
   key: string;
   name: string;
   code: string;
-  color: string;
+  panel?: Panel;
+  spec?: HardwareSpec;
   total: number;
   used: number;
+  now: number; // 지금 단계에서 쓰는 수량
   nextStep: number | null; // 남은 부품이 다음에 쓰이는 단계 번호
   nextIndex: number | null;
 }
 
-const PANEL_COLOR = "#e9dcc6";
-
 function inventory(scene: Scene, stepIndex: number): Item[] {
   const items = new Map<string, Item>();
-  const add = (key: string, name: string, code: string, color: string, qty: number, i: number, tool: boolean) => {
-    const item = items.get(key) ?? { key, name, code, color, total: 0, used: 0, nextStep: null, nextIndex: null };
+  const add = (key: string, base: Pick<Item, "name" | "code" | "panel" | "spec">, qty: number, i: number, tool: boolean) => {
+    const item = items.get(key) ?? { key, ...base, total: 0, used: 0, now: 0, nextStep: null, nextIndex: null };
     item.total = tool ? Math.max(item.total, qty) : item.total + qty;
+    if (i === stepIndex) item.now = tool ? Math.max(item.now, qty) : item.now + qty;
     if (i <= stepIndex) item.used = tool ? Math.max(item.used, qty) : item.used + qty;
     else if (item.nextIndex === null && (!tool || item.used === 0)) {
       item.nextIndex = i;
@@ -32,59 +35,90 @@ function inventory(scene: Scene, stepIndex: number): Item[] {
   scene.steps.forEach((step, i) => {
     step.adds.forEach((id) => {
       const panel = scene.panels.find((p) => p.id === id);
-      add(id, panel?.name_ko ?? id, "", PANEL_COLOR, 1, i, false);
+      add(id, { name: panel?.name_ko ?? id, code: "", panel }, 1, i, false);
     });
     step.uses.forEach((u) => {
       const spec = scene.hardware?.[u.part_id];
-      add(u.part_id, u.name_ko, u.part_id, spec?.color ?? "#9ca3af", u.qty, i, spec?.model === "hex_key");
+      add(u.part_id, { name: u.name_ko, code: u.part_id, spec }, u.qty, i, spec?.model === "hex_key");
     });
   });
   return [...items.values()];
 }
 
-export default function PartsInventory({ scene, stepIndex, onJump }: {
-  scene: Scene; stepIndex: number; onJump: (index: number) => void;
+function dims(panel: Panel) {
+  return [...panel.size].sort((a, b) => b - a).map((v) => +v.toFixed(1)).join(" × ") + " cm";
+}
+
+function PartCard({ item, count, kind, onJump }: {
+  item: Item; count: number; kind: "used" | "left"; onJump: (index: number) => void;
 }) {
-  const [tab, setTab] = useState<"used" | "left">("used");
+  const sub = item.code || (item.panel ? dims(item.panel) : "");
+  return (
+    <li className={`pcard ${kind} ${kind === "used" && item.now > 0 ? "now" : ""}`}>
+      <div className="pcard-img">
+        {item.panel ? <PanelThumb size={item.panel.size} still={`panel:${item.key}`} />
+          : item.spec ? <HardwareThumb spec={item.spec} still={`hw:${item.key}`} /> : <span className="none">⚙</span>}
+        {kind === "used" && item.now > 0 && <span className="tag">이 단계</span>}
+        {kind === "used" && item.used >= item.total && <span className="done" aria-label="모두 사용">✓</span>}
+      </div>
+      <b className="pcard-qty">{count}x</b>
+      <span className="pcard-name">{item.name}</span>
+      {sub && <code className="pcard-code">{sub}</code>}
+      {kind === "used" && item.total > item.used && <small className="pcard-note">{item.total - item.used}개 남음</small>}
+      {kind === "left" && item.nextIndex !== null && (
+        <button className="pcard-next" onClick={() => onJump(item.nextIndex!)}>{item.nextStep}단계에서 사용 ›</button>
+      )}
+    </li>
+  );
+}
+
+export default function PartsInventory({ scene, stepIndex, onJump, onClose }: {
+  scene: Scene; stepIndex: number; onJump: (index: number) => void; onClose: () => void;
+}) {
   const items = useMemo(() => inventory(scene, stepIndex), [scene, stepIndex]);
   const totalQty = items.reduce((n, it) => n + it.total, 0);
   const usedQty = items.reduce((n, it) => n + it.used, 0);
-  const used = items.filter((it) => it.used > 0);
-  const left = items.filter((it) => it.total > it.used);
-  const list = tab === "used" ? used : left;
+  // 이 단계에서 쓴 부품을 맨 앞에, 남은 부품은 먼저 쓰이는 순서대로.
+  const used = items.filter((it) => it.used > 0).sort((a, b) => b.now - a.now);
+  const left = items.filter((it) => it.total > it.used).sort((a, b) => (a.nextIndex ?? 1e9) - (b.nextIndex ?? 1e9));
+  const pct = Math.round((usedQty / Math.max(totalQty, 1)) * 100);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   return (
-    <div className="inventory">
-      <div className="inv-progress">
-        <div className="bar"><span style={{ width: `${(usedQty / Math.max(totalQty, 1)) * 100}%` }} /></div>
-        <small>{usedQty} / {totalQty}개 사용 · {stepIndex + 1}단계까지</small>
+    <div className="inv-backdrop" onClick={onClose}>
+      <div className="inv-modal" role="dialog" aria-label="부품 현황" onClick={(e) => e.stopPropagation()}>
+        <header className="inv-head">
+          <div>
+            <h2>부품 현황</h2>
+            <small>{scene.steps[stepIndex].number}단계까지 · {usedQty} / {totalQty}개 사용 ({pct}%)</small>
+          </div>
+          <button className="icon" onClick={onClose} aria-label="닫기">✕</button>
+        </header>
+        <div className="inv-bar"><span style={{ width: `${pct}%` }} /></div>
+        <div className="inv-cols">
+          <section className="inv-col used">
+            <h3>사용한 부품 <span>{used.length}종 · {used.reduce((n, it) => n + it.used, 0)}개</span></h3>
+            {used.length === 0 ? <p className="muted">아직 쓴 부품이 없어요.</p> : (
+              <ul className="pgrid">
+                {used.map((it) => <PartCard key={it.key} item={it} count={it.used} kind="used" onJump={onJump} />)}
+              </ul>
+            )}
+          </section>
+          <section className="inv-col left">
+            <h3>남은 부품 <span>{left.length}종 · {left.reduce((n, it) => n + it.total - it.used, 0)}개</span></h3>
+            {left.length === 0 ? <p className="muted">남은 부품이 없어요. 다 썼어요!</p> : (
+              <ul className="pgrid">
+                {left.map((it) => <PartCard key={it.key} item={it} count={it.total - it.used} kind="left" onJump={onJump} />)}
+              </ul>
+            )}
+          </section>
+        </div>
       </div>
-      <div className="inv-tabs">
-        <button className={tab === "used" ? "on" : ""} onClick={() => setTab("used")}>사용함 {used.length}종</button>
-        <button className={tab === "left" ? "on" : ""} onClick={() => setTab("left")}>남음 {left.length}종</button>
-      </div>
-      <ul>
-        {list.map((it) => {
-          const count = tab === "used" ? it.used : it.total - it.used;
-          return (
-            <li key={it.key}>
-              <span className="swatch" style={{ background: it.color }} />
-              <span className="name">
-                {it.name}
-                {it.code && <code>{it.code}</code>}
-              </span>
-              <span className="count">
-                <b>{count}개</b>
-                {tab === "used" && it.total > it.used && <small>{it.total - it.used}개 남음</small>}
-                {tab === "left" && it.nextIndex !== null && (
-                  <button className="next" onClick={() => onJump(it.nextIndex!)}>{it.nextStep}단계 ›</button>
-                )}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-      {list.length === 0 && <p className="muted">{tab === "used" ? "아직 쓴 부품이 없어요." : "남은 부품이 없어요. 다 썼어요!"}</p>}
     </div>
   );
 }

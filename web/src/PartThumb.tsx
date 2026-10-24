@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { Edges } from "@react-three/drei";
 import * as THREE from "three";
@@ -57,19 +57,66 @@ function Fit({ children }: { children: ReactNode }) {
   return <group ref={ref}>{children}</group>;
 }
 
-function Thumb({ children }: { children: ReactNode }) {
+// 브라우저는 WebGL 컨텍스트를 16개 안팎만 허용한다. 썸네일이 많은 화면(부품 현황 팝업)에서는
+// 캔버스를 잠깐 띄워 한 장 찍어 두고 이미지로 바꾼다. 동시에 띄우는 캔버스 수도 제한한다.
+const shots = new Map<string, string>();
+const MAX_LIVE = 4;
+let live = 0;
+const waiting: (() => void)[] = [];
+function acquire(start: () => void) {
+  if (live < MAX_LIVE) { live++; start(); } else waiting.push(start);
+  return () => { const i = waiting.indexOf(start); if (i >= 0) waiting.splice(i, 1); };
+}
+function release() {
+  const next = waiting.shift();
+  if (next) next(); else live--;
+}
+
+function Capture({ onShot }: { onShot: (url: string) => void }) {
+  const { gl, scene, camera } = useThree();
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      gl.render(scene, camera);
+      onShot(gl.domElement.toDataURL("image/png"));
+    });
+    return () => cancelAnimationFrame(id);
+  }, [gl, scene, camera, onShot]);
+  return null;
+}
+
+function Thumb({ children, still }: { children: ReactNode; still?: string }) {
+  const [url, setUrl] = useState(() => (still ? shots.get(still) : undefined));
+  const [granted, setGranted] = useState(false);
+  const holding = useRef(false);
+  useEffect(() => {
+    if (!still || url) return;
+    const cancel = acquire(() => { holding.current = true; setGranted(true); });
+    return () => {
+      cancel();
+      if (holding.current) { holding.current = false; release(); }
+    };
+  }, [still, url]);
+  const onShot = useMemo(() => (shot: string) => {
+    if (still) shots.set(still, shot);
+    setUrl(shot);
+  }, [still]);
+
+  if (url) return <img className="thumb-img" src={url} alt="" />;
+  if (still && !granted) return null;
   return (
     <Canvas orthographic frameloop="demand" dpr={[1, 2]} gl={{ alpha: true, antialias: true }} className="thumb-canvas">
       <ambientLight intensity={1.1} />
       <directionalLight position={[3, 5, 4]} intensity={1.8} />
       <Fit>{children}</Fit>
+      {still && <Capture onShot={onShot} />}
     </Canvas>
   );
 }
 
-export function PanelThumb({ size, active }: { size: Vec3; active?: boolean }) {
+export function PanelThumb({ size, active, still }: { size: Vec3; active?: boolean; still?: string }) {
   return (
-    <Thumb>
+    // 가구마다 판 id가 겹칠 수 있어 크기 · 강조 여부까지 캐시 키에 넣는다.
+    <Thumb still={still && `${still}:${size.join(",")}:${active ? 1 : 0}`}>
       <mesh>
         <boxGeometry args={size} />
         <meshStandardMaterial color={active ? "#ff9a4d" : BOARD} roughness={0.8} />
@@ -79,7 +126,7 @@ export function PanelThumb({ size, active }: { size: Vec3; active?: boolean }) {
   );
 }
 
-export function HardwareThumb({ spec }: { spec: HardwareSpec }) {
+export function HardwareThumb({ spec, still }: { spec: HardwareSpec; still?: string }) {
   const metal = METAL.includes(spec.model);
   const material = useMemo(
     () => new THREE.MeshStandardMaterial({
@@ -89,7 +136,7 @@ export function HardwareThumb({ spec }: { spec: HardwareSpec }) {
   );
   const accent = useMemo(() => new THREE.MeshBasicMaterial({ color: "#222222", side: THREE.DoubleSide }), []);
   return (
-    <Thumb>
+    <Thumb still={still}>
       <group quaternion={POSE[spec.model]}>
         <HardwareMesh part={spec} material={material} accent={accent} renderOrder={0} />
       </group>

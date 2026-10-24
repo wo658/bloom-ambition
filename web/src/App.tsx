@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { ContactShadows, OrbitControls } from "@react-three/drei";
 import gsap from "gsap";
+import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import Assembly, { type RenderStyle } from "./Assembly";
 import { HardwareThumb, PanelThumb } from "./PartThumb";
@@ -9,6 +11,7 @@ import PartsInventory from "./PartsInventory";
 import type { Scene } from "./types";
 import { onGoToStep, setCurrentStep } from "./bridge";
 import DemoSwitcher from "./DemoSwitcher";
+import ChatPanel from "./ChatPanel";
 
 const DEMO = "/demo";
 const HOME_CAMERA: [number, number, number] = [150, 140, 200];
@@ -34,6 +37,20 @@ function CameraRig({ resetKey }: { resetKey: number }) {
     if (orbit) tl.to(orbit.target, { x: HOME_TARGET[0], y: HOME_TARGET[1], z: HOME_TARGET[2], duration: 0.9, ease: "power2.inOut" }, 0);
     return () => { tl.kill(); };
   }, [resetKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  return null;
+}
+
+// 원목 모드: 스튜디오처럼 부드러운 반사광을 깔아 오크의 따뜻한 색이 살아나게 한다(TORNVIKEN 재질 뷰어와 같은 조명).
+function StudioEnvironment({ on }: { on: boolean }) {
+  const { gl, scene } = useThree();
+  useEffect(() => {
+    if (!on) return;
+    const pmrem = new THREE.PMREMGenerator(gl);
+    const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = env;
+    scene.environmentIntensity = 0.9;
+    return () => { scene.environment = null; env.dispose(); pmrem.dispose(); };
+  }, [on, gl, scene]);
   return null;
 }
 
@@ -96,13 +113,20 @@ export default function App() {
     if (i >= 0) setStepIndex(i);
   }), [scene]);
 
+  const closeInventory = useCallback(() => setShowInventory(false), []);
+
   const toggleFullscreen = () => {
     if (document.fullscreenElement) document.exitFullscreen();
     else appRef.current?.requestFullscreen();
   };
 
+  // 채팅으로 단계가 줄어들면 지금 단계 번호를 범위 안으로 당긴다.
+  useEffect(() => {
+    if (scene && stepIndex > scene.steps.length - 1) setStepIndex(scene.steps.length - 1);
+  }, [scene, stepIndex]);
+
   if (!scene) return <div className="loading">scene.json 불러오는 중…</div>;
-  const step = scene.steps[stepIndex];
+  const step = scene.steps[Math.min(stepIndex, scene.steps.length - 1)];
   const total = scene.steps.length;
   const lowConfidence = step.confidence < 0.5;
   const parts = [
@@ -121,7 +145,8 @@ export default function App() {
     // 카메라를 돌리는 동안에는 2D 오버레이를 흐리게 해서 모델을 가리지 않게 한다(Cadasio의 autohide).
     <div ref={appRef} className={`viewer ${dragging ? "dragging" : ""}`}>
       <Canvas shadows gl={{ alpha: true }} camera={{ position: HOME_CAMERA, fov: 40, near: 1, far: 2000 }}>
-        <ambientLight intensity={renderStyle === "technical" ? 1.1 : 0.6} />
+        <ambientLight intensity={renderStyle === "technical" ? 1.1 : renderStyle === "color" ? 0.25 : 0.6} />
+        <StudioEnvironment on={renderStyle === "color"} />
         <directionalLight position={[80, 160, 100]} intensity={renderStyle === "technical" ? 0.8 : 1.6} castShadow
           shadow-mapSize={[2048, 2048]} shadow-camera-left={-120} shadow-camera-right={120}
           shadow-camera-top={120} shadow-camera-bottom={-120} />
@@ -159,20 +184,19 @@ export default function App() {
       </section>
 
       {/* 오른쪽 위: 이 단계에 필요한 부품 */}
-      <section className={`overlay card parts ${showInventory ? "with-inventory" : ""}`}>
+      <section className="overlay card parts">
         <div className="parts-head">
-          <h2>{showInventory ? "부품 현황" : "이 단계에 필요한 부품"}</h2>
-          <button className={`mini ${showInventory ? "on" : ""}`} title="지금까지 쓴 부품과 남은 부품"
-            onClick={() => setShowInventory((v) => !v)}>{showInventory ? "이 단계" : "📦 현황"}</button>
+          <h2>이 단계에 필요한 부품</h2>
+          <button className="mini" title="지금까지 쓴 부품과 남은 부품을 크게 보기"
+            onClick={() => setShowInventory(true)}>📦 현황</button>
         </div>
-        {showInventory && <PartsInventory scene={scene} stepIndex={stepIndex} onJump={setStepIndex} />}
-        {!showInventory && parts.length === 0 && <p className="muted">새 부품 없음</p>}
-        {!showInventory && <ul>
+        {parts.length === 0 && <p className="muted">새 부품 없음</p>}
+        <ul>
           {parts.map((p) => (
             <li key={p.key}>
               <span className="thumb">
-                {p.panel ? <PanelThumb size={p.panel.size} active />
-                  : p.spec ? <HardwareThumb spec={p.spec} /> : "⚙"}
+                {p.panel ? <PanelThumb size={p.panel.size} active still={`card:${p.key}`} />
+                  : p.spec ? <HardwareThumb spec={p.spec} still={`card:hw:${p.key}`} /> : "⚙"}
               </span>
               <span className="name">
                 {p.name}
@@ -181,7 +205,7 @@ export default function App() {
               <b className="qty">{p.qty}x</b>
             </li>
           ))}
-        </ul>}
+        </ul>
       </section>
 
       {/* 오른쪽 가운데: 보기 도구 */}
@@ -259,6 +283,13 @@ export default function App() {
           </div>
         </aside>
       )}
+
+      {showInventory && (
+        <PartsInventory scene={scene} stepIndex={stepIndex} onClose={closeInventory}
+          onJump={(i) => { setStepIndex(i); setShowInventory(false); }} />
+      )}
+
+      <ChatPanel scene={scene} setScene={setScene} />
 
       {pageZoom && (
         <div className="lightbox" onClick={() => setPageZoom(false)}>

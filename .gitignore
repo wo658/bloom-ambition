@@ -10,3 +10,5 @@ web/public/demo/
 web/dist/
 __pycache__/
 *.tsbuildinfo
+.env.local
+.env*.local

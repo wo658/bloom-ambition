@@ -17,8 +17,9 @@ const EDGE: Record<RenderStyle, string> = { technical: "#1f1f1f", toon: "#4b4b4b
 function Material({ style, color, wood }: { style: RenderStyle; color: string; wood?: boolean }) {
   if (style === "technical") return <meshBasicMaterial color={color} />;
   if (style === "toon") return <meshToonMaterial color={color} />;
-  if (wood) return <meshStandardMaterial color={color} {...oakMaps()} normalScale={[0.6, 0.6]} roughness={1} metalness={0} />;
-  return <meshStandardMaterial color={color} roughness={0.8} metalness={0} />;
+  // 텍스처 유무가 바뀌면 셰이더를 다시 만들어야 해서 key로 재질을 새로 만든다.
+  if (wood) return <meshStandardMaterial key="wood" color={color} {...oakMaps()} normalScale={[0.6, 0.6]} roughness={1} metalness={0} />;
+  return <meshStandardMaterial key="plain" color={color} roughness={0.8} metalness={0} />;
 }
 const SMALL_TRAVEL = 8;
 const SCREW_TURNS = 4;

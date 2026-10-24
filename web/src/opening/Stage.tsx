@@ -104,11 +104,13 @@ function Effects({ bloomOn }: { bloomOn: boolean }) {
     composer.setSize(size.width, size.height);
   }, [composer, gl, size]);
   useEffect(() => () => composer.dispose(), [composer]);
+  // 발광이 꺼진 대부분의 구간은 중간 버퍼를 거치지 않고 화면에 바로 그린다(화면 전체를 한 번 덜 칠한다).
+  // 두 경로의 셰이더는 Warmup에서 모두 준비해 둬서 바뀌는 순간 멈추지 않는다.
   useFrame(() => {
     const strength = bloomOn ? 1.0 * darkness(clock.t) : 0;
-    bloom.enabled = strength > 0.01;
     bloom.strength = strength;
-    composer.render();
+    if (strength > 0.01) composer.render();
+    else gl.render(scene, camera);
   }, 1);
   return null;
 }
@@ -117,16 +119,19 @@ function Effects({ bloomOn }: { bloomOn: boolean }) {
 function Backdrop() {
   const { scene } = useThree();
   const dim = useRef<THREE.MeshBasicMaterial>(null);
+  const sphere = useRef<THREE.Mesh>(null);
   useEffect(() => {
     const tex = appBackground();
     scene.background = tex;
     return () => { scene.background = null; tex.dispose(); };
   }, [scene]);
   useFrame(() => {
-    if (dim.current) dim.current.opacity = darkness(clock.t);
+    const d = darkness(clock.t);
+    if (dim.current) dim.current.opacity = d;
+    if (sphere.current) sphere.current.visible = d > 0.003; // 안 보일 때 화면 전체를 칠하지 않게
   });
   return (
-    <mesh renderOrder={-10}>
+    <mesh ref={sphere} renderOrder={-10} visible={false}>
       <sphereGeometry args={[1500, 24, 12]} />
       <meshBasicMaterial ref={dim} color={NAVY} side={THREE.BackSide} transparent opacity={0} depthWrite={false} />
     </mesh>
@@ -572,6 +577,16 @@ function Warmup({ onDone }: { onDone: (slow: boolean) => void }) {
       gl.compile(scene, camera);
       gl.setRenderTarget(null);
       target.dispose();
+      gl.compile(scene, camera); // 발광이 꺼졌을 때 화면에 바로 그리는 경로
+      // 설명서 페이지·원목 텍스처를 미리 그래픽 메모리에 올려 둔다(책이 처음 나올 때 멈추지 않게).
+      const seen = new Set<THREE.Texture>();
+      scene.traverse((o) => {
+        const mats = (o as THREE.Mesh).material;
+        for (const m of Array.isArray(mats) ? mats : mats ? [mats] : []) {
+          const values = [...Object.values(m), ...Object.values((m as THREE.ShaderMaterial).uniforms ?? {}).map((u) => u?.value)];
+          for (const v of values) if (v instanceof THREE.Texture && !seen.has(v)) { seen.add(v); gl.initTexture(v); }
+        }
+      });
       return;
     }
     if (w.frames === 3) { play(9.9, true); return; } // 청사진 + 발광

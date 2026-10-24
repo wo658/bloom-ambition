@@ -27,7 +27,7 @@ body { font-family: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", 
 .op-en { margin: -26px 0 40px; font-size: clamp(18px, 2.1vw, 28px); font-weight: 700; letter-spacing: -.015em; color: var(--sub); }
 .op-stage-row { display: grid; grid-template-columns: 1fr 240px; gap: 36px; align-items: center; }
 
-.op-drop { height: 230px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+.op-drop { position: relative; height: 230px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
   border: 2px dashed #b7c0cd; border-radius: 22px; background: rgba(255, 255, 255, .72); backdrop-filter: blur(6px);
   color: var(--sub); cursor: pointer; transition: border-color .2s, background .2s, transform .2s; }
 .op-drop b { font-size: 18px; color: var(--ink); font-weight: 700; }
@@ -36,14 +36,19 @@ body { font-family: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", 
   font-size: 14px; font-weight: 700; box-shadow: 0 6px 16px rgba(255, 122, 26, .3); transition: background .15s, transform .15s; }
 .op-sample:hover { background: var(--accent-dark); transform: translateY(-1px); }
 /* 시범 동작이 상자에 닿는 순간 */
-.op-drop.hint { border-color: var(--accent); background: #fff6ee; }
-.op-drop.hint .op-drop-icon { color: var(--accent); transform: translateY(3px); }
-.op-drop.taken { border-style: solid; justify-content: flex-end; padding-bottom: 30px; cursor: default; }
-.op-drop-done { font-size: 15px !important; font-family: var(--op-mono); }
+.op-drop.op-hit { border-color: var(--accent); background: #fff6ee; }
+.op-drop.op-hit .op-drop-icon { color: var(--accent); transform: translateY(3px); }
+/* 받은 뒤: 크기·배치는 그대로 두고 안내만 흐려지며, 아래에 '받았어요'가 같은 자리에서 나타난다. */
+.op-drop > :not(.op-drop-done) { transition: opacity .25s ease; }
+.op-drop.op-taken { border-style: solid; border-color: var(--accent); background: #fff6ee; cursor: default; }
+.op-drop.op-taken > :not(.op-drop-done) { opacity: 0; pointer-events: none; }
+.op-drop-done { position: absolute; left: 0; right: 0; bottom: 28px; text-align: center; font-size: 15px !important;
+  font-family: var(--op-mono); opacity: 0; transition: opacity .3s ease .35s; }
+.op-drop.op-taken .op-drop-done { opacity: 1; }
 .op-drop-icon { font-size: 30px; line-height: 1; color: #9aa5b5; transition: color .2s, transform .2s; }
-.op-drop.over { border-color: var(--accent); background: #fff6ee; transform: scale(1.015); }
-.op-drop.over .op-drop-icon { color: var(--accent); transform: translateY(3px); }
-.op-drop.taken { border-style: solid; }
+.op-drop.op-over { border-color: var(--accent); background: #fff6ee; transform: scale(1.015); }
+.op-drop.op-over .op-drop-icon { color: var(--accent); transform: translateY(3px); }
+.op-drop.op-taken { border-style: solid; }
 
 .op-desk { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .op-file { width: 176px; display: flex; flex-direction: column; gap: 4px; padding: 0; border: 0; background: none; text-align: left; cursor: grab;
@@ -62,6 +67,7 @@ body { font-family: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", 
 .op-doc img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
 .op-pdf-badge { position: absolute; left: 8px; bottom: 8px; padding: 3px 7px; border-radius: 4px; background: #e5322d; color: #fff;
   font: 800 11px/1 var(--op-mono); font-style: normal; letter-spacing: .04em; }
+.op-hint.op-hide { visibility: hidden; }
 .op-hint { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--ink); color: #fff;
   font-size: 12.5px; font-weight: 600; white-space: nowrap; }
 .op-ghost { position: absolute; z-index: 2; opacity: 0; pointer-events: none; transform-origin: 0 0; }
@@ -163,4 +169,25 @@ body { font-family: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", 
   .op-thumb { width: 100%; max-width: 34px; height: 34px; }
   .op-list-head { margin-bottom: 4px; }
   .op-status { bottom: 14px; padding: 9px 12px; }
+}
+
+/* ── 높이가 낮은 화면(창을 줄였거나 화면 배율이 큼): 첫 화면을 줄여 드롭존이 화면 밖으로 밀리지 않게 한다 ── */
+@media (max-height: 600px) {
+  /* 위쪽 진행 표시(생성 → 검수 → 고객 체험) 아래에서 시작해서 Stepcast 로고가 가려지지 않게 한다. */
+  .op-hero { align-items: start; padding-top: 62px; }
+  .op-brand { margin-bottom: 6px; font-size: 13px; }
+  .op-brand svg { width: 20px; height: 20px; }
+  .op-hero h1 { font-size: clamp(22px, 3.6vw, 40px); margin-bottom: 14px; }
+  .op-en { margin: -8px 0 14px; font-size: clamp(14px, 1.8vw, 20px); }
+  .op-stage-row { grid-template-columns: 1fr 120px; gap: 16px; }
+  .op-desk { order: 0; flex-direction: column; gap: 8px; }
+  .op-file { width: 78px; }
+  .op-file-name, .op-file-meta { font-size: 10px; }
+  .op-drop { height: 130px; gap: 6px; }
+  .op-drop b { font-size: 14px; }
+  .op-drop-icon { font-size: 22px; }
+  .op-sample { padding: 7px 12px; font-size: 12.5px; }
+  .op-hint { font-size: 11px; padding: 4px 9px; white-space: normal; text-align: center; }
+  .op-file-meta { display: none; }
+  .op-drop-done { bottom: 16px; font-size: 13px !important; }
 }

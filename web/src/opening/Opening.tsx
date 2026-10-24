@@ -65,7 +65,7 @@ function Hero({ onDropped, leaving }: { onDropped: () => void; leaving: boolean 
     if (taken || !card.current || !zone.current) return;
     setTaken(true);
     setTouched(true);
-    setOver(true);
+    setOver(false);
     const c = card.current.getBoundingClientRect(), z = zone.current.getBoundingClientRect();
     const dx = z.left + z.width / 2 - (c.left + c.width / 2) + Number(gsap.getProperty(card.current, "x"));
     const dy = z.top + z.height * 0.36 - (c.top + c.height / 2) + Number(gsap.getProperty(card.current, "y"));
@@ -74,6 +74,7 @@ function Hero({ onDropped, leaving }: { onDropped: () => void; leaving: boolean 
       .to(card.current, { opacity: 0, scale: 0.36, duration: 0.18 }, "+=0.04");
   };
 
+  // 상태 표시 클래스는 모두 op- 로 시작한다(App의 전역 .hint 같은 규칙과 겹치면 상자 크기가 바뀐다).
   // 시범 동작: 가만히 있으면 반투명한 카드가 손가락과 함께 상자로 미끄러져 들어가는 모습을 되풀이한다.
   useEffect(() => {
     const g = ghost.current, c = card.current, z = zone.current;
@@ -88,10 +89,10 @@ function Hero({ onDropped, leaving }: { onDropped: () => void; leaving: boolean 
       .set(g, { x: sx, y: sy, scale: 1, rotate: -3 })
       .to(g, { opacity: 0.85, x: sx - 26, y: sy - 18, rotate: -6, duration: 0.3, ease: "power2.out" })
       .to(g, { keyframes: [{ x: mx, y: my, scale: 0.75, rotate: 0 }, { x: ex, y: ey, scale: 0.42 }], duration: 1.15, ease: "power2.inOut" })
-      .call(() => z.classList.add("hint"))
+      .call(() => z.classList.add("op-hit"))
       .to(g, { opacity: 0, duration: 0.3 }, "+=0.1")
-      .call(() => z.classList.remove("hint"), [], "+=0.35");
-    return () => { tl.kill(); z.classList.remove("hint"); gsap.set(g, { opacity: 0 }); };
+      .call(() => z.classList.remove("op-hit"), [], "+=0.35");
+    return () => { tl.kill(); z.classList.remove("op-hit"); gsap.set(g, { opacity: 0 }); };
   }, [touched, taken, layoutKey]);
 
   useEffect(() => {
@@ -160,17 +161,14 @@ function Hero({ onDropped, leaving }: { onDropped: () => void; leaving: boolean 
         <h1>브랜드의 PDF 설명서를,<br />고객이 따라 하는 3D 안내로.</h1>
         <p className="op-en" lang="en">Paper manuals in. 3D guides out.</p>
         <div className="op-stage-row">
-          <div ref={zone} className={`op-drop ${over ? "over" : ""} ${taken ? "taken" : ""}`} onClick={accept}
+          <div ref={zone} className={`op-drop ${over ? "op-over" : ""} ${taken ? "op-taken" : ""}`} onClick={accept}
             onPointerEnter={() => setTouched(true)}>
-            {taken ? (
-              <b className="op-drop-done">{FILE_NAME} 받았어요</b>
-            ) : (
-              <>
-                <span className="op-drop-icon" aria-hidden>⤓</span>
-                <b>설명서 PDF를 여기에 끌어다 놓으세요</b>
-                <button className="op-sample" onClick={(e) => { e.stopPropagation(); accept(); }}>샘플 설명서로 체험하기 →</button>
-              </>
-            )}
+            {/* 내용을 빼지 않고 흐리게만 해서 상자 안이 갑자기 비어 보이지 않게 한다. */}
+            <span className="op-drop-icon" aria-hidden>⤓</span>
+            <b>설명서 PDF를 여기에 끌어다 놓으세요</b>
+            <button className="op-sample" tabIndex={taken ? -1 : 0}
+              onClick={(e) => { e.stopPropagation(); accept(); }}>샘플 설명서로 체험하기 →</button>
+            <b className="op-drop-done" aria-live="polite">{taken ? `${FILE_NAME} 받았어요` : ""}</b>
           </div>
           <div className="op-desk">
             <button ref={card} className="op-file" onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp}
@@ -186,7 +184,8 @@ function Hero({ onDropped, leaving }: { onDropped: () => void; leaving: boolean 
               <span className="op-file-name">{FILE_NAME}</span>
               <span className="op-file-meta">24쪽 · 조립 설명서</span>
             </button>
-            {!taken && <span className="op-hint">끌어다 놓거나 눌러 보세요</span>}
+            {/* 누른 뒤에도 자리는 남겨 둔다. 빼면 칸 높이가 줄어 화면 전체가 밀리고 카드가 가운데를 놓친다. */}
+            <span className={`op-hint ${taken ? "op-hide" : ""}`}>끌어다 놓거나 눌러 보세요</span>
           </div>
         </div>
       </div>

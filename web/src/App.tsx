@@ -48,7 +48,7 @@ const SPOTLIGHT_HOLD_MS = 3000; // 부품 모션이 끝나고 강조를 남겨 �
 const PREP_DIRECTION = new THREE.Vector3(0.15, 1.25, 1).normalize();
 const PREP = -1; // 1단계 앞의 부품 확인 단계
 const PREP_AUTOPLAY_MS = 4000;
-const PREP_CAPTION = "부품을 모두 꺼내 바닥에 펼치세요.\n목록과 개수를 하나씩 맞춰 보며 체크하세요.\n모자라면 조립을 시작하기 전에 매장에 문의하세요.";
+const PREP_CAPTION = "부품을 모두 꺼내서 바닥에 펼쳐 놓으세요.\n목록을 보며 개수가 맞는지 하나씩 확인하세요.\n모자라는 부품이 있으면 조립을 시작하기 전에 매장에 문의하세요.";
 const WALL_SHOT = 48; // 벽에 구멍을 뚫고 나사를 박는 자리를 따라갈 때의 거리
 // 벽 작업은 옆에서 비스듬히 봐야 드릴·나사가 벽 속으로 들어가는 깊이가 보이고, 드릴이 화면을 가리지 않는다.
 const WALL_SHOT_DIRECTION = new THREE.Vector3(1, 0.3, 0.75).normalize();

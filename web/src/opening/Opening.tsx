@@ -8,6 +8,7 @@ import App from "../App";
 import { PartsChecklist, PartsLabels, checkItems, layoutParts, partsPage, type Layout } from "../PartsCheck";
 import type { Scene } from "../types";
 import Stage, { findRects } from "./Stage";
+import { LogoMark } from "../Logo";
 import {
   END, FINDS, PAGE_PX, STATUS, T, cardLand, cardStart, clock, pageUrl, play, stop, useClock, type Find,
 } from "./timeline";
@@ -155,7 +156,7 @@ function Hero({ onDropped, leaving }: { onDropped: () => void; leaving: boolean 
         {Array.from({ length: 24 }, (_, i) => <img key={i} src={pageUrl(i + 1)} alt="" />)}
       </div>
       <div className="op-hero-body">
-        <p className="op-brand">Stepcast</p>
+        <p className="op-brand"><LogoMark size={28} />Stepcast</p>
         <h1>브랜드의 PDF 설명서를,<br />고객이 따라 하는 3D 안내로.</h1>
         <div className="op-stage-row">
           <div ref={zone} className={`op-drop ${over ? "over" : ""} ${taken ? "taken" : ""}`} onClick={accept}

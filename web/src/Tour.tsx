@@ -121,6 +121,7 @@ let view: View = null;
 let control: { scene: AbortController; stopped: boolean } | null = null;
 // 사용자가 조작해 멈춘 장면. 다시 ▶ 를 누르면 그 장면부터 이어서 튼다(끝까지 보면 0으로 돌아가 처음부터).
 let resumeFrom = 0;
+let lastApi: TourApi | null = null; // 멈춘 데모를 ← → 로 다시 틀 때 쓴다
 const listeners = new Set<() => void>();
 const setView = (v: View) => { view = v; listeners.forEach((l) => l()); };
 const subscribe = (l: () => void) => { listeners.add(l); return () => { listeners.delete(l); }; };
@@ -135,8 +136,10 @@ export function stopTour() {
   control.scene.abort("stop");
 }
 
-export async function startTour(api: TourApi) {
+// from을 주면 그 장면부터, 없으면 멈췄던 장면(처음이면 0)부터 튼다.
+export async function startTour(api: TourApi, from?: number) {
   if (control) return;
+  lastApi = api;
   const startLang = getLang();
   const voiceWas = isVoiceOn();
   const orbit = api.orbit();
@@ -193,7 +196,7 @@ export async function startTour(api: TourApi) {
   const INPUTS = ["pointerdown", "wheel", "touchstart", "keydown"] as const;
   INPUTS.forEach((type) => window.addEventListener(type, handsOn, { capture: true, passive: true }));
 
-  let i = resumeFrom;
+  let i = from ?? resumeFrom;
   while (i < TOTAL && !state.stopped) {
     state.scene = new AbortController();
     base(!!SCENES[i].chat);
@@ -218,7 +221,16 @@ export async function startTour(api: TourApi) {
 export function useTourKeys() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (!control || (e.target as HTMLElement)?.closest?.("textarea, input, select")) return;
+      if ((e.target as HTMLElement)?.closest?.("textarea, input, select")) return;
+      // 사용자가 조작해 멈춘 데모는 → 면 다음 장면, ← 면 이전 장면부터 다시 튼다(뷰어 단계 이동 대신).
+      if (!control) {
+        const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!step || resumeFrom === 0 || !lastApi) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        startTour(lastApi, Math.min(TOTAL - 1, Math.max(0, resumeFrom + step)));
+        return;
+      }
       const move = e.key === "ArrowRight" ? "next" : e.key === "ArrowLeft" ? "prev" : e.key === "Escape" ? "stop" : null;
       if (!move) return;
       e.preventDefault();

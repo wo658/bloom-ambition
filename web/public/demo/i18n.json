@@ -279,7 +279,9 @@
   "건너뛰고 시작 ›": "Skip and start ›",
   "왼쪽·오른쪽 옆판 안쪽 면의 윗판 바로 아래 뒤쪽 모서리에 벽 고정 브래킷을 하나씩 대세요.\n짧은 나사를 2개씩, 모두 4개를 십자 드라이버로 조이세요.": "Place one wall bracket on the inside of each side panel, at the back corner just below the top panel.\nTighten 2 short screws in each, 4 in total, with a Phillips screwdriver.",
   "선반을 잠시 옆으로 비켜 두세요.\n표시한 두 곳에 드릴로 구멍을 뚫고, 머리가 둥근 벽용 나사를 박되, 머리가 조금 튀어나오게 남겨 두세요.\n접시머리 나사는 쓰지 마세요.": "Move the shelf aside for now.\nDrill holes at the two marks and drive in round-head wall screws, leaving the heads sticking out slightly.\nDo not use flat-head screws.",
-  "전동 드릴 (미포함)": "Power drill (not included)"
+  "전동 드릴 (미포함)": "Power drill (not included)",
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Turn on autoplay: Scenes advance automatically when they end",
+  "자동 재생": "Autoplay"
  },
  "de": {
   "가구가 넘어지면 심각하거나 치명적인 부상을 입을 수 있어요. 반드시 동봉된 벽 고정 장치로 벽에 고정하세요.": "Umkippende Möbel können schwere oder tödliche Verletzungen verursachen. Befestige das Möbel unbedingt mit der beiliegenden Wandbefestigung an der Wand.",

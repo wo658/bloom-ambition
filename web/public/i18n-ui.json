@@ -124,7 +124,11 @@
   "반자동": "Semi-auto",
   "반자동: 장면마다 → 를 눌러 넘겨요": "Semi-auto: Press → to go to the next scene",
   "자동": "Auto",
-  "자동: 장면이 끝나면 저절로 넘어가요": "Auto: Moves to the next scene automatically when each one ends"
+  "자동: 장면이 끝나면 저절로 넘어가요": "Auto: Moves to the next scene automatically when each one ends",
+  "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "A demo that shows every feature in turn (press → to advance)",
+  "자동 재생": "Autoplay",
+  "자동 재생 끄기: → 를 눌러 넘겨요": "Autoplay off: press → to advance",
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Autoplay on: advances automatically when each scene ends"
  },
  "ja": {
   "N단계": "Nステップ",
@@ -251,7 +255,11 @@
   "반자동": "セミオート",
   "반자동: 장면마다 → 를 눌러 넘겨요": "セミオート：シーンごとに → を押して進めます",
   "자동": "オート",
-  "자동: 장면이 끝나면 저절로 넘어가요": "オート：シーンが終わると自動で進みます"
+  "자동: 장면이 끝나면 저절로 넘어가요": "オート：シーンが終わると自動で進みます",
+  "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "すべての機能を順に紹介するデモ（→ で進む）",
+  "자동 재생": "自動再生",
+  "자동 재생 끄기: → 를 눌러 넘겨요": "自動再生オフ：→ を押して進みます",
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "自動再生オン：シーンが終わると自動で進みます"
  },
  "zh-CN": {
   "N단계": "第N步",
@@ -378,7 +386,11 @@
   "반자동": "半自动",
   "반자동: 장면마다 → 를 눌러 넘겨요": "半自动：每个场景按 → 翻页",
   "자동": "自动",
-  "자동: 장면이 끝나면 저절로 넘어가요": "自动：场景结束后自动翻页"
+  "자동: 장면이 끝나면 저절로 넘어가요": "自动：场景结束后自动翻页",
+  "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "依次展示所有功能的演示（按 → 翻页）",
+  "자동 재생": "自动播放",
+  "자동 재생 끄기: → 를 눌러 넘겨요": "关闭自动播放：按 → 翻页",
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "开启自动播放：场景结束后自动翻页"
  },
  "zh-TW": {
   "N단계": "第N步",
@@ -505,7 +517,11 @@
   "반자동": "半自動",
   "반자동: 장면마다 → 를 눌러 넘겨요": "半自動：每個場景請按 → 翻頁",
   "자동": "自動",
-  "자동: 장면이 끝나면 저절로 넘어가요": "自動：場景結束後會自動翻頁"
+  "자동: 장면이 끝나면 저절로 넘어가요": "自動：場景結束後會自動翻頁",
+  "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "依序展示所有功能的示範（按 → 翻頁）",
+  "자동 재생": "自動播放",
+  "자동 재생 끄기: → 를 눌러 넘겨요": "關閉自動播放：按 → 翻頁",
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "開啟自動播放：場景結束後自動跳到下一個"
  },
  "es": {
   "N단계": "Paso N",
@@ -632,7 +648,11 @@
   "반자동": "Semiautomático",
   "반자동: 장면마다 → 를 눌러 넘겨요": "Semiautomático: pulsa → en cada escena para avanzar",
   "자동": "Automático",
-  "자동: 장면이 끝나면 저절로 넘어가요": "Automático: al terminar cada escena, se avanza solo"
+  "자동: 장면이 끝나면 저절로 넘어가요": "Automático: al terminar cada escena, se avanza solo",
+  "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "Demo que muestra todas las funciones en orden (pasa con →)",
+  "자동 재생": "Reproducción automática",
+  "자동 재생 끄기: → 를 눌러 넘겨요": "Reproducción automática desactivada: pulsa → para avanzar",
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Reproducción automática activada: al terminar la escena, avanza sola"
  },
  "fr": {
   "N단계": "Étape N",
@@ -759,7 +779,11 @@
   "반자동": "Semi-automatique",
   "반자동: 장면마다 → 를 눌러 넘겨요": "Semi-automatique : appuyez sur → pour passer à chaque scène",
   "자동": "Automatique",
-  "자동: 장면이 끝나면 저절로 넘어가요": "Automatique : passe à la suite à la fin de chaque scène"
+  "자동: 장면이 끝나면 저절로 넘어가요": "Automatique : passe à la suite à la fin de chaque scène",
+  "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "Démo qui présente toutes les fonctions une à une (→ pour avancer)",
+  "자동 재생": "Lecture automatique",
+  "자동 재생 끄기: → 를 눌러 넘겨요": "Lecture automatique désactivée : appuyez sur → pour avancer",
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Lecture automatique activée : passage automatique à la fin de chaque scène"
  },
  "de": {
   "N단계": "Schritt N",
@@ -886,7 +910,11 @@
   "반자동": "Halbautomatisch",
   "반자동: 장면마다 → 를 눌러 넘겨요": "Halbautomatisch: Tippe bei jeder Szene auf →, um weiterzugehen",
   "자동": "Automatisch",
-  "자동: 장면이 끝나면 저절로 넘어가요": "Automatisch: Nach jeder Szene geht es von selbst weiter"
+  "자동: 장면이 끝나면 저절로 넘어가요": "Automatisch: Nach jeder Szene geht es von selbst weiter",
+  "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "Demo, die alle Funktionen nacheinander zeigt (mit → weiterblättern)",
+  "자동 재생": "Automatische Wiedergabe",
+  "자동 재생 끄기: → 를 눌러 넘겨요": "Automatische Wiedergabe aus: Mit → weiterblättern",
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Automatische Wiedergabe an: Nach jeder Szene geht es automatisch weiter"
  },
  "vi": {
   "N단계": "Bước N",
@@ -1013,7 +1041,11 @@
   "반자동": "Bán tự động",
   "반자동: 장면마다 → 를 눌러 넘겨요": "Bán tự động: Nhấn → để chuyển từng cảnh",
   "자동": "Tự động",
-  "자동: 장면이 끝나면 저절로 넘어가요": "Tự động: Hết cảnh sẽ tự chuyển sang cảnh tiếp theo"
+  "자동: 장면이 끝나면 저절로 넘어가요": "Tự động: Hết cảnh sẽ tự chuyển sang cảnh tiếp theo",
+  "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "Bản demo lần lượt giới thiệu mọi tính năng (nhấn → để chuyển tiếp)",
+  "자동 재생": "Tự động phát",
+  "자동 재생 끄기: → 를 눌러 넘겨요": "Tắt tự động phát: nhấn → để chuyển tiếp",
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Bật tự động phát: hết cảnh sẽ tự chuyển tiếp"
  },
  "id": {
   "N단계": "Langkah N",
@@ -1140,6 +1172,10 @@
   "반자동": "Semi-otomatis",
   "반자동: 장면마다 → 를 눌러 넘겨요": "Semi-otomatis: tekan → untuk lanjut di setiap adegan",
   "자동": "Otomatis",
-  "자동: 장면이 끝나면 저절로 넘어가요": "Otomatis: lanjut sendiri saat adegan selesai"
+  "자동: 장면이 끝나면 저절로 넘어가요": "Otomatis: lanjut sendiri saat adegan selesai",
+  "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "Demo yang menampilkan semua fitur secara berurutan (geser dengan →)",
+  "자동 재생": "Putar otomatis",
+  "자동 재생 끄기: → 를 눌러 넘겨요": "Putar otomatis mati: tekan → untuk lanjut",
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Putar otomatis aktif: lanjut sendiri saat adegan selesai"
  }
 }

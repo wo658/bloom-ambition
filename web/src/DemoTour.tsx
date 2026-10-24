@@ -76,8 +76,16 @@ const SCENES: { text: string; run: (c: Ctx) => Promise<void> }[] = [
 const TOTAL = SCENES.length;
 
 export default function DemoTour({ api }: { api: TourApi }) {
-  // 기본은 반자동(발표자가 → 로 넘김). ?tour=auto로 열면 자동.
-  const [semi, setSemi] = useState(() => new URLSearchParams(location.search).get("tour") !== "auto");
+  // 기본은 반자동(발표자가 → 로 넘김). 데모 중 자막의 '자동 재생'으로 언제든 바꾼다. ?tour=auto로 열면 자동.
+  const [semi, setSemiState] = useState(() => new URLSearchParams(location.search).get("tour") !== "auto");
+  const semiRef = useRef(semi);
+  const setSemi = (v: boolean) => {
+    semiRef.current = v;
+    setSemiState(v);
+    // → 를 기다리던 중에 자동으로 바꾸면 바로 다음 장면으로 간다.
+    if (!v && readyRef.current) control.current?.scene.abort("next");
+  };
+  const readyRef = useRef(false);
   const [view, setView] = useState<{ n: number; text: string; ready: boolean } | null>(null);
   const control = useRef<{ scene: AbortController; stopped: boolean } | null>(null);
 
@@ -99,7 +107,7 @@ export default function DemoTour({ api }: { api: TourApi }) {
 
   const stop = () => { const c = control.current; if (c) { c.stopped = true; c.scene.abort("stop"); } };
 
-  const run = async (semiMode: boolean) => {
+  const run = async () => {
     if (control.current) { stop(); return; }
     const startLang = getLang();
     const voiceWas = isVoiceOn();
@@ -146,13 +154,15 @@ export default function DemoTour({ api }: { api: TourApi }) {
     while (i < TOTAL && !state.stopped) {
       state.scene = new AbortController();
       base(i);
+      readyRef.current = false;
       setView({ n: i + 1, text: SCENES[i].text, ready: false });
       let move = "next";
       try {
         await SCENES[i].run(ctx);
+        readyRef.current = true;
         setView({ n: i + 1, text: SCENES[i].text, ready: true });
         // 반자동은 → 를 기다리고(마지막 장면 포함), 자동은 잠깐 숨을 고른 뒤 넘어간다.
-        await (semiMode ? new Promise<void>((_, reject) => state.scene.signal.addEventListener("abort", () => reject(state.scene.signal.reason), { once: true })) : wait(500));
+        await (semiRef.current ? new Promise<void>((_, reject) => state.scene.signal.addEventListener("abort", () => reject(state.scene.signal.reason), { once: true })) : wait(500));
       } catch (e) {
         move = String(e);
       }
@@ -170,29 +180,25 @@ export default function DemoTour({ api }: { api: TourApi }) {
   useEffect(() => {
     const mode = new URLSearchParams(location.search).get("tour");
     if (!mode) return;
-    const id = setTimeout(() => runRef.current(mode !== "auto"), 1500);
+    const id = setTimeout(() => runRef.current(), 1500);
     return () => clearTimeout(id);
   }, []);
 
   return (
     <>
-      <div className="demo-group">
-        <button className={`demo-btn ${view ? "on" : ""}`} onClick={() => run(semi)}
-          title={t(view ? "데모 멈추기 (Esc)" : "모든 기능을 차례로 보여 주는 데모")}>
-          {view ? "■" : "▶"} {t(view ? "데모 멈추기" : "데모")}
-        </button>
-        {!view && (
-          <button className="demo-mode" onClick={() => setSemi((v) => !v)} aria-pressed={semi}
-            title={t(semi ? "반자동: 장면마다 → 를 눌러 넘겨요" : "자동: 장면이 끝나면 저절로 넘어가요")}>
-            {t(semi ? "반자동" : "자동")}
-          </button>
-        )}
-      </div>
+      <button className={`demo-btn ${view ? "on" : ""}`} onClick={run}
+        title={t(view ? "데모 멈추기 (Esc)" : "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)")}>
+        {view ? "■" : "▶"} {t(view ? "데모 멈추기" : "데모")}
+      </button>
       {view && (
         <div className="tour-caption" role="status" aria-live="polite" key={view.n}>
           <span className="tour-count">{view.n} / {TOTAL}</span>
           <p>{t(view.text)}</p>
           <span className={`tour-keys ${semi && view.ready ? "ready" : ""}`}>{semi && view.ready ? "→" : "← →"}</span>
+          <button className={`tour-auto ${semi ? "" : "on"}`} onClick={() => setSemi(!semi)} aria-pressed={!semi}
+            title={t(semi ? "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요" : "자동 재생 끄기: → 를 눌러 넘겨요")}>
+            {semi ? "▶▶" : "❚❚"} {t("자동 재생")}
+          </button>
           <button onClick={stop} aria-label={t("데모 멈추기")}>✕</button>
           <i className="tour-bar" style={{ width: `${(view.n / TOTAL) * 100}%` }} />
         </div>

@@ -32,15 +32,16 @@
   background: rgba(18, 22, 32, .86); backdrop-filter: blur(10px); color: #fff; box-shadow: 0 18px 50px rgba(10, 15, 25, .35);
   animation: tour-in .45s cubic-bezier(.2, .8, .2, 1); }
 body.chat-open .tour-caption { left: calc((100vw - var(--chat-w)) / 2); max-width: min(680px, calc(100vw - var(--chat-w) - 48px)); }
-.tour-caption p { margin: 0; font-size: 19px; font-weight: 700; line-height: 1.4; letter-spacing: -.01em; word-break: keep-all; }
+.tour-caption p { flex: 1; margin: 0; font-size: 19px; font-weight: 700; line-height: 1.4; letter-spacing: -.01em; word-break: keep-all; }
 .tour-count { flex: none; font-size: 12px; font-weight: 700; color: #ffb37a; font-variant-numeric: tabular-nums; }
-.tour-caption button { flex: none; margin-left: auto; width: 28px; height: 28px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .12); color: #fff; cursor: pointer; }
+.tour-caption > button:last-of-type { flex: none; margin-left: auto; width: 28px; height: 28px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .12); color: #fff; cursor: pointer; }
 .tour-bar { position: absolute; left: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, #ff7a1a, #ffc46b); transition: width .6s ease; }
 @keyframes tour-in { from { opacity: 0; transform: translate(-50%, 12px); } }
 @container viewer (max-width: 1100px) { .demo-btn { padding: 7px 11px; } }
-.demo-group { display: inline-flex; align-items: center; gap: 4px; }
-.demo-mode { padding: 6px 11px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font: inherit; font-size: 12px; font-weight: 600; color: var(--sub); cursor: pointer; white-space: nowrap; }
-.demo-mode[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); }
 .tour-keys { flex: none; padding: 3px 8px; border-radius: 6px; background: rgba(255, 255, 255, .1); font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, .6); }
 .tour-keys.ready { background: #ff7a1a; color: #fff; animation: nudge 1s ease-in-out infinite; }
 @keyframes nudge { 50% { transform: translateX(3px); } }
+.tour-auto { flex: none; display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border: 1px solid rgba(255, 255, 255, .22); border-radius: 999px;
+  background: none; color: rgba(255, 255, 255, .8); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.tour-auto:hover { border-color: rgba(255, 255, 255, .5); color: #fff; }
+.tour-auto.on { background: #fff; border-color: #fff; color: #121620; }

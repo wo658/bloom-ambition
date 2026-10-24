@@ -18,7 +18,7 @@ import ChangeScene, { useCompareView } from "./ChangeScene";
 import ChangeHud, { CompareBadge, CompareCard, CompareTimeline } from "./ChangeHud";
 import LangBar from "./LangBar";
 import { LogoMark } from "./Logo";
-import { TourCaption, startTour, stopTour, useTourKeys, useTourView, type TourApi } from "./Tour";
+import { TourCaption, startTour, stopTour, useTourKeys, useTourResume, useTourView, type TourApi } from "./Tour";
 import { afterSpeech, t, useLang, useSpeak } from "./lang";
 import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
 
@@ -243,6 +243,7 @@ export default function App() {
   // ▶ 재생 = 데모 시나리오(Tour). 부품 확인부터 완성까지 단계를 넘기며 기능을 차례로 보여 주고 자막이 따라간다.
   // 열자마자 튼다. 오프닝이 켜져 있으면(기본, App을 뒤에 미리 띄워 둔다) 오프닝이 끝난 뒤에 튼다. ?step=N·?tour=0이면 틀지 않는다.
   const tourView = useTourView();
+  const resumeAt = useTourResume(); // 사용자가 조작해 멈춘 장면(0이면 처음부터)
   useTourKeys();
   const sceneRef = useRef(scene);
   sceneRef.current = scene;
@@ -530,7 +531,7 @@ export default function App() {
             <button onClick={() => { setMotion(null); setExplode(null); setPlayKey((k) => k + 1); }}>{t("↻ 다시 보기")}</button>
             <button className={tourView ? "on" : ""} onClick={() => (tourView ? stopTour() : playTour())}
               title={t("부품 확인부터 완성까지 기능을 차례로 보여 줘요 (← → 로 넘기기, Esc로 멈춤)")}>
-              {t(tourView ? "⏸ 멈춤" : "▶ 자동 재생")}
+              {t(tourView ? "⏸ 멈춤" : resumeAt > 0 ? "▶ 이어서 재생" : "▶ 자동 재생")}
             </button>
             <span className="hint">{t("← → 단계 이동 · Space 다시 보기")}</span>
           </div>

@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react"
 import { _roots } from "@react-three/fiber";
 import gsap from "gsap";
 import App from "../App";
+import { introDone } from "../bridge";
 import { PartsChecklist, PartsLabels, checkItems, layoutParts, partsPage, type Layout } from "../PartsCheck";
 import type { Scene } from "../types";
 import Stage, { findRects } from "./Stage";
@@ -373,6 +374,9 @@ export default function Opening() {
     const id = setTimeout(() => setToast(false), 4500);
     return () => clearTimeout(id);
   }, [handoff, skipped]);
+
+  // 오프닝이 끝나면(건너뛰기 포함) 뷰어에 알린다. 뷰어는 데모 재생을 이어 튼다.
+  useEffect(() => { if (finished) introDone(); }, [finished]);
 
   const skip = () => {
     stop(END);

@@ -28,6 +28,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .title { display: flex; flex-direction: column; line-height: 1.2; }
 .brand { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-dark); }
 .product { font-weight: 800; font-size: 17px; letter-spacing: -.01em; }
+.brand-lg { display: inline-flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 800; letter-spacing: -.01em; }
 .progress-text { font-size: 12px; color: var(--sub); }
 .safety { top: 16px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; max-width: 46vw;
   padding: 7px 8px 7px 14px; background: #fff7d1; border: 1px solid #f5d76e; border-radius: 999px; font-size: 13px; box-shadow: var(--shadow); }

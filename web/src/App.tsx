@@ -13,11 +13,11 @@ import { ROOM_VIEW } from "./Room";
 import { onGoToStep, onPlayExplode, onPlayPartMotion, onReplayStep, playExplode, playPartMotion, setCurrentStep, type MotionTarget } from "./bridge";
 import Explode from "./Explode";
 import { mentionPart, partTag, smallTag } from "./partTags";
-import DemoSwitcher from "./DemoSwitcher";
 import ChatPanel from "./ChatPanel";
 import ChangeScene, { useCompareView } from "./ChangeScene";
 import ChangeHud, { CompareBadge, CompareCard, CompareTimeline } from "./ChangeHud";
 import LangBar from "./LangBar";
+import { LogoMark } from "./Logo";
 import { TourCaption, startTour, stopTour, useTourKeys, useTourView, type TourApi } from "./Tour";
 import { afterSpeech, t, useLang, useSpeak } from "./lang";
 import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
@@ -186,7 +186,6 @@ export default function App() {
   const [renderStyle, setRenderStyle] = useState<RenderStyle>("color");
   const [xray, setXray] = useState(() => new URLSearchParams(location.search).has("xray")); // ?xray=1로 투시 켠 채 열기
   const [resetKey, setResetKey] = useState(0);
-  const [showList, setShowList] = useState(false);
   const [showPage, setShowPage] = useState(true);
   const [pageZoom, setPageZoom] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -223,7 +222,7 @@ export default function App() {
       if (e.key === "ArrowRight") go(1);
       if (e.key === "ArrowLeft") go(-1);
       if (e.key === " ") { e.preventDefault(); setMotion(null); setExplode(null); setPlayKey((k) => k + 1); }
-      if (e.key === "Escape") { setPageZoom(false); setShowList(false); setAutoplay(false); }
+      if (e.key === "Escape") { setPageZoom(false); setAutoplay(false); }
       if (e.key === "x" || e.key === "X") setXray((v) => !v);
     };
     window.addEventListener("keydown", onKey);
@@ -418,11 +417,10 @@ export default function App() {
       <ChangeHud />
       {prep && !compareView && <PartsLabels layout={layout} checked={checked} els={labelEls} onToggle={toggleChecked} />}
 
-      {/* 상단: 제품명 */}
+      {/* 상단: 서비스 로고 */}
       <header className="overlay topbar">
-        <button className="icon" title={t("전체 단계")} onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
-          <span className="product">{scene.product}</span>
+          <span className="brand-lg"><LogoMark size={22} />Stepcast</span>
         </div>
         <CompareBadge />
         <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />
@@ -534,40 +532,6 @@ export default function App() {
         </div>
         <button className="nav primary" onClick={() => go(1)} disabled={stepIndex === total - 1} aria-label={t("다음 단계")}>›</button>
       </footer>
-
-      {/* 전체 단계 목록 서랍 */}
-      {showList && (
-        <aside className="drawer">
-          <DemoSwitcher current={null} />
-          <div className="drawer-head">
-            <b>{t("전체 단계")}</b>
-            <button className="icon" onClick={() => setShowList(false)} aria-label={t("닫기")}>✕</button>
-          </div>
-          <nav>
-            <button className={prep ? "on" : ""} onClick={() => { setStepIndex(PREP); setShowList(false); }}>
-              <span className="num">✓</span>
-              <span className="cap">{t("부품 확인")}</span>
-            </button>
-            {scene.steps.map((s, i) => (
-              <button key={s.number} className={i === stepIndex ? "on" : ""}
-                onClick={() => { setStepIndex(i); setShowList(false); }}>
-                <span className="num">{s.number}</span>
-                <span className="cap">{t(s.caption_ko)}</span>
-                {s.confidence < 0.5 && <span className="flag">{t("확인 필요")}</span>}
-              </button>
-            ))}
-          </nav>
-          <div className="drawer-foot">
-            {scene.issues.length > 0 && (
-              <div className="issues">
-                <b>{t("수량 검증 경고")}</b>
-                {scene.issues.map((issue) => <p key={issue}>{issue}</p>)}
-              </div>
-            )}
-            <p className="meta">{t("추출")}: {scene.extracted_by}</p>
-          </div>
-        </aside>
-      )}
 
       {showInventory && (
         <PartsInventory scene={scene} stepIndex={stepIndex} onClose={closeInventory}

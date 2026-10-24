@@ -108,3 +108,19 @@ export const chatState = { busy: false };
 export function chatCommand(cmd: ChatCommand) {
   chatBus.dispatchEvent(new CustomEvent("cmd", { detail: cmd }));
 }
+
+// 오프닝(심사위원용 첫 화면)을 보여 줄지: 기본으로 보여 주고, ?intro=0·특정 단계 링크(?step=N)·키트(?demo=…)면 건너뛴다.
+export function introEnabled() {
+  const q = new URLSearchParams(location.search);
+  return !q.get("demo") && !q.has("step") && q.get("intro") !== "0";
+}
+
+// 오프닝이 끝나 실제 뷰어로 넘어갔다는 신호(건너뛰기 포함). 뷰어는 이걸 받아 데모 재생을 이어 튼다.
+const introDoneHandlers = new Set<() => void>();
+export function onIntroDone(handler: () => void) {
+  introDoneHandlers.add(handler);
+  return () => { introDoneHandlers.delete(handler); };
+}
+export function introDone() {
+  introDoneHandlers.forEach((h) => h());
+}

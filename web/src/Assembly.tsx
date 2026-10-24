@@ -132,11 +132,25 @@ function contactY(part: SmallPart) {
   return 0;
 }
 
+// 연필로 십자 긋기(a: 0→1). 내려와서 가로 획, 살짝 들어 옮긴 뒤 세로 획, 다 그으면 들어 올린다.
+// strokes는 획별 진행(0→1), tip은 표시 크기 1 기준 심 끝 위치(x, z), lift는 벽에서 뗀 거리(cm).
+function markStroke(a: number) {
+  const k = (from: number, to: number) => Math.min(1, Math.max(0, (a - from) / (to - from)));
+  const p1 = k(0.15, 0.5), hop = k(0.5, 0.58), p2 = k(0.58, 0.9);
+  const tip: [number, number] = a < 0.5 ? [-0.5 + p1, 0] : a < 0.58 ? [0.5 - 0.5 * hop, 0.5 * hop] : [0, 0.5 - p2];
+  const lift = 4 * (1 - k(0, 0.15)) + 0.8 * Math.sin(Math.PI * hop) + 4 * k(0.9, 1);
+  return { strokes: [p1, p2], tip, lift };
+}
+
 // 공구를 부품 로컬 좌표(접점이 원점, +Y가 박히는 방향)에 맞춰 놓는다.
 function ToolPose({ tool, children }: { tool: HardwareSpec; children: React.ReactNode }) {
   if (tool.model === "hex_key") {
     // 짧은 팔을 육각 홈에 꽂고 긴 팔은 옆으로 뻗는다.
     return <group position={[0, -(tool.dims.short - 0.3), 0]} rotation={[0, 0, Math.PI / 2]}>{children}</group>;
+  }
+  if (tool.model === "pencil") {
+    // 설명서 그림처럼 손에 쥔 듯 비스듬히 눕혀 심 끝만 벽에 닿게 한다.
+    return <group rotation={[-0.35, 0, 0.6]}>{children}</group>;
   }
   return <>{children}</>;
 }
@@ -215,17 +229,24 @@ function Small({ part, slot, active, clock, style, tool }: {
     ref.current.position.set(...pos);
     const scale = !active || !magnify ? 1 : u < 0.85 ? MAGNIFY : MAGNIFY + (1 - MAGNIFY) * ease((u - 0.85) / 0.15);
     scaler.current?.scale.setScalar(scale);
-    if (mark) scaler.current?.scale.setScalar(active ? (a > 0.5 ? scale : 0.0001) : 1);
+    // 연필 표시는 심 끝이 지나간 만큼만 획이 그려진다.
+    const draw = mark ? markStroke(active ? a : 1) : null;
+    if (draw && spinner.current) {
+      draw.strokes.forEach((p, i) => spinner.current!.children[i]?.scale.set(Math.max(p, 0.0001), 1, 1));
+    }
     // 나사류는 머리 쪽에서 볼 때 시계 방향(조이는 방향)으로 돈다.
     const turn = spins ? (tool ? a : ease(u)) * SCREW_TURNS * Math.PI * 2 : 0;
     if (spinner.current) spinner.current.rotation.y = turn;
     const working = active && !!tool && u > handEnd * 0.5 && u < 1;
     if (toolRef.current) {
       toolRef.current.visible = working;
-      const pencilLift = mark ? Math.max(0, 4 * (1 - 2 * a)) : 0;
-      toolRef.current.position.y = contact * scale - gap - pencilLift;
-      // 연필은 십자를 긋듯이 살짝 흔든다.
-      toolRef.current.rotation.z = mark && a > 0.5 ? 0.25 * Math.sin(a * 40) : 0;
+      if (draw) {
+        // 심 끝을 획을 따라 옮긴다. 표시가 크게 그려져 있으면 그만큼 넓게 움직인다.
+        const s = part.dims.size * scale;
+        toolRef.current.position.set(draw.tip[0] * s, -draw.lift, draw.tip[1] * s);
+      } else {
+        toolRef.current.position.y = contact * scale - gap;
+      }
     }
     if (toolSpin.current) toolSpin.current.rotation.y = spins ? turn : 0;
     if (pathArrow.current) pathArrow.current.visible = active && travel > 1 && u > 0 && u < Math.max(handEnd, 0.6);

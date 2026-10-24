@@ -277,13 +277,22 @@ function Screwdriver({ dims: d, material, accent, renderOrder }: Props) {
   );
 }
 
-// 연필: 원점이 심 끝, 몸통은 -Y로 뻗는 육각 기둥.
+// 연필: 원점이 심 끝, 몸통은 -Y로 뻗는 육각 기둥. 깎인 나무 끝과 검은 심이 보이게 한다.
 function Pencil({ dims: d, material, accent, renderOrder }: Props) {
-  const tip = d.d * 1.6;
+  const tip = d.d * 1.6, lead = tip * 0.35;
+  const wood = useMemo(() => {
+    const m = material.clone() as THREE.MeshStandardMaterial;
+    m.color?.set("#e8c99a");
+    return m;
+  }, [material]);
+  useEffect(() => () => wood.dispose(), [wood]);
   return (
     <>
-      <mesh position={[0, -tip / 2, 0]} rotation={[Math.PI, 0, 0]} material={accent} renderOrder={renderOrder}>
-        <coneGeometry args={[d.d / 2, tip, 6]} />
+      <mesh position={[0, -lead / 2, 0]} rotation={[Math.PI, 0, 0]} material={accent} renderOrder={renderOrder}>
+        <coneGeometry args={[(d.d / 2) * (lead / tip), lead, 6]} />
+      </mesh>
+      <mesh position={[0, -lead - (tip - lead) / 2, 0]} rotation={[Math.PI, 0, 0]} material={wood} renderOrder={renderOrder}>
+        <cylinderGeometry args={[(d.d / 2) * (lead / tip), d.d / 2, tip - lead, 6]} />
       </mesh>
       <mesh position={[0, -tip - d.length / 2, 0]} material={material} renderOrder={renderOrder}>
         <cylinderGeometry args={[d.d / 2, d.d / 2, d.length, 6]} />
@@ -310,15 +319,25 @@ function SpiritLevel({ dims: d, material, accent, renderOrder }: Props) {
   );
 }
 
-// 연필 표시(+): 벽 면(원점)에 그린 십자.
+// 연필 표시(+): 벽 면(원점)에 그린 십자. 획마다 시작점에 둔 그룹이라 scale.x로 긋는 동안 늘어나게 할 수 있다.
+// 첫 획은 -X에서 +X로, 둘째 획은 +Z(위)에서 -Z(아래)로 긋는다.
+const MARK_STROKES = [
+  { from: (s: number) => [-s / 2, 0] as const, rotation: 0 },
+  { from: (s: number) => [0, s / 2] as const, rotation: Math.PI / 2 },
+];
 function WallMark({ dims: d, material, renderOrder }: Props) {
   return (
     <>
-      {[0, Math.PI / 2].map((r) => (
-        <mesh key={r} position={[0, -0.02, 0]} rotation={[0, r, 0]} material={material} renderOrder={renderOrder}>
-          <boxGeometry args={[d.size, 0.02, d.line]} />
-        </mesh>
-      ))}
+      {MARK_STROKES.map(({ from, rotation }) => {
+        const [x, z] = from(d.size);
+        return (
+          <group key={rotation} position={[x, -0.02, z]} rotation={[0, rotation, 0]}>
+            <mesh position={[d.size / 2, 0, 0]} material={material} renderOrder={renderOrder}>
+              <boxGeometry args={[d.size, 0.02, d.line]} />
+            </mesh>
+          </group>
+        );
+      })}
     </>
   );
 }

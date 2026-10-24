@@ -146,6 +146,168 @@
       }
     }
   },
+  "parts": [
+    {
+      "id": "outer_bottom",
+      "kind": "panel",
+      "name_ko": "바닥판",
+      "qty": 1,
+      "page": 10,
+      "included": true
+    },
+    {
+      "id": "outer_left",
+      "kind": "panel",
+      "name_ko": "왼쪽 옆판",
+      "qty": 1,
+      "page": 10,
+      "included": true
+    },
+    {
+      "id": "outer_right",
+      "kind": "panel",
+      "name_ko": "오른쪽 옆판",
+      "qty": 1,
+      "page": 10,
+      "included": true
+    },
+    {
+      "id": "outer_top",
+      "kind": "panel",
+      "name_ko": "윗판",
+      "qty": 1,
+      "page": 10,
+      "included": true
+    },
+    {
+      "id": "divider_vertical",
+      "kind": "panel",
+      "name_ko": "가운데 세로 칸막이",
+      "qty": 1,
+      "page": 10,
+      "included": true
+    },
+    {
+      "id": "shelf_left",
+      "kind": "panel",
+      "name_ko": "왼쪽 짧은 선반",
+      "qty": 1,
+      "page": 10,
+      "included": true
+    },
+    {
+      "id": "shelf_right",
+      "kind": "panel",
+      "name_ko": "오른쪽 짧은 선반",
+      "qty": 1,
+      "page": 10,
+      "included": true
+    },
+    {
+      "id": "104321",
+      "kind": "cam_screw",
+      "name_ko": "긴 연결 볼트",
+      "qty": 8,
+      "page": 9,
+      "included": true
+    },
+    {
+      "id": "101339",
+      "kind": "dowel",
+      "name_ko": "나무못",
+      "qty": 14,
+      "page": 9,
+      "included": true
+    },
+    {
+      "id": "100372",
+      "kind": "screw",
+      "name_ko": "짧은 나사",
+      "qty": 4,
+      "page": 9,
+      "included": true
+    },
+    {
+      "id": "103693",
+      "kind": "bracket",
+      "name_ko": "벽걸이 고리 브래킷",
+      "qty": 2,
+      "page": 9,
+      "included": true
+    },
+    {
+      "id": "115753",
+      "kind": "bracket",
+      "name_ko": "벽 고정 브래킷",
+      "qty": 2,
+      "page": 10,
+      "included": true
+    },
+    {
+      "id": "115754",
+      "kind": "cover",
+      "name_ko": "브래킷 커버",
+      "qty": 2,
+      "page": 10,
+      "included": true
+    },
+    {
+      "id": "10002300",
+      "kind": "pad",
+      "name_ko": "펠트 패드",
+      "qty": 4,
+      "page": 9,
+      "included": true
+    },
+    {
+      "id": "100001",
+      "kind": "tool",
+      "name_ko": "육각 렌치",
+      "qty": 1,
+      "page": 9,
+      "included": true
+    },
+    {
+      "id": "wall_screw",
+      "kind": "screw",
+      "name_ko": "벽용 나사 (미포함, 벽 재질에 맞게 별도 구매)",
+      "qty": 2,
+      "page": 19,
+      "included": false
+    },
+    {
+      "id": "hammer",
+      "kind": "tool",
+      "name_ko": "망치 (미포함)",
+      "qty": 1,
+      "page": 12,
+      "included": false
+    },
+    {
+      "id": "screwdriver",
+      "kind": "tool",
+      "name_ko": "십자 드라이버 (미포함)",
+      "qty": 1,
+      "page": 18,
+      "included": false
+    },
+    {
+      "id": "pencil",
+      "kind": "tool",
+      "name_ko": "연필 (미포함)",
+      "qty": 1,
+      "page": 19,
+      "included": false
+    },
+    {
+      "id": "level",
+      "kind": "tool",
+      "name_ko": "수평계 (미포함)",
+      "qty": 1,
+      "page": 19,
+      "included": false
+    }
+  ],
   "reseat_ratio": 0.15,
   "floor_offset": 0.4,
   "panels": [

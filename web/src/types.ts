@@ -53,6 +53,16 @@ export interface Step {
   unit_offset?: Vec3; // 가구 전체를 잠시 옮겨 두는 거리
 }
 
+// 설명서 부품 페이지의 목록. included=false는 상자에 없어 따로 준비하는 것(공구·벽 나사).
+export interface PartEntry {
+  id: string;
+  kind: string;
+  name_ko: string;
+  qty: number;
+  page: number;
+  included: boolean;
+}
+
 export interface Scene {
   product: string;
   size: Vec3;
@@ -61,6 +71,7 @@ export interface Scene {
   reseat_ratio?: number;
   hardware: Record<string, HardwareSpec>;
   panels: Panel[];
+  parts?: PartEntry[];
   steps: Step[];
   safety_ko: string[];
   extracted_by: string;

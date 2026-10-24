@@ -108,6 +108,12 @@ export function useLang(dir: string, scene?: unknown) {
   return { lang, voiceOn, translating: pending > 0 };
 }
 
+// 언어가 바뀌면 다시 그려야 하는 곳(뷰어 밖의 위젯 등)에서 쓴다.
+export function useT() {
+  useSyncExternalStore(subscribe, () => version);
+  return { t, lang };
+}
+
 export function setLang(id: string) {
   lang = id;
   emit();

@@ -39,13 +39,19 @@ const tools = {
   },
 };
 
-export type ChatBody = { messages: UIMessage[]; scene: unknown; step?: number };
+export type ChatBody = { messages: UIMessage[]; scene: unknown; step?: number; lang?: string };
 
-export async function chatStream({ messages, scene, step }: ChatBody, env: { ANTHROPIC_API_KEY: string; CHAT_MODEL?: string }) {
+// 화면 언어가 한국어가 아니면 답은 그 언어로 하되, scene의 *_ko 값은 한국어로 쓴다(화면이 번역해 보여 준다).
+function replyIn(lang?: string) {
+  if (!lang || lang === "ko" || !/^[a-z]{2,3}(-[A-Z]{2})?$/.test(lang)) return "";
+  return `\n- 사용자 화면 언어는 BCP 47 "${lang}"이다. 답과 patch_scene의 summary는 이 언어로 쓴다. 단, scene의 *_ko 값을 바꿀 때는 한국어로 쓴다(화면이 번역해 보여 준다).`;
+}
+
+export async function chatStream({ messages, scene, step, lang }: ChatBody, env: { ANTHROPIC_API_KEY: string; CHAT_MODEL?: string }) {
   const anthropic = createAnthropic({ apiKey: env.ANTHROPIC_API_KEY });
   const result = streamText({
     model: anthropic(env.CHAT_MODEL || "claude-opus-5-5"),
-    system: `${SYSTEM}\n\n지금 사용자가 보고 있는 단계: ${step ?? "?"}단계\n\nscene:\n${JSON.stringify(scene)}`,
+    system: `${SYSTEM}${replyIn(lang)}\n\n지금 사용자가 보고 있는 단계: ${step ?? "?"}단계\n\nscene:\n${JSON.stringify(scene)}`,
     messages: await convertToModelMessages(messages),
     tools,
   });

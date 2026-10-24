@@ -1,4 +1,5 @@
 import "./demoSwitcher.css";
+import { t } from "./lang";
 
 // 볼 수 있는 설명서 목록. demo가 없으면 가구 3D 뷰어(/), 있으면 키트 3D 조립(/?demo=<이름>).
 const DEMOS = [
@@ -9,7 +10,7 @@ const DEMOS = [
 export default function DemoSwitcher({ current }: { current: string | null }) {
   return (
     <div className="demo-switcher">
-      <span className="demo-switcher-label">설명서</span>
+      <span className="demo-switcher-label">{t("설명서")}</span>
       <div className="demo-switcher-list">
         {DEMOS.map((d) => {
           const on = d.demo === current;
@@ -19,7 +20,7 @@ export default function DemoSwitcher({ current }: { current: string | null }) {
               <img src={d.thumb} alt="" />
               <span className="demo-switcher-text">
                 <b>{d.name}</b>
-                <small>{d.kind}</small>
+                <small>{t(d.kind)}</small>
               </span>
               {on && <span className="demo-switcher-check" aria-hidden>✓</span>}
             </a>

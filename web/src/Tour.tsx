@@ -209,7 +209,6 @@ export function TourCaption() {
     <div className="tour-caption" role="status" aria-live="polite" key={v.n}>
       <span className="tour-count">{v.n} / {TOTAL}</span>
       <p>{t(v.text)}</p>
-      <span className="tour-keys">← →</span>
       <button onClick={stopTour} aria-label={t("재생 멈추기")}>✕</button>
       <i className="tour-bar" style={{ width: `${(v.n / TOTAL) * 100}%` }} />
     </div>

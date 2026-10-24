@@ -361,7 +361,8 @@ export default function App() {
           </div>
           <div className="playback">
             <button onClick={() => setPlayKey((k) => k + 1)}>{t("↻ 다시 보기")}</button>
-            <button className={autoplay ? "on" : ""} onClick={() => setAutoplay((a) => !a)}>
+            <button className={autoplay ? "on" : ""} onClick={() => setAutoplay((a) => !a)}
+              title={t("단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)")}>
               {t(autoplay ? "⏸ 멈춤" : "▶ 자동 재생")}
             </button>
             <span className="hint">{t("← → 단계 이동 · Space 다시 보기")}</span>

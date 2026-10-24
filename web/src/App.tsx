@@ -218,7 +218,7 @@ export default function App() {
 
       {/* 상단: 제품명과 진행 상황 */}
       <header className="overlay topbar">
-        <button className="icon" title="전체 단계" onClick={() => setShowList((v) => !v)}>☰</button>
+        <button className="icon" title={t("전체 단계")} onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
           <span className="product">{scene.product}</span>
           <span className="progress-text">{prep ? t("부품 확인") : t("{n} / {total} 단계", { n: step.number, total })}</span>
@@ -246,7 +246,7 @@ export default function App() {
         <section className="overlay card parts">
           <div className="parts-head">
             <h2>{t("이 단계에 필요한 부품")}</h2>
-            <button className="mini" title="지금까지 쓴 부품과 남은 부품을 크게 보기"
+            <button className="mini" title={t("지금까지 쓴 부품과 남은 부품을 크게 보기")}
               onClick={() => setShowInventory(true)}>{t("📦 현황")}</button>
           </div>
           {parts.length === 0 && <p className="muted">{t("새 부품 없음")}</p>}
@@ -270,7 +270,7 @@ export default function App() {
 
       {/* 오른쪽 가운데: 보기 도구 */}
       <div className="overlay toolbar">
-        <button className="icon" title="시점 초기화" onClick={() => setResetKey((k) => k + 1)}>⌂</button>
+        <button className="icon" title={t("시점 초기화")} onClick={() => setResetKey((k) => k + 1)}>⌂</button>
         <div className="style-switch">
           {STYLES.map((s) => (
             <button key={s.id} className={renderStyle === s.id ? "on" : ""} onClick={() => setRenderStyle(s.id)}>
@@ -278,21 +278,21 @@ export default function App() {
             </button>
           ))}
         </div>
-        <button className={`icon ${showPage ? "on" : ""}`} title="원본 페이지" onClick={() => setShowPage((v) => !v)}>📄</button>
-        <button className="icon" title="전체 화면" onClick={toggleFullscreen}>⛶</button>
+        <button className={`icon ${showPage ? "on" : ""}`} title={t("원본 페이지")} onClick={() => setShowPage((v) => !v)}>📄</button>
+        <button className="icon" title={t("전체 화면")} onClick={toggleFullscreen}>⛶</button>
       </div>
 
       {/* 오른쪽 아래: 원본 설명서 페이지 */}
       {showPage && !prep && (
-        <button className="overlay card source" onClick={() => setPageZoom(true)} title="크게 보기">
+        <button className="overlay card source" onClick={() => setPageZoom(true)} title={t("크게 보기")}>
           <span className="source-label">{t("원본 {n}쪽", { n: page })}</span>
-          <img src={pageUrl(page)} alt={`설명서 ${page}쪽`} />
+          <img src={pageUrl(page)} alt={t("설명서 {n}쪽", { n: page })} />
         </button>
       )}
 
       {/* 아래: 단계 타임라인과 재생 컨트롤 */}
       <footer className="overlay dock">
-        <button className="nav" onClick={() => go(-1)} disabled={prep} aria-label="이전 단계">‹</button>
+        <button className="nav" onClick={() => go(-1)} disabled={prep} aria-label={t("이전 단계")}>‹</button>
         <div className="middle">
           <div className="timeline">
             <button title={t("부품 확인")} className={`seg prep ${prep ? "on" : "done"}`} onClick={() => setStepIndex(PREP)}>
@@ -314,7 +314,7 @@ export default function App() {
             <span className="hint">{t("← → 단계 이동 · Space 다시 보기")}</span>
           </div>
         </div>
-        <button className="nav primary" onClick={() => go(1)} disabled={stepIndex === total - 1} aria-label="다음 단계">›</button>
+        <button className="nav primary" onClick={() => go(1)} disabled={stepIndex === total - 1} aria-label={t("다음 단계")}>›</button>
       </footer>
 
       {/* 전체 단계 목록 서랍 */}
@@ -323,7 +323,7 @@ export default function App() {
           <DemoSwitcher current={null} />
           <div className="drawer-head">
             <b>{t("전체 단계")}</b>
-            <button className="icon" onClick={() => setShowList(false)} aria-label="닫기">✕</button>
+            <button className="icon" onClick={() => setShowList(false)} aria-label={t("닫기")}>✕</button>
           </div>
           <nav>
             <button className={prep ? "on" : ""} onClick={() => { setStepIndex(PREP); setShowList(false); }}>
@@ -342,11 +342,11 @@ export default function App() {
           <div className="drawer-foot">
             {scene.issues.length > 0 && (
               <div className="issues">
-                <b>수량 검증 경고</b>
+                <b>{t("수량 검증 경고")}</b>
                 {scene.issues.map((issue) => <p key={issue}>{issue}</p>)}
               </div>
             )}
-            <p className="meta">추출: {scene.extracted_by}</p>
+            <p className="meta">{t("추출")}: {scene.extracted_by}</p>
           </div>
         </aside>
       )}
@@ -360,7 +360,7 @@ export default function App() {
 
       {pageZoom && (
         <div className="lightbox" onClick={() => setPageZoom(false)}>
-          <img src={pageUrl(page)} alt={`설명서 ${page}쪽`} />
+          <img src={pageUrl(page)} alt={t("설명서 {n}쪽", { n: page })} />
         </div>
       )}
     </div>

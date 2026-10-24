@@ -135,7 +135,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
 
       {/* 상단: 제품명과 진행 상황 */}
       <header className="overlay topbar">
-        <button className="icon" title="전체 단계" onClick={() => setShowList((v) => !v)}>☰</button>
+        <button className="icon" title={t("전체 단계")} onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
           <span className="product">{scene.product}</span>
           <span className="progress-text">{t("{n} / {total} 단계", { n: index + 1, total })}{mk ? ` · ${t("마킹")} ${mk}` : ""}</span>
@@ -158,7 +158,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
         <div className="step-badge">{step.number}</div>
         <div className="body">
           <p className="step-title">
-            {step.label && <i className="sub-badge" title="이 단계에서 만든 조립품 기호">{step.label}</i>}
+            {step.label && <i className="sub-badge" title={t("이 단계에서 만든 조립품 기호")}>{step.label}</i>}
             {t(step.title_ko)}
           </p>
           <p className="text">{t(step.caption_ko)}</p>
@@ -203,27 +203,27 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
 
       {/* 오른쪽 가운데: 보기 도구 */}
       <div className="overlay toolbar">
-        <button className="icon" title="시점 초기화" onClick={() => setResetKey((k) => k + 1)}>⌂</button>
+        <button className="icon" title={t("시점 초기화")} onClick={() => setResetKey((k) => k + 1)}>⌂</button>
         <div className="style-switch">
           {STYLES.map((s) => (
             <button key={s.id} className={renderStyle === s.id ? "on" : ""} onClick={() => setRenderStyle(s.id)}>{t(s.label)}</button>
           ))}
         </div>
-        <button className={`icon ${showPage ? "on" : ""}`} title="원본 페이지" onClick={() => setShowPage((v) => !v)}>📄</button>
-        <button className="icon" title="전체 화면" onClick={toggleFullscreen}>⛶</button>
+        <button className={`icon ${showPage ? "on" : ""}`} title={t("원본 페이지")} onClick={() => setShowPage((v) => !v)}>📄</button>
+        <button className="icon" title={t("전체 화면")} onClick={toggleFullscreen}>⛶</button>
       </div>
 
       {/* 오른쪽 아래: 원본 설명서 페이지 */}
       {showPage && (
-        <button className="overlay card source" onClick={() => setPageZoom(true)} title="크게 보기">
+        <button className="overlay card source" onClick={() => setPageZoom(true)} title={t("크게 보기")}>
           <span className="source-label">{t("원본 {n}쪽", { n: step.page })}</span>
-          <img src={pageUrl(step.page)} alt={`설명서 ${step.page}쪽`} />
+          <img src={pageUrl(step.page)} alt={t("설명서 {n}쪽", { n: step.page })} />
         </button>
       )}
 
       {/* 아래: 단계 타임라인과 재생 컨트롤 */}
       <footer className="overlay dock">
-        <button className="nav" onClick={() => go(-1)} disabled={index === 0} aria-label="이전 단계">‹</button>
+        <button className="nav" onClick={() => go(-1)} disabled={index === 0} aria-label={t("이전 단계")}>‹</button>
         <div className="middle">
           <div className="timeline">
             {order.map(({ s }, i) => (
@@ -242,7 +242,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
             <span className="hint">{t("← → 단계 이동 · Space 다시 보기")}</span>
           </div>
         </div>
-        <button className="nav primary" onClick={() => go(1)} disabled={index === total - 1} aria-label="다음 단계">›</button>
+        <button className="nav primary" onClick={() => go(1)} disabled={index === total - 1} aria-label={t("다음 단계")}>›</button>
       </footer>
 
       {/* 전체 단계 목록 서랍 */}
@@ -251,7 +251,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
           <DemoSwitcher current={demo} />
           <div className="drawer-head">
             <b>{t("전체 단계")} <small className="count">{total}</small></b>
-            <button className="icon" onClick={() => setShowList(false)} aria-label="닫기">✕</button>
+            <button className="icon" onClick={() => setShowList(false)} aria-label={t("닫기")}>✕</button>
           </div>
           <nav>
             {order.map(({ s }, i) => (
@@ -273,7 +273,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
           <div className="drawer-foot">
             {scene.issues.length > 0 && (
               <div className="issues">
-                <b>검증 경고</b>
+                <b>{t("검증 경고")}</b>
                 {scene.issues.map((issue) => <p key={issue}>{issue}</p>)}
               </div>
             )}
@@ -281,14 +281,14 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
               <b>{t("기호 안내")}</b>
               <ul>{scene.notes_ko.map((n) => <li key={n}>{t(n)}</li>)}</ul>
             </div>
-            <p className="meta">추출: {scene.extracted_by}</p>
+            <p className="meta">{t("추출")}: {scene.extracted_by}</p>
           </div>
         </aside>
       )}
 
       {pageZoom && (
         <div className="lightbox" onClick={() => setPageZoom(false)}>
-          <img src={pageUrl(step.page)} alt={`설명서 ${step.page}쪽`} />
+          <img src={pageUrl(step.page)} alt={t("설명서 {n}쪽", { n: step.page })} />
         </div>
       )}
     </div>

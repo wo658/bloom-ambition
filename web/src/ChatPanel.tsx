@@ -3,6 +3,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
 import type { Scene } from "./types";
 import { goToStep, useCurrentStep } from "./bridge";
+import { useT } from "./lang";
 import "./chat.css";
 
 type Op = { op: "replace" | "add" | "remove"; path: string; value?: unknown };
@@ -48,6 +49,9 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<Scene[]>([]);
   const step = useCurrentStep();
+  const { t, lang } = useT();
+  const langRef = useRef(lang);
+  langRef.current = lang;
   const sceneRef = useRef(scene);
   const stepRef = useRef(step);
   sceneRef.current = scene;
@@ -58,7 +62,7 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
   const { messages, sendMessage, addToolOutput, status, stop, error, setMessages } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
-      body: () => ({ scene: sceneRef.current, step: stepRef.current?.number }),
+      body: () => ({ scene: sceneRef.current, step: stepRef.current?.number, lang: langRef.current }),
     }),
     sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
     onToolCall({ toolCall }) {
@@ -107,37 +111,53 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
     setScene(prev);
   };
 
+  // 왼쪽 가장자리를 끌어 채팅 폭(--chat-w)을 바꾼다. 320~720px.
+  const startResize = (e: React.PointerEvent) => {
+    e.preventDefault();
+    const move = (ev: PointerEvent) =>
+      document.documentElement.style.setProperty("--chat-w", `${Math.min(720, Math.max(320, window.innerWidth - ev.clientX))}px`);
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      document.body.classList.remove("chat-resizing");
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    document.body.classList.add("chat-resizing");
+  };
+
   if (!open) {
     return (
       <button className="chat-launcher" onClick={() => setOpen(true)}>
         <span className="chat-orb small" />
-        도면 AI에게 묻기
+        {t("도면 AI에게 묻기")}
       </button>
     );
   }
 
   return (
-    <aside className="chat-sidebar" aria-label="도면 AI 채팅"
+    <aside className="chat-sidebar" aria-label={t("도면 AI 채팅")}
       // 입력 중 ←→·Space가 뷰어 단축키로 새지 않게 막는다.
       onKeyDown={(e) => e.stopPropagation()}>
+      <div className="chat-resize" onPointerDown={startResize} title={t("끌어서 폭 바꾸기")} />
       <header className="chat-head">
         <span className="chat-orb" />
         <div className="chat-title">
-          <b>도면 어시스턴트</b>
-          <span>{scene.product}{step ? ` · ${step.number}단계 보는 중` : ""}</span>
+          <b>{t("도면 어시스턴트")}</b>
+          <span>{scene.product}{step ? ` · ${t("{n}단계 보는 중", { n: step.number })}` : ""}</span>
         </div>
-        <button className="chat-btn" onClick={undo} disabled={!history.length || busy} title="마지막 수정 되돌리기">↶</button>
-        <button className="chat-btn" onClick={() => { stop(); setMessages([]); }} title="새 대화">⟲</button>
-        <button className="chat-btn" onClick={() => setOpen(false)} aria-label="닫기">✕</button>
+        <button className="chat-btn" onClick={undo} disabled={!history.length || busy} title={t("마지막 수정 되돌리기")}>↶</button>
+        <button className="chat-btn" onClick={() => { stop(); setMessages([]); }} title={t("새 대화")}>⟲</button>
+        <button className="chat-btn" onClick={() => setOpen(false)} aria-label={t("닫기")}>✕</button>
       </header>
 
       <div className="chat-list" ref={listRef}>
         {messages.length === 0 && (
           <div className="chat-empty">
             <span className="chat-orb large" />
-            <p>설명서 내용을 묻거나, 바꾸고 싶은 걸 말해 보세요.<br />바꾼 내용은 도면에 바로 반영돼요.</p>
+            <p>{t("설명서 내용을 묻거나, 바꾸고 싶은 걸 말해 보세요.")}<br />{t("바꾼 내용은 도면에 바로 반영돼요.")}</p>
             <div className="chat-suggest">
-              {SUGGESTIONS.map((s) => <button key={s} onClick={() => send(s)}>{s}</button>)}
+              {SUGGESTIONS.map((s) => <button key={s} onClick={() => send(t(s))}>{t(s)}</button>)}
             </div>
           </div>
         )}
@@ -152,33 +172,33 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
                   <div key={i} className={`chat-tool ${failed ? "fail" : ""}`}>
                     <span>{p.state === "output-available" ? (failed ? "✕" : "✓") : "…"}</span>
                     <div>
-                      <b>{input?.summary ?? "도면 수정 중"}</b>
-                      {p.state === "output-available" && <small>{String(p.output).split(". ")[0]}</small>}
+                      <b>{input?.summary ?? t("도면 수정 중")}</b>
+                      {p.state === "output-available" && <small>{failed ? `${t("적용 실패")}: ${String(p.output).replace(/^적용 실패: /, "")}` : t("적용 완료")}</small>}
                     </div>
                   </div>
                 );
               }
               if (p.type === "tool-go_to_step") {
                 const input = p.input as { number?: number } | undefined;
-                return <div key={i} className="chat-tool"><span>→</span><b>{input?.number}단계로 이동</b></div>;
+                return <div key={i} className="chat-tool"><span>→</span><b>{t("{n}단계로 이동", { n: input?.number ?? "" })}</b></div>;
               }
               return null;
             })}
           </div>
         ))}
         {status === "submitted" && <div className="chat-msg assistant"><span className="chat-typing"><i /><i /><i /></span></div>}
-        {error && <div className="chat-error">오류: {error.message}</div>}
+        {error && <div className="chat-error">{t("오류")}: {error.message}</div>}
       </div>
 
       <form className="chat-input" onSubmit={(e) => { e.preventDefault(); send(input); }}>
-        <textarea ref={inputRef} rows={1} value={input} placeholder="메시지를 입력하세요…"
+        <textarea ref={inputRef} rows={1} value={input} placeholder={t("메시지를 입력하세요…")}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); send(input); }
           }} />
         {busy
-          ? <button type="button" className="chat-send" onClick={stop} aria-label="멈춤">■</button>
-          : <button type="submit" className="chat-send" disabled={!input.trim()} aria-label="보내기">↑</button>}
+          ? <button type="button" className="chat-send" onClick={stop} aria-label={t("멈춤")}>■</button>
+          : <button type="submit" className="chat-send" disabled={!input.trim()} aria-label={t("보내기")}>↑</button>}
       </form>
     </aside>
   );

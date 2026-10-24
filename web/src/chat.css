@@ -1,8 +1,14 @@
 /* 오른쪽에 붙는 AI 채팅 사이드바(ElevenLabs 에이전트 위젯 느낌) */
+/* 열리면 3D 뷰어가 왼쪽으로 줄고, 뷰어 안 카드들은 style.css의 컨테이너 쿼리로 알아서 접힌다. 왼쪽 가장자리를 끌어 폭을 바꾼다. */
 :root { --chat-w: 400px; }
+.viewer { transition: width .28s cubic-bezier(.2, .8, .2, 1); }
 body.chat-open .viewer { width: calc(100vw - var(--chat-w)); }
-body.chat-open .dock { width: min(980px, calc(100vw - var(--chat-w) - 260px)); }
-body.chat-open .pdf-launcher { right: calc(var(--chat-w) + 16px); }
+body.chat-open .pdf-launcher { display: none; }
+body.chat-resizing, body.chat-resizing * { cursor: col-resize !important; user-select: none; }
+body.chat-resizing .viewer { transition: none; }
+.chat-resize { position: absolute; top: 0; bottom: 0; left: -5px; width: 10px; cursor: col-resize; z-index: 1; }
+.chat-resize::after { content: ""; position: absolute; top: 50%; left: 3px; width: 4px; height: 44px; margin-top: -22px; border-radius: 4px; background: #d5d9e0; opacity: 0; transition: opacity .15s; }
+.chat-resize:hover::after, body.chat-resizing .chat-resize::after { opacity: 1; }
 
 .chat-orb { flex: none; width: 34px; height: 34px; border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #fff 0 8%, transparent 40%), conic-gradient(from 200deg, #ff7a1a, #ffc46b, #9ad0ff, #6a7cff, #ff7a1a);

@@ -1,4 +1,4 @@
-// 개발 서버에 붙는 API: 원본 PDF 제공(/api/pdf/<demo>).
+// 개발 서버에 붙는 API: 원본 PDF 제공(/api/pdf/<demo>). 배포본은 vercel.json rewrite로 제조사 원본을 가져온다.
 import fs from "node:fs";
 import path from "node:path";
 import type { Plugin } from "vite";

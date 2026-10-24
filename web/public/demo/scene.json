@@ -144,6 +144,19 @@
         "width": 3.0,
         "t": 2.0
       }
+    },
+    "drill": {
+      "model": "drill",
+      "color": "#2f7d6d",
+      "dims": {
+        "bit": 6,
+        "bit_d": 0.6,
+        "chuck": 2,
+        "body": 12,
+        "body_d": 4,
+        "grip": 9,
+        "grip_w": 2.6
+      }
     }
   },
   "reseat_ratio": 0.15,
@@ -1459,11 +1472,16 @@
     {
       "number": 13,
       "page": 19,
-      "caption_ko": "선반을 잠시 옆으로 비켜 두세요.\n표시한 두 곳에 머리가 둥근 벽용 나사를 박되, 머리가 조금 튀어나오게 남겨 두세요.\n접시머리 나사는 쓰지 마세요.",
+      "caption_ko": "선반을 잠시 옆으로 비켜 두세요.\n표시한 두 곳에 드릴로 구멍을 뚫고, 머리가 둥근 벽용 나사를 박되, 머리가 조금 튀어나오게 남겨 두세요.\n접시머리 나사는 쓰지 마세요.",
       "adds": [],
       "warning_ko": "벽용 나사는 들어 있지 않아요.\n벽 재질에 맞는 나사를 따로 준비하세요.",
       "confidence": 0.7,
       "uses": [
+        {
+          "part_id": "drill",
+          "qty": 1,
+          "name_ko": "전동 드릴 (미포함)"
+        },
         {
           "part_id": "wall_screw",
           "qty": 2,
@@ -1471,6 +1489,48 @@
         }
       ],
       "small": [
+        {
+          "id": "s13-wall_hole-0",
+          "part_id": "wall_hole",
+          "model": "wall_hole",
+          "color": "#2b2622",
+          "dims": {
+            "d": 0.6,
+            "depth": 3.5
+          },
+          "at": [
+            -32.5,
+            70.925,
+            -20.0
+          ],
+          "axis": [
+            0,
+            0,
+            -1
+          ],
+          "tool": "drill"
+        },
+        {
+          "id": "s13-wall_hole-1",
+          "part_id": "wall_hole",
+          "model": "wall_hole",
+          "color": "#2b2622",
+          "dims": {
+            "d": 0.6,
+            "depth": 3.5
+          },
+          "at": [
+            32.5,
+            70.925,
+            -20.0
+          ],
+          "axis": [
+            0,
+            0,
+            -1
+          ],
+          "tool": "drill"
+        },
         {
           "id": "s13-wall_screw-0",
           "part_id": "wall_screw",

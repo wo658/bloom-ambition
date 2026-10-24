@@ -11,7 +11,7 @@ export interface Panel {
 export type HardwareModel =
   | "connector_screw" | "dowel" | "euro_screw" | "wall_screw"
   | "corner_bracket" | "hook_plate" | "bracket_cover" | "felt_pad" | "hex_key"
-  | "hammer" | "screwdriver" | "pencil" | "wall_mark" | "spirit_level";
+  | "hammer" | "screwdriver" | "pencil" | "wall_mark" | "spirit_level" | "drill" | "wall_hole";
 
 export interface HardwareSpec {
   model: HardwareModel;

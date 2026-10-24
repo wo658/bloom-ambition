@@ -63,11 +63,16 @@ HARDWARE = {
     "screwdriver": {"model": "screwdriver", "color": "#d9480f", "dims": {"shaft": 10, "shaft_d": 0.5, "grip": 10, "grip_d": 3}},
     "pencil": {"model": "pencil", "color": "#f2b705", "dims": {"length": 16, "d": 0.8}},
     "level": {"model": "spirit_level", "color": "#e8b923", "dims": {"long": 40, "width": 3.0, "t": 2.0}},
+    "drill": {"model": "drill", "color": "#2f7d6d", "dims": {
+        "bit": 6, "bit_d": 0.6, "chuck": 2, "body": 12, "body_d": 4, "grip": 9, "grip_w": 2.6}},
     "wall_mark": {"model": "wall_mark", "color": "#374151", "dims": {"size": 2.0, "line": 0.18}},
+    # 벽에 뚫린 나사 구멍. 지름은 벽 나사 나사산보다 조금 크고, 깊이는 나사가 박히는 길이만큼.
+    "wall_hole": {"model": "wall_hole", "color": "#2b2622", "dims": {"d": 0.6, "depth": 3.5}},
 }
 # 철물 종류별로 그림에 나오는 공구. 단계의 uses에 그 공구가 있을 때만 붙인다.
 TOOL_FOR = {"connector_screw": "100001", "dowel": "hammer", "euro_screw": "screwdriver",
-            "wall_screw": "screwdriver", "wall_mark": "pencil"}
+            "wall_screw": "screwdriver", "wall_mark": "pencil",
+            "wall_hole": "drill"}
 # 부품 번호를 모르면 종류별 대표 부품으로 그린다.
 KIND_FALLBACK = {"dowel": "101339", "cam_screw": "104321", "screw": "100372",
                  "bracket": "115753", "cover": "115754", "pad": "10002300", "tool": "100001"}
@@ -186,7 +191,7 @@ class Placer:
         if model == "spirit_level":
             # 왼쪽 옆판 바깥 면에 세로로 대고 수직을 본다(19쪽). 그 단계에서만 보인다.
             return [{"at": [-self.w / 2, self.h / 2, 0], "axis": [1, 0, 0], "up": [0, 1, 0], "transient": True}]
-        if model == "wall_mark":
+        if model in ("wall_mark", "wall_hole"):
             return [{"at": [x + s * b["wall"] / 2, y + wall_screw_dy(), self.wall_z], "axis": [0, 0, -1]}
                     for (x, y, _), s in sides][:qty]
         return []
@@ -245,6 +250,10 @@ def build_scene(manual: Manual) -> dict:
             models.append(("level", "tool", 1))
         if "pencil" in tools and all(pid == "level" for pid, _, _ in models):
             models.append(("wall_mark", "tool", len(placer.bracket_origins)))
+        # 드릴을 쓰는 단계: 벽 나사를 박기 전에 표시한 자리마다 구멍부터 뚫는다(19쪽).
+        if "drill" in tools:
+            screws = sum(qty for pid, kind, qty in models if hardware(pid, kind)["model"] == "wall_screw")
+            models.insert(0, ("wall_hole", "tool", screws))
         small = []
         for part_id, kind, qty in models:
             spec = hardware(part_id, kind)

@@ -56,7 +56,8 @@ function CameraRig({ resetKey, scene, stepIndex }: { resetKey: number; scene: Sc
     const distance = Math.min(HOME_DISTANCE, Math.max(FOCUS_MIN, focus.radius * 4.5));
     const direction = scene.steps[stepIndex].pose === "upright" ? FRONT_DIRECTION : HOME_DIRECTION.clone().normalize();
     return fly(target.clone().addScaledVector(direction, distance), target);
-  }, [scene, stepIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+    // 첫 렌더에는 OrbitControls가 아직 없어서, ?step=으로 바로 열면 controls가 생긴 뒤에 다시 겨눈다.
+  }, [scene, stepIndex, controls]); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 
@@ -76,7 +77,8 @@ function StudioEnvironment({ on }: { on: boolean }) {
 
 export default function App() {
   const [scene, setScene] = useState<Scene | null>(null);
-  const [stepIndex, setStepIndex] = useState(0);
+  // ?step=13 처럼 단계 번호를 주면 그 단계부터 연다.
+  const [stepIndex, setStepIndex] = useState(() => Math.max(0, (Number(new URLSearchParams(location.search).get("step")) || 1) - 1));
   const [playKey, setPlayKey] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
   const [renderStyle, setRenderStyle] = useState<RenderStyle>("color");

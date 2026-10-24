@@ -36,6 +36,7 @@ const PANEL_TIME = 1.2;
 const TOOL_TIME = 1.1; // 공구로 조이거나 두드리는 부품 하나
 const PLAIN_TIME = 0.6; // 손으로 붙이는 부품 하나
 const PLAIN_STAGGER = 0.3;
+const DRILL_TIME = 2.0; // 드릴로 벽에 구멍 하나 뚫기
 
 type Slot = { start: number; dur: number };
 type Schedule = { panels: Slot | null; parts: Slot[]; total: number };
@@ -54,7 +55,7 @@ export function schedule(step: Step): Schedule {
   let end = cursor;
   const parts = step.small.map((s) => {
     // 걸고 내리는 부품은 두 동작이라 공구 쓰는 부품만큼 시간을 준다.
-    const dur = s.tool || s.drop ? TOOL_TIME : PLAIN_TIME;
+    const dur = s.model === "wall_hole" ? DRILL_TIME : s.tool || s.drop ? TOOL_TIME : PLAIN_TIME;
     const slot = { start: cursor, dur };
     cursor += s.tool ? dur : PLAIN_STAGGER;
     end = Math.max(end, slot.start + dur);
@@ -124,6 +125,21 @@ function hardwareMaterial(style: RenderStyle, color: string, metal: boolean, act
   return new THREE.MeshStandardMaterial({ ...common, metalness: metal ? 0.7 : 0, roughness: metal ? 0.35 : 0.8 });
 }
 
+// 드릴 동작(a: 0→1): 날 끝을 벽에 대고(~APPROACH), 밀어 넣으며 뚫은 뒤(~RETRACT) 빼낸다.
+const DRILL_APPROACH = 0.15;
+const DRILL_RETRACT = 0.8;
+const DRILL_STANDOFF = 5; // 드릴이 다가오기 시작하는 벽과의 거리
+const DRILL_TURNS = 30;
+const DUST = Array.from({ length: 10 }, (_, i) => ({ phase: i / 10, x: Math.sin(i * 12.9898) * 0.5, drift: 0.6 + (i % 3) * 0.3 }));
+const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+function drillMotion(a: number, depth: number) {
+  const bore = clamp01((a - DRILL_APPROACH) / (DRILL_RETRACT - DRILL_APPROACH));
+  const y = a < DRILL_APPROACH ? -DRILL_STANDOFF * (1 - ease(a / DRILL_APPROACH))
+    : a < DRILL_RETRACT ? bore * depth
+    : depth - (depth + DRILL_STANDOFF) * ease((a - DRILL_RETRACT) / (1 - DRILL_RETRACT));
+  return { bore, y, cutting: a > DRILL_APPROACH && a < DRILL_RETRACT };
+}
+
 // 공구가 닿는 곳(부품 로컬 Y). 나사·볼트는 머리 윗면, 나무못은 뒤쪽 끝, 벽 나사는 벽에서 나온 머리.
 function contactY(part: SmallPart) {
   const d = part.dims;
@@ -150,6 +166,7 @@ function Small({ part, slot, active, clock, style, tool }: {
   const toolRef = useRef<THREE.Group>(null);
   const toolSpin = useRef<THREE.Group>(null);
   const pathArrow = useRef<THREE.Group>(null);
+  const dust = useRef<THREE.Group>(null);
   const turnArrow = useRef<THREE.Group>(null);
   const quaternion = useMemo(() => orientation(part.axis, part.up), [part.axis, part.up]);
   const metal = METAL.includes(part.model);
@@ -164,10 +181,11 @@ function Small({ part, slot, active, clock, style, tool }: {
     [material, accent, toolMaterial, toolAccent]);
 
   const mark = part.model === "wall_mark";
-  // 공구(수평계)는 원래 커서 키우지 않는다.
-  const magnify = !TOOLS.includes(part.model);
+  const hole = part.model === "wall_hole";
+  // 공구(수평계)는 원래 커서 키우지 않는다. 구멍은 벽에 뚫리는 크기 그대로 보여 준다.
+  const magnify = !TOOLS.includes(part.model) && !hole;
   const length = part.dims.length ?? 2;
-  const travel = mark ? 0 : part.travel ?? Math.max(SMALL_TRAVEL, length + 2);
+  const travel = mark || hole ? 0 : part.travel ?? Math.max(SMALL_TRAVEL, length + 2);
   const dir = part.approach ?? part.axis;
   // drop이 있으면 그만큼 위(hang)로 들어온 뒤 제자리로 내려앉는다.
   const hang = add(part.at, [0, part.drop ?? 0, 0]);
@@ -216,6 +234,18 @@ function Small({ part, slot, active, clock, style, tool }: {
     const scale = !active || !magnify ? 1 : u < 0.85 ? MAGNIFY : MAGNIFY + (1 - MAGNIFY) * ease((u - 0.85) / 0.15);
     scaler.current?.scale.setScalar(scale);
     if (mark) scaler.current?.scale.setScalar(active ? (a > 0.5 ? scale : 0.0001) : 1);
+    const drill = hole && active ? drillMotion(a, part.dims.depth ?? 3) : null;
+    // 구멍은 날이 들어가는 만큼 벌어지고 가루가 둘레에 묻는다.
+    if (drill) scaler.current?.scale.setScalar(drill.bore > 0 ? Math.min(1, 0.3 + drill.bore * 1.4) : 0.0001);
+    if (dust.current) {
+      dust.current.visible = !!drill?.cutting;
+      // 뚫는 동안 구멍에서 가루가 나와 벽을 타고 떨어진다(로컬 -Y 앞, -Z 아래).
+      dust.current.children.forEach((m, i) => {
+        const { phase, x, drift } = DUST[i];
+        const p = (a * 8 + phase) % 1;
+        m.position.set(x * (0.4 + p), -0.3 - p * drift, -p * p * 4);
+      });
+    }
     // 나사류는 머리 쪽에서 볼 때 시계 방향(조이는 방향)으로 돈다.
     const turn = spins ? (tool ? a : ease(u)) * SCREW_TURNS * Math.PI * 2 : 0;
     if (spinner.current) spinner.current.rotation.y = turn;
@@ -226,6 +256,13 @@ function Small({ part, slot, active, clock, style, tool }: {
       toolRef.current.position.y = contact * scale - gap - pencilLift;
       // 연필은 십자를 긋듯이 살짝 흔든다.
       toolRef.current.rotation.z = mark && a > 0.5 ? 0.25 * Math.sin(a * 40) : 0;
+      if (drill) {
+        // 드릴은 뚫는 동안 살짝 떨리고 날만 빠르게 돈다.
+        toolRef.current.position.y = drill.y;
+        toolRef.current.position.x = drill.cutting ? 0.06 * Math.sin(a * 400) : 0;
+        const bit = toolRef.current.getObjectByName("drill-bit");
+        if (bit) bit.rotation.y = drill.bore * DRILL_TURNS * Math.PI * 2;
+      }
     }
     if (toolSpin.current) toolSpin.current.rotation.y = spins ? turn : 0;
     if (pathArrow.current) pathArrow.current.visible = active && travel > 1 && u > 0 && u < Math.max(handEnd, 0.6);
@@ -249,6 +286,16 @@ function Small({ part, slot, active, clock, style, tool }: {
             <HardwareMesh part={part} material={material} accent={accent} renderOrder={active ? 10 : 0} />
           </group>
         </group>
+        {active && hole && (
+          <group ref={dust} visible={false}>
+            {DUST.map((_, i) => (
+              <mesh key={i} renderOrder={11}>
+                <boxGeometry args={[0.18, 0.18, 0.18]} />
+                <meshBasicMaterial color="#d8d2c8" depthTest={false} transparent />
+              </mesh>
+            ))}
+          </group>
+        )}
         {active && tool && (
           <group ref={toolRef} visible={false}>
             <group ref={toolSpin} scale={toolScale}>
@@ -370,8 +417,8 @@ function WallShade({ size, z }: { size: Vec3; z: number }) {
   );
 }
 
-// 벽에 붙는 것(연필 표시, 벽 나사)은 가구를 옮겨도 제자리에 남는다.
-const ON_WALL: SmallPart["model"][] = ["wall_mark", "wall_screw"];
+// 벽에 붙는 것(연필 표시, 구멍, 벽 나사)은 가구를 옮겨도 제자리에 남는다.
+const ON_WALL: SmallPart["model"][] = ["wall_mark", "wall_hole", "wall_screw"];
 
 type Pose = { rot: number; pos: Vec3 };
 function poses(scene: Scene): Record<Step["pose"], Pose> {

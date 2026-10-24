@@ -25,13 +25,17 @@ def panel_boxes(w: float, h: float, d: float) -> dict[str, dict]:
         "outer_top": {"size": [w, OUTER_T, d], "pos": [0, h - OUTER_T / 2, 0], "from": [0, 1, 0]},
         "outer_left": {"size": [OUTER_T, ih, d], "pos": [-side_x, h / 2, 0], "from": [-1, 0, 0]},
         "outer_right": {"size": [OUTER_T, ih, d], "pos": [side_x, h / 2, 0], "from": [1, 0, 0]},
-        "divider_vertical": {"size": [INNER_T, ih, d], "pos": [0, h / 2, 0], "from": [0, 0, 1]},
-        "shelf_left": {"size": [cell, INNER_T, d], "pos": [-shelf_x, h / 2, 0], "from": [0, 0, 1]},
-        "shelf_right": {"size": [cell, INNER_T, d], "pos": [shelf_x, h / 2, 0], "from": [0, 0, 1]},
+        # 칸막이·선반은 먼저 박힌 나무못 축을 따라 길이 방향으로 밀려 들어간다(12~14쪽 화살표).
+        "divider_vertical": {"size": [INNER_T, ih, d], "pos": [0, h / 2, 0], "from": [0, 1, 0]},
+        "shelf_left": {"size": [cell, INNER_T, d], "pos": [-shelf_x, h / 2, 0], "from": [1, 0, 0]},
+        "shelf_right": {"size": [cell, INNER_T, d], "pos": [shelf_x, h / 2, 0], "from": [1, 0, 0]},
     }
 
 
 DOWEL_INSET = 7.0  # 앞뒤 모서리에서 나무못 구멍까지
+DOWEL_PAIR_GAP = 3.0  # 칸막이 끝은 앞뒤에 나무못이 2개씩 붙어 있다(13·14쪽)
+RESEAT = 0.15  # 다시 밀어 넣는 단계에서 판을 빼내는 거리(진입 거리 대비)
+UNIT_PULL = 95  # 벽 나사를 박는 동안 선반을 옆으로 비켜 두는 거리
 SCREW_INSET = 5.0  # 앞뒤 모서리에서 연결 볼트 구멍까지
 PAD_INSET = 2.0  # 바닥 모서리에서 펠트 패드 중심까지
 WALL_GAP = 0.5  # 뒷모서리와 벽 사이
@@ -53,8 +57,16 @@ HARDWARE = {
     "115754": {"model": "bracket_cover", "color": "#f5f5f2", "dims": {
         "height": 5.9, "side": 3.6, "wall": 4.8, "t": 0.2, "back": 0.25}},
     "10002300": {"model": "felt_pad", "color": "#9a8a73", "dims": {"r": 1.2, "t": 0.4}},
-    "100001": {"model": "hex_key", "color": "#4b5563", "dims": {"long": 7.5, "short": 2.5, "across": 0.4}},
+    "100001": {"model": "hex_key", "color": "#8b95a5", "dims": {"long": 7.5, "short": 2.5, "across": 0.4}},
+    # 부품에 들어 있지 않은 공구와 연필 표시. 그림에 나오는 동작을 보여 주는 데만 쓴다.
+    "hammer": {"model": "hammer", "color": "#6b7280", "dims": {"head": 10, "head_d": 2.6, "handle": 28, "handle_d": 1.8}},
+    "screwdriver": {"model": "screwdriver", "color": "#d9480f", "dims": {"shaft": 10, "shaft_d": 0.5, "grip": 10, "grip_d": 3}},
+    "pencil": {"model": "pencil", "color": "#f2b705", "dims": {"length": 16, "d": 0.8}},
+    "wall_mark": {"model": "wall_mark", "color": "#374151", "dims": {"size": 2.0, "line": 0.18}},
 }
+# 철물 종류별로 그림에 나오는 공구. 단계의 uses에 그 공구가 있을 때만 붙인다.
+TOOL_FOR = {"connector_screw": "100001", "dowel": "hammer", "euro_screw": "screwdriver",
+            "wall_screw": "screwdriver", "wall_mark": "pencil"}
 # 부품 번호를 모르면 종류별 대표 부품으로 그린다.
 KIND_FALLBACK = {"dowel": "101339", "cam_screw": "104321", "screw": "100372",
                  "bracket": "115753", "cover": "115754", "pad": "10002300", "tool": "100001"}
@@ -65,18 +77,17 @@ def hardware(part_id: str, kind: str) -> dict:
     return {"model": spec["model"], "color": spec["color"], "dims": dict(spec["dims"])}
 
 
-def dowel_joints(w: float, h: float) -> list[tuple[str, list[float], list[int]]]:
-    """(나무못이 맞물릴 판 역할, 결합면 위 점 [x, y], 박는 방향).
-    나무못은 먼저 놓인 판에 박혀 결합면에서 반만 나오고, 뒤에 오는 판이 거기에 끼워진다."""
+def dowel_joints(w: float, h: float) -> list[tuple[str, list[float], list[int], bool]]:
+    """(나무못이 맞물릴 판 역할, 결합면 위 점 [x, y], 박는 방향, 앞뒤 2개씩인지).
+    나무못은 먼저 놓인 판에 박혀 결합면에서 반만 나오고, 뒤에 오는 판이 거기에 끼워진다.
+    바깥 모서리는 연결 볼트만으로 잇는다. 2+4+2+6 = 14개(12~14쪽)."""
     mid = h / 2
     return [
-        ("shelf_left", [-w / 2 + OUTER_T, mid], [-1, 0, 0]),  # 왼쪽 옆판 안쪽 면
-        ("divider_vertical", [0, OUTER_T], [0, -1, 0]),  # 바닥판 윗면 가운데
-        ("divider_vertical", [-INNER_T / 2, mid], [-1, 0, 0]),  # 왼쪽 선반 오른쪽 끝
-        ("shelf_right", [INNER_T / 2, mid], [-1, 0, 0]),  # 칸막이 오른쪽 면
-        ("outer_right", [w / 2 - OUTER_T, mid], [-1, 0, 0]),  # 오른쪽 선반 끝
-        ("outer_right", [w / 2 - OUTER_T / 2, OUTER_T], [0, -1, 0]),  # 바닥판 오른쪽 끝
-        ("outer_top", [0, h - OUTER_T], [0, -1, 0]),  # 칸막이 윗끝
+        ("shelf_left", [-w / 2 + OUTER_T, mid], [-1, 0, 0], False),  # 왼쪽 옆판 안쪽 면
+        ("divider_vertical", [0, OUTER_T], [0, -1, 0], True),  # 칸막이 아래 끝 ↔ 바닥판
+        ("shelf_right", [INNER_T / 2, mid], [-1, 0, 0], False),  # 칸막이 오른쪽 면
+        ("outer_right", [w / 2 - OUTER_T, mid], [-1, 0, 0], False),  # 오른쪽 선반 끝
+        ("outer_top", [0, h - OUTER_T], [0, -1, 0], True),  # 칸막이 윗끝
     ]
 
 
@@ -101,7 +112,11 @@ class Placer:
         never = len(manual.steps)
         joints = sorted(dowel_joints(self.w, self.h), key=lambda j: self.added_at.get(j[0], never))
         dz = self.d / 2 - DOWEL_INSET
-        self.dowels = [{"at": [x, y, z], "axis": axis} for _, (x, y), axis in joints for z in (-dz, dz)]
+        self.dowels = [
+            {"at": [x, y, z], "axis": axis}
+            for _, (x, y), axis, pair in joints
+            for z in ((-dz, -dz + DOWEL_PAIR_GAP, dz - DOWEL_PAIR_GAP, dz) if pair else (-dz, dz))
+        ]
         self.corners = corner_joints(self.w, self.h)
         self.used: Counter = Counter()
         bracket = HARDWARE["115753"]["dims"]
@@ -150,16 +165,25 @@ class Placer:
             return [self.take(model, holes) for _ in range(qty)]
         hook = HARDWARE["103693"]["dims"]
         if model == "hook_plate":
-            plates = [{"at": [x + b["wall"] / 2, y, z], **frame} for x, y, z in self.bracket_origins]
+            # 열쇠 구멍을 벽 나사 머리에 끼우므로 앞에서 벽 쪽으로 다가온다.
+            plates = [{"at": [x + b["wall"] / 2, y, z], **frame, "approach": [0, 0, -1]} for x, y, z in self.bracket_origins]
             return [self.take(model, plates) for _ in range(qty)]
         if model == "wall_screw":
             # 고리 판 열쇠 구멍의 좁은 쪽에 걸리도록 벽에서 고리 판 앞면까지 튀어나온다.
             dims["protrude"] = round(-self.d / 2 + b["t"] + hook["t"] - self.wall_z, 3)
-            neck_y = (hook["key_y"] + hook["slot_top"]) / 2 + 0.2
-            screws = [{"at": [x + b["wall"] / 2, y + neck_y, self.wall_z], "axis": [0, 0, -1]}
+            screws = [{"at": [x + b["wall"] / 2, y + wall_screw_dy(), self.wall_z], "axis": [0, 0, -1]}
                       for x, y, _ in self.bracket_origins]
             return [self.take(model, screws) for _ in range(qty)]
+        if model == "wall_mark":
+            return [{"at": [x + b["wall"] / 2, y + wall_screw_dy(), self.wall_z], "axis": [0, 0, -1]}
+                    for x, y, _ in self.bracket_origins][:qty]
         return []
+
+
+def wall_screw_dy() -> float:
+    """벽 나사(와 그 자리의 연필 표시)가 브래킷 중심보다 위로 얼마나 올라가는지."""
+    hook = HARDWARE["103693"]["dims"]
+    return (hook["key_y"] + hook["slot_top"]) / 2 + 0.2
 
 
 def check_counts(manual: Manual) -> list[str]:
@@ -189,27 +213,52 @@ def build_scene(manual: Manual) -> dict:
          "from": [c * INSERT_DISTANCE for c in boxes[p.role]["from"]]}
         for p in manual.parts if p.kind == "panel"
     ]
-    lying_until = max((s.number for s in manual.steps if s.adds), default=0)
+    # 펠트 패드도 눕힌 채 바닥판 바깥 면에 붙인다(17쪽). 세우는 건 그다음 단계.
+    lying_until = max((s.number for s in manual.steps
+                       if s.adds or any(kinds[u.part_id].kind == "pad" for u in s.uses)), default=0)
     placer = Placer(manual)
     floor = 0.0
     steps = []
+    placed: dict[str, list[dict]] = {}  # 모델별로 이미 놓인 철물(나중에 다시 조일 때)
+    last_added: list[str] = []
     for i, step in enumerate(manual.steps):
-        small = []
+        tools = {u.part_id for u in step.uses if kinds[u.part_id].kind == "tool"}
+        models = []
         for use in step.uses:
             part = kinds[use.part_id]
-            if part.kind in ("panel", "tool"):
-                continue
-            spec = hardware(part.id, part.kind)
+            if part.kind not in ("panel", "tool"):
+                models.append((part.id, part.kind, use.qty))
+        # 연필만 쓰는 단계: 다음에 박을 벽 나사 자리를 벽에 표시한다(19쪽).
+        if "pencil" in tools and not models:
+            models.append(("wall_mark", "tool", len(placer.bracket_origins)))
+        small = []
+        for part_id, kind, qty in models:
+            spec = hardware(part_id, kind)
             if spec["model"] == "felt_pad":
                 floor = spec["dims"]["t"]
-            for n, slot in enumerate(placer.place(i, spec["model"], spec["dims"], use.qty)):
-                small.append({"id": f"s{step.number}-{part.id}-{n}", "part_id": part.id, **spec, **slot})
+            tool = TOOL_FOR.get(spec["model"])
+            for n, slot in enumerate(placer.place(i, spec["model"], spec["dims"], qty)):
+                item = {"id": f"s{step.number}-{part_id}-{n}", "part_id": part_id, **spec, **slot}
+                if tool in tools:
+                    item["tool"] = tool
+                small.append(item)
+                placed.setdefault(spec["model"], []).append(item)
+            # 고리 판을 건 뒤 드라이버로 벽 나사를 마저 조인다(20쪽).
+            if spec["model"] == "hook_plate" and "screwdriver" in tools:
+                small += [{**s, "tool": "screwdriver", "travel": 0.3} for s in placed.get("wall_screw", [])]
+        # 이미 붙은 판을 다시 끝까지 밀어 넣는 단계(15쪽 7단계는 5단계 그림 반복).
+        reseat = last_added[-1:] if not step.adds and not small else []
+        last_added += step.adds
+        pulls_wall_screws = any(s["model"] == "wall_screw" and "travel" not in s for s in small)
         steps.append({
             **step.model_dump(include={"number", "page", "caption_ko", "warning_ko", "confidence", "adds"}),
             "uses": [{"part_id": u.part_id, "qty": u.qty, "name_ko": kinds[u.part_id].name_ko} for u in step.uses],
             "small": small,
+            "reseat": reseat,
             "pose": "lying" if step.number <= lying_until else "upright",
             "wall": step.number >= 12,
+            # 벽 나사를 박을 때는 선반을 옆으로 비켜 둔다(19쪽 13단계 그림에 가구가 없다).
+            "unit_offset": [UNIT_PULL, 0, 0] if pulls_wall_screws else [0, 0, 0],
         })
     return {
         "product": manual.product,
@@ -217,6 +266,7 @@ def build_scene(manual: Manual) -> dict:
         "wall_z": placer.wall_z,
         # 부품 목록 썸네일용: 판재가 아닌 부품 번호별 형상
         "hardware": {p.id: hardware(p.id, p.kind) for p in manual.parts if p.kind != "panel"},
+        "reseat_ratio": RESEAT,
         "floor_offset": floor,
         "panels": panels,
         "steps": steps,

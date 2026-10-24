@@ -10,6 +10,8 @@ type Props = { dims: Dims; material: THREE.Material; accent: THREE.Material; ren
 
 export const METAL: HardwareModel[] = ["connector_screw", "euro_screw", "wall_screw", "hook_plate", "hex_key"];
 export const SPINS: HardwareModel[] = ["connector_screw", "euro_screw", "wall_screw"];
+// 부품에 들어 있지 않거나 소모되지 않는 공구. 단계 동작을 보여 줄 때만 잠깐 그린다.
+export const TOOLS: HardwareModel[] = ["hex_key", "hammer", "screwdriver", "pencil"];
 
 const v2 = (x: number, y: number) => new THREE.Vector2(x, y);
 
@@ -239,6 +241,62 @@ function HexKey({ dims: d, material, renderOrder }: Props) {
   );
 }
 
+// 망치: 원점이 때리는 면. 머리는 -Y로, 자루는 머리 가운데에서 +X로 뻗는다.
+function Hammer({ dims: d, material, accent, renderOrder }: Props) {
+  return (
+    <>
+      <mesh position={[0, -d.head / 2, 0]} material={material} renderOrder={renderOrder}>
+        <cylinderGeometry args={[d.head_d / 2, d.head_d / 2, d.head, 16]} />
+      </mesh>
+      <mesh position={[d.handle / 2, -d.head * 0.45, 0]} rotation={[0, 0, Math.PI / 2]} material={accent} renderOrder={renderOrder}>
+        <cylinderGeometry args={[d.handle_d / 2, d.handle_d / 2 * 1.2, d.handle, 12]} />
+      </mesh>
+    </>
+  );
+}
+
+// 십자 드라이버: 원점이 날 끝, 날과 손잡이는 -Y로 뻗는다.
+function Screwdriver({ dims: d, material, accent, renderOrder }: Props) {
+  return (
+    <>
+      <mesh position={[0, -d.shaft / 2, 0]} material={accent} renderOrder={renderOrder}>
+        <cylinderGeometry args={[d.shaft_d / 2, d.shaft_d / 4, d.shaft, 12]} />
+      </mesh>
+      <mesh position={[0, -d.shaft - d.grip / 2, 0]} material={material} renderOrder={renderOrder}>
+        <cylinderGeometry args={[d.grip_d / 2 * 0.85, d.grip_d / 2, d.grip, 8]} />
+      </mesh>
+    </>
+  );
+}
+
+// 연필: 원점이 심 끝, 몸통은 -Y로 뻗는 육각 기둥.
+function Pencil({ dims: d, material, accent, renderOrder }: Props) {
+  const tip = d.d * 1.6;
+  return (
+    <>
+      <mesh position={[0, -tip / 2, 0]} rotation={[Math.PI, 0, 0]} material={accent} renderOrder={renderOrder}>
+        <coneGeometry args={[d.d / 2, tip, 6]} />
+      </mesh>
+      <mesh position={[0, -tip - d.length / 2, 0]} material={material} renderOrder={renderOrder}>
+        <cylinderGeometry args={[d.d / 2, d.d / 2, d.length, 6]} />
+      </mesh>
+    </>
+  );
+}
+
+// 연필 표시(+): 벽 면(원점)에 그린 십자.
+function WallMark({ dims: d, material, renderOrder }: Props) {
+  return (
+    <>
+      {[0, Math.PI / 2].map((r) => (
+        <mesh key={r} position={[0, -0.02, 0]} rotation={[0, r, 0]} material={material} renderOrder={renderOrder}>
+          <boxGeometry args={[d.size, 0.02, d.line]} />
+        </mesh>
+      ))}
+    </>
+  );
+}
+
 const MODELS: Record<HardwareModel, (p: Props) => React.JSX.Element> = {
   connector_screw: ConnectorScrew,
   euro_screw: EuroScrew,
@@ -249,6 +307,10 @@ const MODELS: Record<HardwareModel, (p: Props) => React.JSX.Element> = {
   bracket_cover: BracketCover,
   felt_pad: FeltPad,
   hex_key: HexKey,
+  hammer: Hammer,
+  screwdriver: Screwdriver,
+  pencil: Pencil,
+  wall_mark: WallMark,
 };
 
 export function HardwareMesh({ part, ...props }: Omit<Props, "dims"> & { part: Pick<SmallPart, "model" | "dims"> }) {

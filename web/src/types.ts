@@ -10,7 +10,8 @@ export interface Panel {
 
 export type HardwareModel =
   | "connector_screw" | "dowel" | "euro_screw" | "wall_screw"
-  | "corner_bracket" | "hook_plate" | "bracket_cover" | "felt_pad" | "hex_key";
+  | "corner_bracket" | "hook_plate" | "bracket_cover" | "felt_pad" | "hex_key"
+  | "hammer" | "screwdriver" | "pencil" | "wall_mark";
 
 export interface HardwareSpec {
   model: HardwareModel;
@@ -19,6 +20,7 @@ export interface HardwareSpec {
 }
 
 // at·axis·up은 가구 좌표(cm). 부품 로컬 +Y가 axis(박히는 방향), +Z가 up.
+// approach는 다가오는 방향(없으면 axis), travel은 움직이는 거리, tool은 함께 그릴 공구의 부품 번호.
 export interface SmallPart {
   id: string;
   part_id: string;
@@ -28,6 +30,9 @@ export interface SmallPart {
   at: Vec3;
   axis: Vec3;
   up?: Vec3;
+  approach?: Vec3;
+  travel?: number;
+  tool?: string;
 }
 
 export interface Step {
@@ -41,6 +46,8 @@ export interface Step {
   small: SmallPart[];
   pose: "lying" | "upright";
   wall: boolean;
+  reseat?: string[]; // 이미 붙은 판을 살짝 뺐다가 다시 끝까지 밀어 넣는다
+  unit_offset?: Vec3; // 가구 전체를 잠시 옮겨 두는 거리
 }
 
 export interface Scene {
@@ -48,6 +55,7 @@ export interface Scene {
   size: Vec3;
   wall_z: number;
   floor_offset: number;
+  reseat_ratio?: number;
   hardware: Record<string, HardwareSpec>;
   panels: Panel[];
   steps: Step[];

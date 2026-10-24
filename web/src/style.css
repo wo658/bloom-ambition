@@ -58,13 +58,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .muted, .meta { color: #8a93a3; font-size: 12px; margin: 0; }
 
 /* 도구 */
-.toolbar { right: 16px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.style-switch { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+/* 넓은 화면에서는 상단 가운데 가로 막대, 뷰어가 좁아지면(아래 컨테이너 쿼리) 오른쪽 세로 막대로 돌아간다. */
+.toolbar { top: 16px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 4px;
+  background: var(--card); backdrop-filter: blur(8px); border-radius: 14px; box-shadow: var(--shadow); }
+.toolbar .icon { width: 34px; height: 34px; }
+.style-switch { display: flex; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 .style-switch button { border: 0; background: none; padding: 7px 8px; font-size: 12px; color: var(--sub); }
 .style-switch button.on { background: var(--ink); color: #fff; }
 
 /* 원본 페이지 */
-.source { right: 72px; bottom: 132px; width: 200px; padding: 8px; text-align: left; }
+.source { right: 16px; bottom: 132px; width: 200px; padding: 8px; text-align: left; }
 .source img { display: block; width: 100%; border-radius: 6px; }
 .source-label { display: block; font-size: 12px; color: var(--sub); margin: 0 0 6px 2px; }
 .source:hover { outline: 2px solid var(--accent); }
@@ -221,4 +224,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .nav { width: 42px; height: 42px; font-size: 24px; }
   .dock { gap: 10px; padding: 10px; bottom: 12px; }
   .playback button { padding: 4px 9px; font-size: 12px; }
+}
+
+@container viewer (max-width: 1360px) {
+  .toolbar { top: 50%; left: auto; right: 16px; transform: translateY(-50%); flex-direction: column; gap: 8px; padding: 0; background: none; backdrop-filter: none; box-shadow: none; }
+  .toolbar .icon { width: 36px; height: 36px; }
+  .style-switch { flex-direction: column; }
+  .source { right: 72px; }
 }

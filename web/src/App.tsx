@@ -15,8 +15,9 @@ import DemoSwitcher from "./DemoSwitcher";
 import ChatPanel from "./ChatPanel";
 import LangBar from "./LangBar";
 import DemoTour from "./DemoTour";
+import { beatAt, playStep, type GuideApi } from "./Guide";
 import { LogoMark } from "./Logo";
-import { afterSpeech, t, useLang, useSpeak } from "./lang";
+import { t, useLang, useSpeak } from "./lang";
 import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
 
 const DEMO = "/demo";
@@ -171,15 +172,18 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, [go]);
 
+  // 자동 재생: 단계 애니메이션이 끝나고 잠깐 쉰 뒤 넘긴다. 기능 소개가 붙은 단계(Guide)에서는 자막과 함께 기능을 보여 준 뒤 넘긴다.
+  // ← → 로 단계를 옮기거나 멈추면 하던 기능을 멈추고 되돌린다.
+  const guideApi = useRef<GuideApi>({ orbit: () => orbitRef.current, setXray, setStyle: setRenderStyle, setInventory: setShowInventory });
   useEffect(() => {
     if (!autoplay || !scene) return;
-    if (stepIndex === scene.steps.length - 1) {
-      setAutoplay(false);
-      return;
-    }
-    // 단계마다 부품을 하나씩 조이는 시간이 달라서, 애니메이션이 끝나고 잠깐 쉰 뒤 넘긴다.
+    const total = scene.steps.length;
     const ms = stepIndex === PREP ? PREP_AUTOPLAY_MS : (stepDuration(scene.steps[stepIndex]) + 1.5) * 1000;
-    return afterSpeech(ms, () => go(1));
+    const ac = new AbortController();
+    playStep(beatAt(stepIndex, total, PREP), ms, guideApi.current, ac.signal)
+      .then(() => (stepIndex === total - 1 ? setAutoplay(false) : go(1)))
+      .catch(() => {});
+    return () => ac.abort("move");
   }, [autoplay, stepIndex, scene, go]);
 
   // 채팅·원본 PDF 위젯에 지금 단계를 알리고, 채팅의 "N단계" 링크로 이동한다.

@@ -10,7 +10,7 @@ import { HardwareThumb, PanelThumb } from "./PartThumb";
 import PartsInventory from "./PartsInventory";
 import type { Scene } from "./types";
 import { ROOM_VIEW } from "./Room";
-import { onGoToStep, onPlayExplode, onPlayPartMotion, onReplayStep, playExplode, playPartMotion, setCurrentStep, type MotionTarget } from "./bridge";
+import { introEnabled, onGoToStep, onIntroDone, onPlayExplode, onPlayPartMotion, onReplayStep, playExplode, playPartMotion, setCurrentStep, type MotionTarget } from "./bridge";
 import Explode from "./Explode";
 import { mentionPart, partTag, smallTag } from "./partTags";
 import ChatPanel from "./ChatPanel";
@@ -241,7 +241,7 @@ export default function App() {
   }, [autoplay, stepIndex, scene, go]);
 
   // ▶ 재생 = 데모 시나리오(Tour). 부품 확인부터 완성까지 단계를 넘기며 기능을 차례로 보여 주고 자막이 따라간다.
-  // 열자마자 튼다. 단, 오프닝(?intro: App을 뒤에 미리 띄워 둔다)·특정 단계 링크(?step=N)·?tour=0이면 틀지 않는다.
+  // 열자마자 튼다. 오프닝이 켜져 있으면(기본, App을 뒤에 미리 띄워 둔다) 오프닝이 끝난 뒤에 튼다. ?step=N·?tour=0이면 틀지 않는다.
   const tourView = useTourView();
   useTourKeys();
   const sceneRef = useRef(scene);
@@ -260,7 +260,9 @@ export default function App() {
   }, []);
   useEffect(() => {
     const q = new URLSearchParams(location.search);
-    if (scene && q.get("tour") !== "0" && !q.has("intro") && !q.has("step")) playTour();
+    if (!scene || q.get("tour") === "0" || q.has("step")) return;
+    if (introEnabled()) return onIntroDone(playTour);
+    playTour();
   }, [!!scene]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 채팅·원본 PDF 위젯에 지금 단계를 알리고, 채팅의 "N단계" 링크로 이동한다.

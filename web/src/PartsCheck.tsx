@@ -3,11 +3,12 @@ import { useFrame } from "@react-three/fiber";
 import { Edges } from "@react-three/drei";
 import gsap from "gsap";
 import * as THREE from "three";
-import { EDGE, HIGHLIGHT, Material, type RenderStyle } from "./Assembly";
+import { EDGE, HIGHLIGHT, Material, TAGGED, pickHandlers, useResetCursor, type RenderStyle } from "./Assembly";
 import { HardwareMesh, METAL } from "./Hardware";
 import { HardwareThumb, PanelThumb } from "./PartThumb";
 import { inventory, panelDims } from "./PartsInventory";
 import { t } from "./lang";
+import { useTaggedParts } from "./partTags";
 import type { HardwareModel, HardwareSpec, Panel, Scene, Vec3 } from "./types";
 import { woodBox } from "./wood";
 
@@ -148,8 +149,9 @@ function useDrop(ref: React.RefObject<THREE.Group | null>, delay: number, playKe
   }, [ref, delay, playKey]);
 }
 
-function LaidPanel({ placed, style, lit, delay, playKey }: {
-  placed: PlacedPanel; style: RenderStyle; lit: boolean; delay: number; playKey: number;
+// tagged: 채팅 입력창에 태그된 부품이라 강조(lit)보다 먼저 파랗게 칠한다.
+function LaidPanel({ placed, style, lit, tagged, delay, playKey, onPick }: {
+  placed: PlacedPanel; style: RenderStyle; lit: boolean; tagged: boolean; delay: number; playKey: number; onPick?: () => void;
 }) {
   const ref = useRef<THREE.Group>(null);
   const geometry = useMemo(() => woodBox(placed.size, placed.item.key), [placed.size, placed.item.key]);
@@ -157,9 +159,9 @@ function LaidPanel({ placed, style, lit, delay, playKey }: {
   useDrop(ref, delay, playKey);
   return (
     <group ref={ref}>
-      <mesh geometry={geometry} position={placed.pos} castShadow receiveShadow>
-        <Material style={style} color={lit ? HIGHLIGHT : "#ffffff"} wood={!lit} />
-        <Edges color={lit ? "#7a2e00" : EDGE[style]} lineWidth={style === "technical" ? 2 : 1} />
+      <mesh geometry={geometry} position={placed.pos} castShadow receiveShadow {...pickHandlers(onPick)}>
+        <Material style={style} color={tagged ? TAGGED : lit ? HIGHLIGHT : "#ffffff"} wood={!lit && !tagged} />
+        <Edges color={tagged ? "#1e3a8a" : lit ? "#7a2e00" : EDGE[style]} lineWidth={style === "technical" ? 2 : 1} />
       </mesh>
     </group>
   );
@@ -172,13 +174,13 @@ function hardwareMaterial(style: RenderStyle, color: string, metal: boolean) {
 }
 
 // 철물 한 종류: 칸 안에 개수만큼 격자로 늘어놓는다. 실제 크기로는 너무 작아서 칸에 맞춰 키운다.
-function HardwareCell({ placed, style, lit, delay, playKey }: {
-  placed: PlacedCell; style: RenderStyle; lit: boolean; delay: number; playKey: number;
+function HardwareCell({ placed, style, lit, tagged, delay, playKey, onPick }: {
+  placed: PlacedCell; style: RenderStyle; lit: boolean; tagged: boolean; delay: number; playKey: number; onPick?: () => void;
 }) {
   const ref = useRef<THREE.Group>(null);
   const { item } = placed;
   const spec = item.spec!;
-  const color = lit ? HIGHLIGHT : style === "technical" ? "#d9d9d9" : spec.color;
+  const color = tagged ? TAGGED : lit ? HIGHLIGHT : style === "technical" ? "#d9d9d9" : spec.color;
   const material = useMemo(() => hardwareMaterial(style, color, METAL.includes(spec.model)), [style, color, spec.model]);
   const accent = useMemo(() => hardwareMaterial(style, "#2b2b2b", false), [style]);
   useEffect(() => () => { material.dispose(); accent.dispose(); }, [material, accent]);
@@ -189,7 +191,7 @@ function HardwareCell({ placed, style, lit, delay, playKey }: {
   const lie = LIE.includes(spec.model);
   return (
     <group ref={ref}>
-      <group position={placed.pos}>
+      <group position={placed.pos} {...pickHandlers(onPick)}>
         {Array.from({ length: item.qty }, (_, i) => (
           <group key={i} position={[((i % cols) - (cols - 1) / 2) * pitch, 0, (Math.floor(i / cols) - (rows - 1) / 2) * pitch]}>
             <Fitted size={pitch * 0.78}>
@@ -204,18 +206,23 @@ function HardwareCell({ placed, style, lit, delay, playKey }: {
   );
 }
 
-export function PartsLayout({ layout, style, hover, playKey }: {
-  layout: Layout; style: RenderStyle; hover: string | null; playKey: number;
+// onPick: 바닥에 펼친 부품을 누르면 그 부품 key(판재 id 또는 철물 part_id)로 부른다.
+export function PartsLayout({ layout, style, hover, playKey, onPick }: {
+  layout: Layout; style: RenderStyle; hover: string | null; playKey: number; onPick?: (key: string) => void;
 }) {
+  useResetCursor();
+  // 철물은 하나를 태그했어도 바닥에서는 종류(칸) 단위로 칠한다.
+  const tags = useTaggedParts();
+  const tagged = useMemo(() => new Set(tags.map((tag) => tag.id)), [tags]);
   return (
     <>
       {layout.panels.map((p, i) => (
-        <LaidPanel key={`${p.item.key}:${p.copy}`} placed={p} style={style} lit={hover === p.item.key}
-          delay={i * 0.05} playKey={playKey} />
+        <LaidPanel key={`${p.item.key}:${p.copy}`} placed={p} style={style} lit={hover === p.item.key} tagged={tagged.has(p.item.key)}
+          delay={i * 0.05} playKey={playKey} onPick={onPick && (() => onPick(p.item.key))} />
       ))}
       {layout.cells.map((c, i) => (
-        <HardwareCell key={c.item.key} placed={c} style={style} lit={hover === c.item.key}
-          delay={(layout.panels.length + i) * 0.05} playKey={playKey} />
+        <HardwareCell key={c.item.key} placed={c} style={style} lit={hover === c.item.key} tagged={tagged.has(c.item.key)}
+          delay={(layout.panels.length + i) * 0.05} playKey={playKey} onPick={onPick && (() => onPick(c.item.key))} />
       ))}
     </>
   );

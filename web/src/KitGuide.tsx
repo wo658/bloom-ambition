@@ -137,6 +137,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
       <header className="overlay topbar">
         <button className="icon" title={t("전체 단계")} onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
+          <span className="brand">Stepcast</span>
           <span className="product">{scene.product}</span>
           <span className="progress-text">{t("{n} / {total} 단계", { n: index + 1, total })}{mk ? ` · ${t("마킹")} ${mk}` : ""}</span>
         </div>

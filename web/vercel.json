@@ -1,6 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/api/pdf/eduard-82212", "destination": "https://www.eduard.com/store/out/media/82212.pdf" },
-    { "source": "/api/pdf/kallax", "destination": "https://www.ikea.com/gb/en/assembly_instructions/kallax-shelving-unit-white__AA-1009450-15-100.pdf" }
-  ]
-}

@@ -29,11 +29,11 @@ export default function PdfViewer() {
               {step && step.page !== page && (
                 <button onClick={() => openPdf(step.page)}>지금 단계 쪽({step.page}쪽)으로</button>
               )}
-              <a href={`/api/pdf/${demoName}`} target="_blank" rel="noreferrer">새 탭에서 열기</a>
+              <a href={`/pdf/${demoName}.pdf`} target="_blank" rel="noreferrer">새 탭에서 열기</a>
               <button className="close" onClick={closePdf} aria-label="닫기">✕</button>
             </header>
             {/* key로 쪽이 바뀔 때 iframe을 다시 그려야 #page가 적용된다. */}
-            <iframe key={page} src={`/api/pdf/${demoName}#page=${page}&view=FitH`} title="원본 설명서 PDF" />
+            <iframe key={page} src={`/pdf/${demoName}.pdf#page=${page}&view=FitH`} title="원본 설명서 PDF" />
           </section>
         </div>
       )}

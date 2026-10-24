@@ -252,6 +252,7 @@ export default function App() {
     const api: TourApi = {
       orbit: () => orbitRef.current, goStep: setStepIndex, setXray, setStyle: setRenderStyle, setInventory: setShowInventory,
       stepMs: (i) => { const s = sceneRef.current?.steps[i]; return i === PREP || !s ? 0 : stepDuration(s) * 1000; },
+      addStep: (id) => sceneRef.current?.steps.findIndex((s) => s.adds.includes(id)) ?? -1,
       prepStep: PREP, xrayStep: Math.min(5, total - 1), lastStep: total - 1,
     };
     setAutoplay(false);

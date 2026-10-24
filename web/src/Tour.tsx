@@ -16,6 +16,7 @@ export type TourApi = {
   setStyle: (style: RenderStyle) => void;
   setInventory: (on: boolean) => void;
   stepMs: (index: number) => number; // 그 단계 조립 애니메이션 길이
+  addStep: (panelId: string) => number; // 그 판이 처음 붙는 단계(없으면 -1)
   prepStep: number;
   xrayStep: number;
   lastStep: number;

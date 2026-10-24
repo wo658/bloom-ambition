@@ -184,9 +184,10 @@ export async function startTour(api: TourApi) {
 
   // 사용자가 화면을 만지면(클릭·드래그·휠·키) 데모는 바로 멈추고 손을 뗀다. 자막과 재생 버튼은 예외다.
   const handsOn = (e: Event) => {
-    const el = e.target as HTMLElement | null;
-    if (el?.closest?.(".tour-caption, .playback")) return;
-    if (e instanceof KeyboardEvent && ["ArrowLeft", "ArrowRight", "Escape"].includes(e.key)) return;
+    if (e instanceof KeyboardEvent) {
+      // 키는 초점이 재생 버튼에 남아 있어도 조작으로 본다(장면 이동·멈춤 키만 뺀다).
+      if (["ArrowLeft", "ArrowRight", "Escape"].includes(e.key)) return;
+    } else if ((e.target as HTMLElement | null)?.closest?.(".tour-caption, .playback")) return;
     stopTour();
   };
   const INPUTS = ["pointerdown", "wheel", "touchstart", "keydown"] as const;

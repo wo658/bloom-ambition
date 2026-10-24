@@ -11,3 +11,4 @@ __pycache__/
 *.tsbuildinfo
 .env.local
 .env*.local
+.vercel/

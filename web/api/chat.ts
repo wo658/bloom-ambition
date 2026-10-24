@@ -44,7 +44,7 @@ export type ChatBody = { messages: UIMessage[]; scene: unknown; step?: number };
 export async function chatStream({ messages, scene, step }: ChatBody, env: { ANTHROPIC_API_KEY: string; CHAT_MODEL?: string }) {
   const anthropic = createAnthropic({ apiKey: env.ANTHROPIC_API_KEY });
   const result = streamText({
-    model: anthropic(env.CHAT_MODEL || "claude-sonnet-5-5"),
+    model: anthropic(env.CHAT_MODEL || "claude-opus-5-5"),
     system: `${SYSTEM}\n\n지금 사용자가 보고 있는 단계: ${step ?? "?"}단계\n\nscene:\n${JSON.stringify(scene)}`,
     messages: await convertToModelMessages(messages),
     tools,

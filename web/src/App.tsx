@@ -165,7 +165,7 @@ export default function App() {
       if (e.key === "ArrowRight") go(1);
       if (e.key === "ArrowLeft") go(-1);
       if (e.key === " ") { e.preventDefault(); setPlayKey((k) => k + 1); }
-      if (e.key === "Escape") { setPageZoom(false); setShowList(false); }
+      if (e.key === "Escape") { setPageZoom(false); setShowList(false); setAutoplay(false); }
       if (e.key === "x" || e.key === "X") setXray((v) => !v);
     };
     window.addEventListener("keydown", onKey);

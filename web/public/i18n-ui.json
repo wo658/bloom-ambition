@@ -260,7 +260,8 @@
   "판 {p}장 · 철물 {h}개": "{p} panels · {h} hardware pieces",
   "폭": "Width",
   "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Tag a part with @ and ask: AI drafts the edit",
-  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Even edits that ripple to joined parts, like panel thickness: compare before and after, then apply or undo"
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Even edits that ripple to joined parts, like panel thickness: compare before and after, then apply or undo",
+  "▶ 이어서 재생": "▶ Continue playing"
  },
  "ja": {
   "N단계": "Nステップ",
@@ -523,7 +524,8 @@
   "판 {p}장 · 철물 {h}개": "板{p}枚 · 金具{h}個",
   "폭": "幅",
   "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "部品を@タグで指して話すと、AIが修正案を作ります",
-  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "板の厚さのように接する部分まで変わる修正もAIが:前後を比べて確認し、適用したり元に戻したりできます"
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "板の厚さのように接する部分まで変わる修正もAIが:前後を比べて確認し、適用したり元に戻したりできます",
+  "▶ 이어서 재생": "▶ 続きから再生"
  },
  "zh-CN": {
   "N단계": "第N步",
@@ -786,7 +788,8 @@
   "판 {p}장 · 철물 {h}개": "板件{p}块 · 五金件{h}个",
   "폭": "宽度",
   "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "用 @ 标记零件并提问，AI 会生成修改方案",
-  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "像板材厚度这样连带相接部位的修改也交给 AI：对比前后进行检查，可以应用，也可以撤销"
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "像板材厚度这样连带相接部位的修改也交给 AI：对比前后进行检查，可以应用，也可以撤销",
+  "▶ 이어서 재생": "▶ 继续播放"
  },
  "zh-TW": {
   "N단계": "第N步",
@@ -1049,7 +1052,8 @@
   "판 {p}장 · 철물 {h}개": "板材{p}片 · 五金{h}個",
   "폭": "寬度",
   "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "用 @ 標記零件再提問，AI 就會做出修改方案",
-  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "像板材厚度這種連相接處都要跟著改的修改也交給 AI：比對前後檢查，可以套用，也可以復原"
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "像板材厚度這種連相接處都要跟著改的修改也交給 AI：比對前後檢查，可以套用，也可以復原",
+  "▶ 이어서 재생": "▶ 繼續播放"
  },
  "es": {
   "N단계": "Paso N",
@@ -1312,7 +1316,8 @@
   "판 {p}장 · 철물 {h}개": "{p} paneles · {h} herrajes",
   "폭": "Ancho",
   "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Etiqueta una pieza con @ y pide: la IA crea la propuesta",
-  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Incluso cambios que afectan a las piezas unidas, como el grosor de un panel: compara antes y después, aplica o deshaz"
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Incluso cambios que afectan a las piezas unidas, como el grosor de un panel: compara antes y después, aplica o deshaz",
+  "▶ 이어서 재생": "▶ Continuar reproducción"
  },
  "fr": {
   "N단계": "Étape N",
@@ -1575,7 +1580,8 @@
   "판 {p}장 · 철물 {h}개": "{p} panneaux · {h} pièces de quincaillerie",
   "폭": "Largeur",
   "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Marquez une pièce avec @ et demandez : l'IA propose la modification",
-  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Même les modifications qui touchent les pièces jointes, comme l'épaisseur d'un panneau : comparez avant/après, appliquez ou annulez"
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Même les modifications qui touchent les pièces jointes, comme l'épaisseur d'un panneau : comparez avant/après, appliquez ou annulez",
+  "▶ 이어서 재생": "▶ Reprendre la lecture"
  },
  "de": {
   "N단계": "Schritt N",
@@ -1838,7 +1844,8 @@
   "판 {p}장 · 철물 {h}개": "{p} Platten · {h} Beschläge",
   "폭": "Breite",
   "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Teil mit @ markieren und fragen: Die KI erstellt den Änderungsvorschlag",
-  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Auch Änderungen, die angrenzende Teile betreffen, wie die Plattenstärke: vorher/nachher vergleichen, übernehmen oder rückgängig machen"
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Auch Änderungen, die angrenzende Teile betreffen, wie die Plattenstärke: vorher/nachher vergleichen, übernehmen oder rückgängig machen",
+  "▶ 이어서 재생": "▶ Weiter abspielen"
  },
  "vi": {
   "N단계": "Bước N",
@@ -2101,7 +2108,8 @@
   "판 {p}장 · 철물 {h}개": "{p} tấm · {h} phụ kiện kim loại",
   "폭": "Chiều rộng",
   "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Gắn thẻ @ cho chi tiết rồi hỏi: AI sẽ tạo đề xuất sửa",
-  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Cả những thay đổi kéo theo các chỗ ghép như độ dày tấm ván: so sánh trước/sau, áp dụng hoặc hoàn tác"
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Cả những thay đổi kéo theo các chỗ ghép như độ dày tấm ván: so sánh trước/sau, áp dụng hoặc hoàn tác",
+  "▶ 이어서 재생": "▶ Tiếp tục phát"
  },
  "id": {
   "N단계": "Langkah N",
@@ -2364,6 +2372,7 @@
   "판 {p}장 · 철물 {h}개": "Panel {p} lembar · Perangkat keras {h} buah",
   "폭": "Lebar",
   "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Tandai bagian dengan @ lalu minta: AI membuat usulan perbaikan",
-  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Bahkan perubahan yang ikut memengaruhi bagian yang tersambung, seperti tebal panel: bandingkan sebelum/sesudah, terapkan atau batalkan"
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Bahkan perubahan yang ikut memengaruhi bagian yang tersambung, seperti tebal panel: bandingkan sebelum/sesudah, terapkan atau batalkan",
+  "▶ 이어서 재생": "▶ Lanjutkan pemutaran"
  }
 }

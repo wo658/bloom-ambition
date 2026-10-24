@@ -5,18 +5,20 @@ import gsap from "gsap";
 import * as THREE from "three";
 import { HardwareMesh, METAL, SPINS, orientation } from "./Hardware";
 import type { Scene, SmallPart, Vec3 } from "./types";
+import { oakMaps, woodBox } from "./wood";
 
 const HIGHLIGHT = "#ff7a1a";
 
-// 도면: IKEA 설명서처럼 흰 면 + 굵은 외곽선, 툰: 흰 면에 계단식 음영, 컬러: 실제 재질 색.
+// 도면: IKEA 설명서처럼 흰 면 + 굵은 외곽선, 툰: 흰 면에 계단식 음영, 컬러: 오일 마감 원목.
 export type RenderStyle = "technical" | "toon" | "color";
-const BOARD: Record<RenderStyle, string> = { technical: "#ffffff", toon: "#ffffff", color: "#d8b98c" };
-const EDGE: Record<RenderStyle, string> = { technical: "#1f1f1f", toon: "#4b4b4b", color: "#6b5434" };
+const BOARD: Record<RenderStyle, string> = { technical: "#ffffff", toon: "#ffffff", color: "#ffffff" };
+const EDGE: Record<RenderStyle, string> = { technical: "#1f1f1f", toon: "#4b4b4b", color: "#7a5532" };
 
-function Material({ style, color, metal }: { style: RenderStyle; color: string; metal?: boolean }) {
+function Material({ style, color, wood }: { style: RenderStyle; color: string; wood?: boolean }) {
   if (style === "technical") return <meshBasicMaterial color={color} />;
   if (style === "toon") return <meshToonMaterial color={color} />;
-  return <meshStandardMaterial color={color} roughness={metal ? 0.4 : 0.8} metalness={metal ? 0.5 : 0} />;
+  if (wood) return <meshStandardMaterial color={color} {...oakMaps()} normalScale={[0.6, 0.6]} roughness={1} metalness={0} />;
+  return <meshStandardMaterial color={color} roughness={0.8} metalness={0} />;
 }
 const SMALL_TRAVEL = 8;
 const SCREW_TURNS = 4;
@@ -28,19 +30,20 @@ function lerp(a: Vec3, b: Vec3, t: number): Vec3 {
   return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
 }
 
-function Board({ size, pos, from, active, progress, style }: {
-  size: Vec3; pos: Vec3; from: Vec3; active: boolean; progress: Progress; style: RenderStyle;
+function Board({ id, size, pos, from, active, progress, style }: {
+  id: string; size: Vec3; pos: Vec3; from: Vec3; active: boolean; progress: Progress; style: RenderStyle;
 }) {
   const ref = useRef<THREE.Mesh>(null);
+  const geometry = useMemo(() => woodBox(size, id), [size, id]);
+  useEffect(() => () => geometry.dispose(), [geometry]);
   const start: Vec3 = [pos[0] + from[0], pos[1] + from[1], pos[2] + from[2]];
   useFrame(() => {
     if (!ref.current) return;
     ref.current.position.set(...(active ? lerp(start, pos, progress.current.t) : pos));
   });
   return (
-    <mesh ref={ref} position={active ? start : pos} castShadow receiveShadow>
-      <boxGeometry args={size} />
-      <Material style={style} color={active ? HIGHLIGHT : BOARD[style]} />
+    <mesh ref={ref} geometry={geometry} position={active ? start : pos} castShadow receiveShadow>
+      <Material style={style} color={active ? HIGHLIGHT : BOARD[style]} wood={!active} />
       <Edges color={active ? "#7a2e00" : EDGE[style]} lineWidth={style === "technical" ? 2 : 1} />
       {active && <Outlines thickness={3} color={HIGHLIGHT} />}
     </mesh>

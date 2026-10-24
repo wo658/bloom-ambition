@@ -16,7 +16,7 @@ const HOME_TARGET: [number, number, number] = [0, 22, 0];
 const STYLES: { id: RenderStyle; label: string }[] = [
   { id: "technical", label: "도면" },
   { id: "toon", label: "툰" },
-  { id: "color", label: "컬러" },
+  { id: "color", label: "원목" },
 ];
 
 function pageUrl(page: number) {
@@ -42,7 +42,7 @@ export default function App() {
   const [stepIndex, setStepIndex] = useState(0);
   const [playKey, setPlayKey] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
-  const [renderStyle, setRenderStyle] = useState<RenderStyle>("technical");
+  const [renderStyle, setRenderStyle] = useState<RenderStyle>("color");
   const [resetKey, setResetKey] = useState(0);
   const [showList, setShowList] = useState(false);
   const [showPage, setShowPage] = useState(true);

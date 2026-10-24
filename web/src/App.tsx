@@ -14,7 +14,6 @@ import { onGoToStep, setCurrentStep } from "./bridge";
 import DemoSwitcher from "./DemoSwitcher";
 import ChatPanel from "./ChatPanel";
 import LangBar from "./LangBar";
-import DemoTour from "./DemoTour";
 import { GuideCaption, beatAt, playStep, type GuideApi } from "./Guide";
 import { LogoMark } from "./Logo";
 import { t, useLang, useSpeak } from "./lang";
@@ -271,16 +270,6 @@ export default function App() {
           <span className="progress-text">{prep ? t("부품 확인") : t("{n} / {total} 단계", { n: step.number, total })}</span>
         </div>
         <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />
-        <DemoTour api={{
-          orbit: () => orbitRef.current,
-          goStep: setStepIndex,
-          setXray,
-          setStyle: setRenderStyle,
-          setInventory: setShowInventory,
-          xrayStep: Math.min(5, total - 1),
-          prepStep: PREP,
-          lastStep: total - 1,
-        }} />
       </header>
 
       {/* 왼쪽 위: 현재 단계 설명 카드 */}

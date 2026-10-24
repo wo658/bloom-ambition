@@ -93,9 +93,12 @@ function Thumb({ children, still }: { children: ReactNode; still?: string }) {
   useEffect(() => {
     if (!still || url) return;
     const cancel = acquire(() => { holding.current = true; setGranted(true); });
+    // 자리를 돌려줄 때 granted도 내린다. StrictMode의 effect 재실행에서 granted가 남아 있으면
+    // 자리 없이 캔버스가 떠서 컨텍스트 한도를 넘고, 먼저 뜬(사용한 부품 쪽) 컨텍스트가 버려진다.
     return () => {
       cancel();
       if (holding.current) { holding.current = false; release(); }
+      setGranted(false);
     };
   }, [still, url]);
   const onShot = useMemo(() => (shot: string) => {

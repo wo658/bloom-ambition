@@ -10,3 +10,14 @@
 .pdf-panel header button, .pdf-panel header a { border: 1px solid #e3e7ee; border-radius: 8px; background: #fff; padding: 5px 10px; font: inherit; font-size: 13px; color: #1d2433; text-decoration: none; cursor: pointer; }
 .pdf-panel header .close { border: 0; font-size: 16px; }
 .pdf-panel iframe { flex: 1; width: 100%; border: 0; }
+
+/* 언어 선택·음성 안내 (상단 막대 안) */
+.lang-bar { display: flex; align-items: center; gap: 4px; padding: 3px 3px 3px 10px; background: #fff; border: 1px solid var(--line); border-radius: 999px; }
+.lang-bar select { max-width: 150px; border: 0; background: none; font: inherit; font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; outline: none; }
+.lang-busy { font-size: 11px; color: var(--sub); white-space: nowrap; animation: pulse 1s ease-in-out infinite alternate; }
+@keyframes pulse { from { opacity: .4; } to { opacity: 1; } }
+.lang-bar .voice { width: 32px; height: 28px; border: 0; border-radius: 999px; background: #f1f3f6; font-size: 16px; line-height: 1; cursor: pointer; filter: grayscale(1); opacity: .6; }
+.lang-bar .voice.on { background: #ff7a1a; filter: none; opacity: 1; }
+.lang-bar .voice:disabled { cursor: not-allowed; opacity: .25; }
+/* 아랍어·히브리어처럼 오른쪽에서 쓰는 글도 문단마다 방향을 알아서 잡는다. */
+.instruction p, .parts .name, .drawer .cap, .safety span { unicode-bidi: plaintext; }

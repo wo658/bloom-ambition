@@ -4,7 +4,7 @@ import { pipeUIMessageStreamToResponse } from "ai";
 import type { Plugin } from "vite";
 import { chatStream, type ChatBody } from "../api/chat";
 
-function readJson(req: IncomingMessage): Promise<any> {
+export function readJson(req: IncomingMessage): Promise<any> {
   return new Promise((resolve, reject) => {
     let raw = "";
     req.on("data", (c) => { raw += c; });

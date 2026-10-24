@@ -12,6 +12,8 @@ import type { Scene } from "./types";
 import { onGoToStep, setCurrentStep } from "./bridge";
 import DemoSwitcher from "./DemoSwitcher";
 import ChatPanel from "./ChatPanel";
+import LangBar from "./LangBar";
+import { afterSpeech, t, useLang, useSpeak } from "./lang";
 
 const DEMO = "/demo";
 const HOME_CAMERA: [number, number, number] = [150, 140, 200];
@@ -86,6 +88,9 @@ export default function App() {
   const [dragging, setDragging] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
   const appRef = useRef<HTMLDivElement>(null);
+  const { lang, voiceOn, translating } = useLang(DEMO, scene);
+  const now = scene?.steps[Math.min(stepIndex, scene.steps.length - 1)];
+  useSpeak(now ? [now.caption_ko, now.warning_ko].filter((x): x is string => !!x).map((x) => t(x)).join("\n") : "");
 
   useEffect(() => {
     fetch(`${DEMO}/scene.json`).then((r) => r.json()).then(setScene);
@@ -117,8 +122,7 @@ export default function App() {
       return;
     }
     // 단계마다 부품을 하나씩 조이는 시간이 달라서, 애니메이션이 끝나고 잠깐 쉰 뒤 넘긴다.
-    const timer = setTimeout(() => go(1), (stepDuration(scene.steps[stepIndex]) + 1.5) * 1000);
-    return () => clearTimeout(timer);
+    return afterSpeech((stepDuration(scene.steps[stepIndex]) + 1.5) * 1000, () => go(1));
   }, [autoplay, stepIndex, scene, go]);
 
   // 채팅·원본 PDF 위젯에 지금 단계를 알리고, 채팅의 "N단계" 링크로 이동한다.
@@ -181,13 +185,14 @@ export default function App() {
         <button className="icon" title="전체 단계" onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
           <span className="product">{scene.product}</span>
-          <span className="progress-text">{step.number} / {total} 단계</span>
+          <span className="progress-text">{t("{n} / {total} 단계", { n: step.number, total })}</span>
         </div>
+        <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />
       </header>
 
       {showSafety && (
         <div className="overlay safety">
-          <span>⚠ {scene.safety_ko[0]}</span>
+          <span>⚠ {t(scene.safety_ko[0])}</span>
           <button onClick={() => setShowSafety(false)} aria-label="닫기">✕</button>
         </div>
       )}
@@ -196,20 +201,20 @@ export default function App() {
       <section className="overlay card instruction" key={stepIndex}>
         <div className="step-badge">{step.number}</div>
         <div className="body">
-          <p className="text">{step.caption_ko}</p>
-          {step.warning_ko && <p className="warn">⚠ {step.warning_ko}</p>}
-          {lowConfidence && <span className="conf low">확인 필요 · 원본 그림과 비교해 보세요</span>}
+          <p className="text">{t(step.caption_ko)}</p>
+          {step.warning_ko && <p className="warn">⚠ {t(step.warning_ko)}</p>}
+          {lowConfidence && <span className="conf low">{t("확인 필요 · 원본 그림과 비교해 보세요")}</span>}
         </div>
       </section>
 
       {/* 오른쪽 위: 이 단계에 필요한 부품 */}
       <section className="overlay card parts">
         <div className="parts-head">
-          <h2>이 단계에 필요한 부품</h2>
+          <h2>{t("이 단계에 필요한 부품")}</h2>
           <button className="mini" title="지금까지 쓴 부품과 남은 부품을 크게 보기"
-            onClick={() => setShowInventory(true)}>📦 현황</button>
+            onClick={() => setShowInventory(true)}>{t("📦 현황")}</button>
         </div>
-        {parts.length === 0 && <p className="muted">새 부품 없음</p>}
+        {parts.length === 0 && <p className="muted">{t("새 부품 없음")}</p>}
         <ul>
           {parts.map((p) => (
             <li key={p.key}>
@@ -218,7 +223,7 @@ export default function App() {
                   : p.spec ? <HardwareThumb spec={p.spec} still={`card:hw:${p.key}`} /> : "⚙"}
               </span>
               <span className="name">
-                {p.name}
+                {t(p.name)}
                 {p.id && <code>{p.id}</code>}
               </span>
               <b className="qty">{p.qty}x</b>
@@ -233,7 +238,7 @@ export default function App() {
         <div className="style-switch">
           {STYLES.map((s) => (
             <button key={s.id} className={renderStyle === s.id ? "on" : ""} onClick={() => setRenderStyle(s.id)}>
-              {s.label}
+              {t(s.label)}
             </button>
           ))}
         </div>
@@ -244,7 +249,7 @@ export default function App() {
       {/* 오른쪽 아래: 원본 설명서 페이지 */}
       {showPage && (
         <button className="overlay card source" onClick={() => setPageZoom(true)} title="크게 보기">
-          <span className="source-label">원본 {step.page}쪽</span>
+          <span className="source-label">{t("원본 {n}쪽", { n: step.page })}</span>
           <img src={pageUrl(step.page)} alt={`설명서 ${step.page}쪽`} />
         </button>
       )}
@@ -255,7 +260,7 @@ export default function App() {
         <div className="middle">
           <div className="timeline">
             {scene.steps.map((s, i) => (
-              <button key={s.number} title={`${s.number}. ${s.caption_ko}`}
+              <button key={s.number} title={`${s.number}. ${t(s.caption_ko)}`}
                 className={`seg ${i < stepIndex ? "done" : ""} ${i === stepIndex ? "on" : ""} ${s.confidence < 0.5 ? "flag" : ""}`}
                 onClick={() => setStepIndex(i)}>
                 <span>{s.number}</span>
@@ -263,11 +268,11 @@ export default function App() {
             ))}
           </div>
           <div className="playback">
-            <button onClick={() => setPlayKey((k) => k + 1)}>↻ 다시 보기</button>
+            <button onClick={() => setPlayKey((k) => k + 1)}>{t("↻ 다시 보기")}</button>
             <button className={autoplay ? "on" : ""} onClick={() => setAutoplay((a) => !a)}>
-              {autoplay ? "⏸ 멈춤" : "▶ 자동 재생"}
+              {t(autoplay ? "⏸ 멈춤" : "▶ 자동 재생")}
             </button>
-            <span className="hint">← → 단계 이동 · Space 다시 보기</span>
+            <span className="hint">{t("← → 단계 이동 · Space 다시 보기")}</span>
           </div>
         </div>
         <button className="nav primary" onClick={() => go(1)} disabled={stepIndex === total - 1} aria-label="다음 단계">›</button>
@@ -278,7 +283,7 @@ export default function App() {
         <aside className="drawer">
           <DemoSwitcher current={null} />
           <div className="drawer-head">
-            <b>전체 단계</b>
+            <b>{t("전체 단계")}</b>
             <button className="icon" onClick={() => setShowList(false)} aria-label="닫기">✕</button>
           </div>
           <nav>
@@ -286,8 +291,8 @@ export default function App() {
               <button key={s.number} className={i === stepIndex ? "on" : ""}
                 onClick={() => { setStepIndex(i); setShowList(false); }}>
                 <span className="num">{s.number}</span>
-                <span className="cap">{s.caption_ko}</span>
-                {s.confidence < 0.5 && <span className="flag">확인 필요</span>}
+                <span className="cap">{t(s.caption_ko)}</span>
+                {s.confidence < 0.5 && <span className="flag">{t("확인 필요")}</span>}
               </button>
             ))}
           </nav>

@@ -9,6 +9,8 @@ import KitAssembly, { appliesTo } from "./KitAssembly";
 import type { KitPartKind, KitScene, KitStep } from "./kitTypes";
 import { onGoToStep, setCurrentStep } from "./bridge";
 import DemoSwitcher from "./DemoSwitcher";
+import LangBar from "./LangBar";
+import { afterSpeech, t, useLang, useSpeak } from "./lang";
 import "./kit.css";
 
 const ALL = "전체";
@@ -59,12 +61,14 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
   const [dragging, setDragging] = useState(false);
   const [hoverPart, setHoverPart] = useState<string | null>(null);
   const appRef = useRef<HTMLDivElement>(null);
+  const { lang, voiceOn, translating } = useLang(`/demo/${demo}`, scene);
 
   const mk = marking === ALL ? null : marking;
   // 선택한 마킹에 해당하는 단계만 이어서 본다. 원본 단계 인덱스(cur)로 3D 장면을 그린다.
   const order = useMemo(() => scene.steps.map((s, i) => ({ s, i })).filter(({ s }) => appliesTo(s.markings, mk)), [scene, mk]);
   const { s: step, i: cur } = order[Math.min(index, order.length - 1)];
   const total = order.length;
+  useSpeak([step.title_ko, step.caption_ko, step.warning_ko].filter((x): x is string => !!x).map((x) => t(x)).join("\n"));
 
   const go = useCallback((delta: number) => setIndex((i) => Math.min(order.length - 1, Math.max(0, i + delta))), [order]);
   const jump = (id: string) => {
@@ -89,8 +93,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
       setAutoplay(false);
       return;
     }
-    const timer = setTimeout(() => go(1), AUTOPLAY_MS);
-    return () => clearTimeout(timer);
+    return afterSpeech(AUTOPLAY_MS, () => go(1));
   }, [autoplay, index, total, go]);
 
   // 채팅·원본 PDF 위젯에 지금 단계를 알리고, 채팅의 "N단계" 링크로 이동한다.
@@ -135,18 +138,19 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
         <button className="icon" title="전체 단계" onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
           <span className="product">{scene.product}</span>
-          <span className="progress-text">{index + 1} / {total} 단계{mk ? ` · 마킹 ${mk}` : ""}</span>
+          <span className="progress-text">{t("{n} / {total} 단계", { n: index + 1, total })}{mk ? ` · ${t("마킹")} ${mk}` : ""}</span>
         </div>
+        <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />
       </header>
 
       {/* 상단 가운데: 마킹(도색 사양) 선택 — 가구의 안전 안내 자리 */}
-      <div className="overlay marking-pill" title={markingTitle}>
-        <span className="label">마킹</span>
+      <div className="overlay marking-pill" title={markingTitle && t(markingTitle)}>
+        <span className="label">{t("마킹")}</span>
         {[ALL, ...scene.markings.map((m) => m.id)].map((id) => (
           <button key={id} className={marking === id ? "on" : ""} title={scene.markings.find((m) => m.id === id)?.title_ko}
-            onClick={() => { setMarking(id); setIndex(0); setAutoplay(false); }}>{id}</button>
+            onClick={() => { setMarking(id); setIndex(0); setAutoplay(false); }}>{id === ALL ? t(ALL) : id}</button>
         ))}
-        {markingTitle && <em>{markingTitle}</em>}
+        {markingTitle && <em>{t(markingTitle)}</em>}
       </div>
 
       {/* 왼쪽 위: 현재 단계 설명 카드 */}
@@ -155,43 +159,43 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
         <div className="body">
           <p className="step-title">
             {step.label && <i className="sub-badge" title="이 단계에서 만든 조립품 기호">{step.label}</i>}
-            {step.title_ko}
+            {t(step.title_ko)}
           </p>
-          <p className="text">{step.caption_ko}</p>
-          {step.warning_ko && <p className="warn">⚠ {step.warning_ko}</p>}
-          {step.paints_ko.length > 0 && <p className="paint">🎨 {step.paints_ko.join("\n")}</p>}
+          <p className="text">{t(step.caption_ko)}</p>
+          {step.warning_ko && <p className="warn">⚠ {t(step.warning_ko)}</p>}
+          {step.paints_ko.length > 0 && <p className="paint">🎨 {step.paints_ko.map((x) => t(x)).join("\n")}</p>}
           {step.uses_steps.length > 0 && (
             <p className="uses-steps">
-              <span>끼우는 조립품</span>
+              <span>{t("끼우는 조립품")}</span>
               {step.uses_steps.map((id) => (
                 <button key={id} onClick={() => jump(id)}>
                   {byId.get(id)?.label && <i className="sub-badge">{byId.get(id)?.label}</i>}
-                  {byId.get(id)?.number}단계 {byId.get(id)?.title_ko}
+                  {byId.get(id)?.number}. {t(byId.get(id)?.title_ko ?? "")}
                 </button>
               ))}
             </p>
           )}
-          {step.markings && <span className="conf mk">마킹 {step.markings.join("·")}만 해당</span>}
-          {lowConfidence && <span className="conf low">확인 필요 · 원본 그림과 비교해 보세요</span>}
+          {step.markings && <span className="conf mk">{t("마킹 {m}만 해당", { m: step.markings.join("·") })}</span>}
+          {lowConfidence && <span className="conf low">{t("확인 필요 · 원본 그림과 비교해 보세요")}</span>}
         </div>
       </section>
 
       {/* 오른쪽 위: 이 단계에 붙는 부품 */}
       <section className="overlay card parts kit-parts">
         <div className="parts-head">
-          <h2>{parts.length > 0 ? `이 단계에 붙는 부품 ${parts.length}` : "이 단계에 붙는 부품"}</h2>
+          <h2>{t("이 단계에 붙는 부품")}{parts.length > 0 ? ` ${parts.length}` : ""}</h2>
         </div>
-        {parts.length === 0 && <p className="muted">새 부품 없이 앞에서 만든 조립품을 끼워요.</p>}
+        {parts.length === 0 && <p className="muted">{t("새 부품 없이 앞에서 만든 조립품을 끼워요.")}</p>}
         <ul>
           {parts.map((p) => (
             <li key={p.id} className={p.optional ? "alt" : ""} onMouseEnter={() => setHoverPart(p.id)} onMouseLeave={() => setHoverPart(null)}>
-              <span className={`kind-dot ${p.kind}`} title={KIND_LABEL[p.kind]} />
+              <span className={`kind-dot ${p.kind}`} title={t(KIND_LABEL[p.kind])} />
               <span className="name">
-                {p.name_ko}
-                <code>{p.id} · {KIND_LABEL[p.kind]}</code>
+                {t(p.name_ko)}
+                <code>{p.id} · {t(KIND_LABEL[p.kind])}</code>
               </span>
               {p.markings && <span className="tag mk">{p.markings.join("·")}</span>}
-              {p.optional && <span className="tag">다른 선택</span>}
+              {p.optional && <span className="tag">{t("다른 선택")}</span>}
             </li>
           ))}
         </ul>
@@ -202,7 +206,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
         <button className="icon" title="시점 초기화" onClick={() => setResetKey((k) => k + 1)}>⌂</button>
         <div className="style-switch">
           {STYLES.map((s) => (
-            <button key={s.id} className={renderStyle === s.id ? "on" : ""} onClick={() => setRenderStyle(s.id)}>{s.label}</button>
+            <button key={s.id} className={renderStyle === s.id ? "on" : ""} onClick={() => setRenderStyle(s.id)}>{t(s.label)}</button>
           ))}
         </div>
         <button className={`icon ${showPage ? "on" : ""}`} title="원본 페이지" onClick={() => setShowPage((v) => !v)}>📄</button>
@@ -212,7 +216,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
       {/* 오른쪽 아래: 원본 설명서 페이지 */}
       {showPage && (
         <button className="overlay card source" onClick={() => setPageZoom(true)} title="크게 보기">
-          <span className="source-label">원본 {step.page}쪽</span>
+          <span className="source-label">{t("원본 {n}쪽", { n: step.page })}</span>
           <img src={pageUrl(step.page)} alt={`설명서 ${step.page}쪽`} />
         </button>
       )}
@@ -223,7 +227,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
         <div className="middle">
           <div className="timeline">
             {order.map(({ s }, i) => (
-              <button key={s.id} title={`${s.number}. ${s.title_ko}`}
+              <button key={s.id} title={`${s.number}. ${t(s.title_ko)}`}
                 className={`seg ${i < index ? "done" : ""} ${i === index ? "on" : ""} ${s.confidence < 0.5 ? "flag" : ""}`}
                 onClick={() => setIndex(i)}>
                 <span>{s.number}</span>
@@ -231,11 +235,11 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
             ))}
           </div>
           <div className="playback">
-            <button onClick={() => setPlayKey((k) => k + 1)}>↻ 다시 보기</button>
+            <button onClick={() => setPlayKey((k) => k + 1)}>{t("↻ 다시 보기")}</button>
             <button className={autoplay ? "on" : ""} onClick={() => setAutoplay((a) => !a)}>
-              {autoplay ? "⏸ 멈춤" : "▶ 자동 재생"}
+              {t(autoplay ? "⏸ 멈춤" : "▶ 자동 재생")}
             </button>
-            <span className="hint">← → 단계 이동 · Space 다시 보기</span>
+            <span className="hint">{t("← → 단계 이동 · Space 다시 보기")}</span>
           </div>
         </div>
         <button className="nav primary" onClick={() => go(1)} disabled={index === total - 1} aria-label="다음 단계">›</button>
@@ -246,7 +250,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
         <aside className="drawer">
           <DemoSwitcher current={demo} />
           <div className="drawer-head">
-            <b>전체 단계 <small className="count">{total}</small></b>
+            <b>{t("전체 단계")} <small className="count">{total}</small></b>
             <button className="icon" onClick={() => setShowList(false)} aria-label="닫기">✕</button>
           </div>
           <nav>
@@ -255,12 +259,12 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
                 <span className="num">{s.number}</span>
                 <span className="cap">
                   {s.label && <i className="sub-badge">{s.label}</i>}
-                  {s.title_ko}
+                  {t(s.title_ko)}
                 </span>
                 {(s.markings || s.confidence < 0.5) && (
                   <span className="tags">
-                    {s.markings && <span className="flag mk">마킹 {s.markings.join("·")}만</span>}
-                    {s.confidence < 0.5 && <span className="flag">확인 필요</span>}
+                    {s.markings && <span className="flag mk">{t("마킹 {m}만 해당", { m: s.markings.join("·") })}</span>}
+                    {s.confidence < 0.5 && <span className="flag">{t("확인 필요")}</span>}
                   </span>
                 )}
               </button>
@@ -274,8 +278,8 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
               </div>
             )}
             <div className="notes">
-              <b>기호 안내</b>
-              <ul>{scene.notes_ko.map((n) => <li key={n}>{n}</li>)}</ul>
+              <b>{t("기호 안내")}</b>
+              <ul>{scene.notes_ko.map((n) => <li key={n}>{t(n)}</li>)}</ul>
             </div>
             <p className="meta">추출: {scene.extracted_by}</p>
           </div>

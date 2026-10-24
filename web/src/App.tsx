@@ -261,6 +261,7 @@ export default function App() {
       <header className="overlay topbar">
         <button className="icon" title={t("전체 단계")} onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
+          <span className="brand">Stepcast</span>
           <span className="product">{scene.product}</span>
           <span className="progress-text">{prep ? t("부품 확인") : t("{n} / {total} 단계", { n: step.number, total })}</span>
         </div>

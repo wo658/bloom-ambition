@@ -119,11 +119,14 @@ const TOTAL = SCENES.length;
 type View = { n: number; text: string } | null;
 let view: View = null;
 let control: { scene: AbortController; stopped: boolean } | null = null;
+// 사용자가 조작해 멈춘 장면. 다시 ▶ 를 누르면 그 장면부터 이어서 튼다(끝까지 보면 0으로 돌아가 처음부터).
+let resumeFrom = 0;
 const listeners = new Set<() => void>();
 const setView = (v: View) => { view = v; listeners.forEach((l) => l()); };
 const subscribe = (l: () => void) => { listeners.add(l); return () => { listeners.delete(l); }; };
 
 export const useTourView = () => useSyncExternalStore(subscribe, () => view);
+export const useTourResume = () => useSyncExternalStore(subscribe, () => resumeFrom);
 export const tourRunning = () => control !== null;
 
 export function stopTour() {
@@ -189,7 +192,7 @@ export async function startTour(api: TourApi) {
   const INPUTS = ["pointerdown", "wheel", "touchstart", "keydown"] as const;
   INPUTS.forEach((type) => window.addEventListener(type, handsOn, { capture: true, passive: true }));
 
-  let i = 0;
+  let i = resumeFrom;
   while (i < TOTAL && !state.stopped) {
     state.scene = new AbortController();
     base(!!SCENES[i].chat);
@@ -204,6 +207,7 @@ export async function startTour(api: TourApi) {
     i = move === "prev" ? Math.max(0, i - 1) : i + 1;
   }
   INPUTS.forEach((type) => window.removeEventListener(type, handsOn, { capture: true }));
+  resumeFrom = state.stopped && i < TOTAL ? i : 0;
   base(false);
   control = null;
   setView(null);

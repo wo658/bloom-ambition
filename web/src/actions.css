@@ -1,0 +1,37 @@
+/* 채팅 예시 문장: 빈 대화의 프롬프트 카드 목록(full), 대화 중 입력창 위의 가로 칩(compact). 문장 속 "@이름"은 말풍선과 같은 태그 칩이다 */
+.act-wrap { display: flex; flex-direction: column; gap: 8px; width: 100%; text-align: left; }
+.act-wrap.compact { padding: 8px 12px 0; }
+.act-head { font-size: 11.5px; font-weight: 600; letter-spacing: .02em; color: #8a93a3; }
+.act-icon { flex: none; width: 16px; height: 16px; }
+.act-badge { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: #fff1e6; color: #e0620a; }
+.motion .act-badge { background: #eaf1ff; color: #2563eb; }
+.ai .act-badge { background: #f3efff; color: #6d4bd8; }
+.act-label .chat-tag { padding: 0 5px; border-radius: 5px; font-weight: 600; }
+
+/* 프롬프트 카드: 말하듯 쓴 문장. 못 쓰게 되면 아래에 까닭이 붙는다. 올리면 보내기 화살표가 뜬다 */
+.act-list { display: flex; flex-direction: column; gap: 7px; }
+.act-card { position: relative; display: flex; align-items: center; gap: 11px; padding: 11px 40px 11px 11px; border: 1px solid #e3e7ee; border-radius: 14px;
+  background: #fff; color: #1d2433; text-align: left; font: inherit; cursor: pointer; box-shadow: 0 1px 2px rgba(20, 30, 50, .04);
+  transition: background .14s, border-color .14s, box-shadow .14s, transform .14s; }
+.act-card:hover:not(:disabled) { border-color: #ffb27a; box-shadow: 0 4px 14px rgba(224, 98, 10, .12); transform: translateY(-1px); }
+.act-card:active:not(:disabled) { transform: none; }
+.act-card:focus-visible { outline: 2px solid #ff7a1a; outline-offset: 2px; }
+.act-card:disabled { opacity: .45; cursor: default; box-shadow: none; }
+.act-body { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
+.act-card .act-label { font-size: 13.5px; font-weight: 500; line-height: 1.5; }
+.act-go { position: absolute; right: 11px; top: 50%; width: 24px; height: 24px; margin-top: -12px; display: grid; place-items: center; border-radius: 50%;
+  background: #1d2433; color: #fff; font-size: 12px; opacity: 0; transform: scale(.8); transition: opacity .14s, transform .14s; }
+.act-card:hover:not(:disabled) .act-go, .act-card:focus-visible .act-go { opacity: 1; transform: none; }
+
+/* 칩: 한 줄로 짧게, 넘치면 가로로 민다 */
+.act-row { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.act-row::-webkit-scrollbar { display: none; }
+.act-chip { flex: none; display: inline-flex; align-items: center; gap: 6px; max-width: 280px; padding: 3px 11px 3px 3px; border: 1px solid #e3e7ee;
+  border-radius: 999px; background: #fff; color: #1d2433; font: inherit; font-size: 12px; cursor: pointer; transition: background .12s, border-color .12s; }
+.act-chip .act-badge { width: 22px; height: 22px; border-radius: 50%; }
+.act-chip .act-icon { width: 13px; height: 13px; }
+.act-chip .act-label { min-width: 0; font-size: 12px; font-weight: 500; line-height: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.act-chip .act-label .chat-tag { display: inline; padding: 1px 4px; }
+.act-chip:hover:not(:disabled) { background: #fff7f0; border-color: #ffb27a; }
+.act-chip:disabled { opacity: .45; cursor: default; }
+@media (prefers-reduced-motion: reduce) { .act-card, .act-go { transition: none; } .act-card:hover:not(:disabled) { transform: none; } }

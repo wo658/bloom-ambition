@@ -81,8 +81,10 @@ const SCENES: { text: string; chat?: boolean; run: (c: Ctx) => Promise<void> }[]
   { text: "10개 언어로 바꾸고, 음성으로 읽어 줘요",
     run: async (c) => {
       c.api.goStep(2); // 부품 모션(2단계) 다음 3단계에서 읽어 준다
-      setLang("en"); c.setVoice(true); await c.wait(900); await c.until(() => !speechSynthesis.speaking, 9000);
-      setLang("ja"); await c.wait(900); await c.until(() => !speechSynthesis.speaking, 9000);
+      // 언어마다 끝까지 읽지 않고 2.5초쯤 보여 주고 넘긴다(바꾸면 읽던 음성도 새 언어로 바뀐다).
+      setLang("en"); c.setVoice(true); await c.wait(2600, 1);
+      setLang("ja"); await c.wait(2400, 1);
+      setLang("zh-CN"); await c.wait(2000, 1);
     } },
   { text: "투시 모드: 판 속 나무못과 볼트까지 들여다봐요",
     run: async (c) => { c.api.goStep(c.api.xrayStep); await c.wait(1800); c.api.setXray(true); c.spin(true, 6); await c.wait(5200); } },

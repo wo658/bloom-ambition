@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { ContactShadows, OrbitControls } from "@react-three/drei";
 import gsap from "gsap";
@@ -14,6 +14,7 @@ import DemoSwitcher from "./DemoSwitcher";
 import ChatPanel from "./ChatPanel";
 import LangBar from "./LangBar";
 import { afterSpeech, t, useLang, useSpeak } from "./lang";
+import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
 
 const DEMO = "/demo";
 const HOME_CAMERA: [number, number, number] = [150, 140, 200];
@@ -33,9 +34,14 @@ const HOME_DISTANCE = HOME_DIRECTION.length();
 // 세운 뒤에는 칸 안쪽(브래킷)과 벽이 보이도록 앞에서 윗판보다 낮게 들여다본다.
 const FRONT_DIRECTION = new THREE.Vector3(0.4, -0.06, 1).normalize();
 const FOCUS_MIN = 70; // 작은 부품에 다가갈 때 가장 가까운 거리
+// 부품 확인은 바닥에 펼친 부품을 비스듬히 내려다본다.
+const PREP_DIRECTION = new THREE.Vector3(0.15, 1.25, 1).normalize();
+const PREP = -1; // 1단계 앞의 부품 확인 단계
+const PREP_AUTOPLAY_MS = 4000;
+const PREP_CAPTION = "부품을 모두 꺼내 바닥에 펼치세요.\n목록과 개수를 하나씩 맞춰 보며 체크하세요.\n모자라면 조립을 시작하기 전에 매장에 문의하세요.";
 
 // 단계가 바뀌면 그 단계에서 움직이는 부품 쪽으로 다가가고, 시점 초기화 버튼을 누르면 기본 위치로 돌아간다.
-function CameraRig({ resetKey, scene, stepIndex }: { resetKey: number; scene: Scene; stepIndex: number }) {
+function CameraRig({ resetKey, scene, stepIndex, prep }: { resetKey: number; scene: Scene; stepIndex: number; prep: Layout }) {
   const { camera, controls } = useThree();
   const fly = (position: THREE.Vector3, target: THREE.Vector3) => {
     const orbit = controls as unknown as OrbitControlsImpl | null;
@@ -50,13 +56,18 @@ function CameraRig({ resetKey, scene, stepIndex }: { resetKey: number; scene: Sc
     return home();
   }, [resetKey]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
+    if (stepIndex === PREP) {
+      // 오른쪽 체크리스트에 가리지 않도록 중심을 조금 오른쪽에 두어 부품이 화면 왼쪽으로 오게 한다.
+      const target = new THREE.Vector3(prep.radius * 0.42, 0, prep.radius * 0.1);
+      return fly(target.clone().addScaledVector(PREP_DIRECTION, prep.radius * 2.8), target);
+    }
     const focus = stepFocus(scene, stepIndex);
     if (!focus) return home();
     const target = new THREE.Vector3(...focus.center);
     const distance = Math.min(HOME_DISTANCE, Math.max(FOCUS_MIN, focus.radius * 4.5));
     const direction = scene.steps[stepIndex].pose === "upright" ? FRONT_DIRECTION : HOME_DIRECTION.clone().normalize();
     return fly(target.clone().addScaledVector(direction, distance), target);
-  }, [scene, stepIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [scene, stepIndex, prep]); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 
@@ -76,7 +87,7 @@ function StudioEnvironment({ on }: { on: boolean }) {
 
 export default function App() {
   const [scene, setScene] = useState<Scene | null>(null);
-  const [stepIndex, setStepIndex] = useState(0);
+  const [stepIndex, setStepIndex] = useState(PREP);
   const [playKey, setPlayKey] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
   const [renderStyle, setRenderStyle] = useState<RenderStyle>("color");
@@ -86,10 +97,14 @@ export default function App() {
   const [pageZoom, setPageZoom] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
+  const [checked, setChecked] = useState<Set<string>>(() => new Set());
+  const [hoverPart, setHoverPart] = useState<string | null>(null);
+  const labelEls = useRef(new Map<string, HTMLElement>());
   const appRef = useRef<HTMLDivElement>(null);
   const { lang, voiceOn, translating } = useLang(DEMO, scene);
   const now = scene?.steps[Math.min(stepIndex, scene.steps.length - 1)];
-  useSpeak(now ? [now.caption_ko, now.warning_ko].filter((x): x is string => !!x).map((x) => t(x)).join("\n") : "");
+  const spoken = stepIndex === PREP ? [PREP_CAPTION] : now ? [now.caption_ko, now.warning_ko] : [];
+  useSpeak(spoken.filter((x): x is string => !!x).map((x) => t(x)).join("\n"));
 
   useEffect(() => {
     fetch(`${DEMO}/scene.json`).then((r) => r.json()).then(setScene);
@@ -98,7 +113,7 @@ export default function App() {
   const go = useCallback(
     (delta: number) => {
       if (!scene) return;
-      setStepIndex((i) => Math.min(scene.steps.length - 1, Math.max(0, i + delta)));
+      setStepIndex((i) => Math.min(scene.steps.length - 1, Math.max(PREP, i + delta)));
     },
     [scene],
   );
@@ -121,19 +136,33 @@ export default function App() {
       return;
     }
     // 단계마다 부품을 하나씩 조이는 시간이 달라서, 애니메이션이 끝나고 잠깐 쉰 뒤 넘긴다.
-    return afterSpeech((stepDuration(scene.steps[stepIndex]) + 1.5) * 1000, () => go(1));
+    const ms = stepIndex === PREP ? PREP_AUTOPLAY_MS : (stepDuration(scene.steps[stepIndex]) + 1.5) * 1000;
+    return afterSpeech(ms, () => go(1));
   }, [autoplay, stepIndex, scene, go]);
 
   // 채팅·원본 PDF 위젯에 지금 단계를 알리고, 채팅의 "N단계" 링크로 이동한다.
   useEffect(() => {
+    if (scene && stepIndex === PREP) {
+      setCurrentStep({ index: PREP, number: 0, page: partsPage(scene), title: "부품 확인" });
+      return;
+    }
     const s = scene?.steps[stepIndex];
     if (s) setCurrentStep({ index: stepIndex, number: s.number, page: s.page, title: s.caption_ko });
   }, [scene, stepIndex]);
 
   useEffect(() => onGoToStep((n) => {
+    if (n === 0) return setStepIndex(PREP);
     const i = scene?.steps.findIndex((s) => s.number === n) ?? -1;
     if (i >= 0) setStepIndex(i);
   }), [scene]);
+
+  const items = useMemo(() => (scene ? checkItems(scene) : []), [scene]);
+  const layout = useMemo(() => layoutParts(items), [items]);
+  const toggleChecked = useCallback((key: string) => setChecked((prev) => {
+    const next = new Set(prev);
+    if (next.has(key)) next.delete(key); else next.add(key);
+    return next;
+  }), []);
 
   const closeInventory = useCallback(() => setShowInventory(false), []);
 
@@ -148,9 +177,11 @@ export default function App() {
   }, [scene, stepIndex]);
 
   if (!scene) return <div className="loading">scene.json 불러오는 중…</div>;
-  const step = scene.steps[Math.min(stepIndex, scene.steps.length - 1)];
+  const prep = stepIndex === PREP;
+  const step = scene.steps[Math.min(Math.max(stepIndex, 0), scene.steps.length - 1)];
   const total = scene.steps.length;
-  const lowConfidence = step.confidence < 0.5;
+  const lowConfidence = !prep && step.confidence < 0.5;
+  const page = prep ? partsPage(scene) : step.page;
   const parts = [
     ...step.adds.map((id) => {
       const panel = scene.panels.find((p) => p.id === id);
@@ -172,57 +203,70 @@ export default function App() {
         <directionalLight position={[80, 160, 100]} intensity={renderStyle === "technical" ? 0.8 : 1.6} castShadow
           shadow-mapSize={[2048, 2048]} shadow-camera-left={-120} shadow-camera-right={120}
           shadow-camera-top={120} shadow-camera-bottom={-120} />
-        <Assembly scene={scene} stepIndex={stepIndex} playKey={playKey} renderStyle={renderStyle} />
+        {prep
+          ? <>
+              <PartsLayout layout={layout} style={renderStyle} hover={hoverPart} playKey={playKey} />
+              <LabelTracker layout={layout} els={labelEls} />
+            </>
+          : <Assembly scene={scene} stepIndex={stepIndex} playKey={playKey} renderStyle={renderStyle} />}
         <ContactShadows position={[0, 0.1, 0]} scale={220} blur={2.4} opacity={0.3} />
         <OrbitControls target={HOME_TARGET} makeDefault
           onStart={() => setDragging(true)} onEnd={() => setDragging(false)} />
-        <CameraRig resetKey={resetKey} scene={scene} stepIndex={stepIndex} />
+        <CameraRig resetKey={resetKey} scene={scene} stepIndex={stepIndex} prep={layout} />
       </Canvas>
+      {prep && <PartsLabels layout={layout} checked={checked} els={labelEls} onToggle={toggleChecked} />}
 
       {/* 상단: 제품명과 진행 상황 */}
       <header className="overlay topbar">
         <button className="icon" title="전체 단계" onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
           <span className="product">{scene.product}</span>
-          <span className="progress-text">{t("{n} / {total} 단계", { n: step.number, total })}</span>
+          <span className="progress-text">{prep ? t("부품 확인") : t("{n} / {total} 단계", { n: step.number, total })}</span>
         </div>
         <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />
       </header>
 
       {/* 왼쪽 위: 현재 단계 설명 카드 */}
       <section className="overlay card instruction" key={stepIndex}>
-        <div className="step-badge">{step.number}</div>
+        <div className="step-badge">{prep ? "✓" : step.number}</div>
         <div className="body">
-          <p className="text">{t(step.caption_ko)}</p>
-          {step.warning_ko && <p className="warn">⚠ {t(step.warning_ko)}</p>}
+          <p className="text">{t(prep ? PREP_CAPTION : step.caption_ko)}</p>
+          {!prep && step.warning_ko && <p className="warn">⚠ {t(step.warning_ko)}</p>}
           {lowConfidence && <span className="conf low">{t("확인 필요 · 원본 그림과 비교해 보세요")}</span>}
         </div>
       </section>
 
-      {/* 오른쪽 위: 이 단계에 필요한 부품 */}
-      <section className="overlay card parts">
-        <div className="parts-head">
-          <h2>{t("이 단계에 필요한 부품")}</h2>
-          <button className="mini" title="지금까지 쓴 부품과 남은 부품을 크게 보기"
-            onClick={() => setShowInventory(true)}>{t("📦 현황")}</button>
-        </div>
-        {parts.length === 0 && <p className="muted">{t("새 부품 없음")}</p>}
-        <ul>
-          {parts.map((p) => (
-            <li key={p.key}>
-              <span className="thumb">
-                {p.panel ? <PanelThumb size={p.panel.size} active still={`card:${p.key}`} />
-                  : p.spec ? <HardwareThumb spec={p.spec} still={`card:hw:${p.key}`} /> : "⚙"}
-              </span>
-              <span className="name">
-                {t(p.name)}
-                {p.id && <code>{p.id}</code>}
-              </span>
-              <b className="qty">{p.qty}x</b>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* 오른쪽 위: 이 단계에 필요한 부품(부품 확인 단계에서는 상자 속 전체 목록) */}
+      {prep ? (
+        <PartsChecklist items={items} checked={checked} page={page} onPage={() => setPageZoom(true)}
+          onToggle={toggleChecked} onHover={setHoverPart}
+          onAll={() => setChecked(new Set(items.filter((it) => it.included).map((it) => it.key)))}
+          onStart={() => setStepIndex(0)} />
+      ) : (
+        <section className="overlay card parts">
+          <div className="parts-head">
+            <h2>{t("이 단계에 필요한 부품")}</h2>
+            <button className="mini" title="지금까지 쓴 부품과 남은 부품을 크게 보기"
+              onClick={() => setShowInventory(true)}>{t("📦 현황")}</button>
+          </div>
+          {parts.length === 0 && <p className="muted">{t("새 부품 없음")}</p>}
+          <ul>
+            {parts.map((p) => (
+              <li key={p.key}>
+                <span className="thumb">
+                  {p.panel ? <PanelThumb size={p.panel.size} active still={`card:${p.key}`} />
+                    : p.spec ? <HardwareThumb spec={p.spec} still={`card:hw:${p.key}`} /> : "⚙"}
+                </span>
+                <span className="name">
+                  {t(p.name)}
+                  {p.id && <code>{p.id}</code>}
+                </span>
+                <b className="qty">{p.qty}x</b>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* 오른쪽 가운데: 보기 도구 */}
       <div className="overlay toolbar">
@@ -239,18 +283,21 @@ export default function App() {
       </div>
 
       {/* 오른쪽 아래: 원본 설명서 페이지 */}
-      {showPage && (
+      {showPage && !prep && (
         <button className="overlay card source" onClick={() => setPageZoom(true)} title="크게 보기">
-          <span className="source-label">{t("원본 {n}쪽", { n: step.page })}</span>
-          <img src={pageUrl(step.page)} alt={`설명서 ${step.page}쪽`} />
+          <span className="source-label">{t("원본 {n}쪽", { n: page })}</span>
+          <img src={pageUrl(page)} alt={`설명서 ${page}쪽`} />
         </button>
       )}
 
       {/* 아래: 단계 타임라인과 재생 컨트롤 */}
       <footer className="overlay dock">
-        <button className="nav" onClick={() => go(-1)} disabled={stepIndex === 0} aria-label="이전 단계">‹</button>
+        <button className="nav" onClick={() => go(-1)} disabled={prep} aria-label="이전 단계">‹</button>
         <div className="middle">
           <div className="timeline">
+            <button title={t("부품 확인")} className={`seg prep ${prep ? "on" : "done"}`} onClick={() => setStepIndex(PREP)}>
+              <span>✓</span>
+            </button>
             {scene.steps.map((s, i) => (
               <button key={s.number} title={`${s.number}. ${t(s.caption_ko)}`}
                 className={`seg ${i < stepIndex ? "done" : ""} ${i === stepIndex ? "on" : ""} ${s.confidence < 0.5 ? "flag" : ""}`}
@@ -279,6 +326,10 @@ export default function App() {
             <button className="icon" onClick={() => setShowList(false)} aria-label="닫기">✕</button>
           </div>
           <nav>
+            <button className={prep ? "on" : ""} onClick={() => { setStepIndex(PREP); setShowList(false); }}>
+              <span className="num">✓</span>
+              <span className="cap">{t("부품 확인")}</span>
+            </button>
             {scene.steps.map((s, i) => (
               <button key={s.number} className={i === stepIndex ? "on" : ""}
                 onClick={() => { setStepIndex(i); setShowList(false); }}>
@@ -309,7 +360,7 @@ export default function App() {
 
       {pageZoom && (
         <div className="lightbox" onClick={() => setPageZoom(false)}>
-          <img src={pageUrl(step.page)} alt={`설명서 ${step.page}쪽`} />
+          <img src={pageUrl(page)} alt={`설명서 ${page}쪽`} />
         </div>
       )}
     </div>

@@ -282,6 +282,9 @@ def build_scene(manual: Manual) -> dict:
         "wall_z": placer.wall_z,
         # 부품 목록 썸네일용: 판재가 아닌 부품 번호별 형상
         "hardware": {p.id: hardware(p.id, p.kind) for p in manual.parts if p.kind != "panel"},
+        # 1단계 전 부품 확인용: 설명서 부품 페이지의 목록과 수량. "미포함"은 상자에 없어 따로 준비하는 것.
+        "parts": [{**p.model_dump(include={"id", "kind", "name_ko", "qty", "page"}), "included": "미포함" not in p.name_ko}
+                  for p in manual.parts],
         "reseat_ratio": RESEAT,
         "floor_offset": floor,
         "panels": panels,

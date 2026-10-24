@@ -8,14 +8,14 @@ import { HardwareMesh, METAL, SPINS, TOOLS, orientation } from "./Hardware";
 import type { HardwareSpec, Scene, SmallPart, Step, Vec3 } from "./types";
 import { oakMaps, woodBox } from "./wood";
 
-const HIGHLIGHT = "#ff7a1a";
+export const HIGHLIGHT = "#ff7a1a";
 
 // 도면: IKEA 설명서처럼 흰 면 + 굵은 외곽선, 툰: 흰 면에 계단식 음영, 컬러: 오일 마감 원목.
 export type RenderStyle = "technical" | "toon" | "color";
 const BOARD: Record<RenderStyle, string> = { technical: "#ffffff", toon: "#ffffff", color: "#ffffff" };
-const EDGE: Record<RenderStyle, string> = { technical: "#1f1f1f", toon: "#4b4b4b", color: "#7a5532" };
+export const EDGE: Record<RenderStyle, string> = { technical: "#1f1f1f", toon: "#4b4b4b", color: "#7a5532" };
 
-function Material({ style, color, wood }: { style: RenderStyle; color: string; wood?: boolean }) {
+export function Material({ style, color, wood }: { style: RenderStyle; color: string; wood?: boolean }) {
   if (style === "technical") return <meshBasicMaterial color={color} />;
   if (style === "toon") return <meshToonMaterial color={color} />;
   // 텍스처 유무가 바뀌면 셰이더를 다시 만들어야 해서 key로 재질을 새로 만든다.

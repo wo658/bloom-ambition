@@ -20,7 +20,7 @@ interface Item {
   nextIndex: number | null;
 }
 
-function inventory(scene: Scene, stepIndex: number): Item[] {
+export function inventory(scene: Scene, stepIndex: number): Item[] {
   const items = new Map<string, Item>();
   const add = (key: string, base: Pick<Item, "name" | "code" | "panel" | "spec">, qty: number, i: number, tool: boolean) => {
     const item = items.get(key) ?? { key, ...base, total: 0, used: 0, now: 0, nextStep: null, nextIndex: null };
@@ -46,14 +46,14 @@ function inventory(scene: Scene, stepIndex: number): Item[] {
   return [...items.values()];
 }
 
-function dims(panel: Panel) {
+export function panelDims(panel: Panel) {
   return [...panel.size].sort((a, b) => b - a).map((v) => +v.toFixed(1)).join(" × ") + " cm";
 }
 
 function PartCard({ item, count, kind, onJump }: {
   item: Item; count: number; kind: "used" | "left"; onJump: (index: number) => void;
 }) {
-  const sub = item.code || (item.panel ? dims(item.panel) : "");
+  const sub = item.code || (item.panel ? panelDims(item.panel) : "");
   return (
     <li className={`pcard ${kind} ${kind === "used" && item.now > 0 ? "now" : ""}`}>
       <div className="pcard-img">

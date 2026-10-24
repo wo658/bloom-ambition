@@ -19,7 +19,6 @@ import ChangeScene, { useCompareView } from "./ChangeScene";
 import ChangeHud, { CompareBadge, CompareCard, CompareTimeline } from "./ChangeHud";
 import LangBar from "./LangBar";
 import { GuideCaption, beatAt, playStep, type GuideApi } from "./Guide";
-import { LogoMark } from "./Logo";
 import { t, useLang, useSpeak } from "./lang";
 import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
 
@@ -402,13 +401,11 @@ export default function App() {
       <ChangeHud />
       {prep && !compareView && <PartsLabels layout={layout} checked={checked} els={labelEls} onToggle={toggleChecked} />}
 
-      {/* 상단: 제품명과 진행 상황 */}
+      {/* 상단: 제품명 */}
       <header className="overlay topbar">
         <button className="icon" title={t("전체 단계")} onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
-          <span className="brand"><LogoMark size={14} />Stepcast</span>
           <span className="product">{scene.product}</span>
-          <span className="progress-text">{prep ? t("부품 확인") : t("{n} / {total} 단계", { n: step.number, total })}</span>
         </div>
         <CompareBadge />
         <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />

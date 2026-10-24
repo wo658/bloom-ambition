@@ -225,7 +225,11 @@
   "자동 재생": "Autoplay",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Autoplay off: press → to advance",
   "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Autoplay on: advances automatically when each scene ends",
-  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "The hardware at the bottom is shown at {n} times actual size (panels are actual size)."
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "The hardware at the bottom is shown at {n} times actual size (panels are actual size).",
+  "단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Features are shown as you move through the steps (← → to navigate, Esc to stop)",
+  "부품부터 확인해요. 상자 속 부품을 바닥에 펼쳐 개수를 맞춰요": "Check the parts first. Spread the parts from the box on the floor and count them",
+  "완성. 설명서 한 권, 어느 나라에서든 끝까지 따라 만들 수 있게": "Done. One manual, so anyone in any country can build it to the end",
+  "재생 멈추기": "Stop playback"
  },
  "ja": {
   "N단계": "Nステップ",
@@ -453,7 +457,11 @@
   "자동 재생": "自動再生",
   "자동 재생 끄기: → 를 눌러 넘겨요": "自動再生オフ：→ を押して進みます",
   "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "自動再生オン：シーンが終わると自動で進みます",
-  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "底面の金具は実物の{n}倍の大きさです（板材は実物大）"
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "底面の金具は実物の{n}倍の大きさです（板材は実物大）",
+  "단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "ステップを進めながら機能も紹介します（← → で移動、Escで停止）",
+  "부품부터 확인해요. 상자 속 부품을 바닥에 펼쳐 개수를 맞춰요": "まず部品を確認します。箱の中の部品を床に広げて、数をそろえましょう",
+  "완성. 설명서 한 권, 어느 나라에서든 끝까지 따라 만들 수 있게": "完成。一冊の説明書で、どの国でも最後まで作れるように",
+  "재생 멈추기": "再生を停止"
  },
  "zh-CN": {
   "N단계": "第N步",
@@ -681,7 +689,11 @@
   "자동 재생": "自动播放",
   "자동 재생 끄기: → 를 눌러 넘겨요": "关闭自动播放：按 → 翻页",
   "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "开启自动播放：场景结束后自动翻页",
-  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "底部的五金件是实际尺寸的{n}倍（板材为实际尺寸）"
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "底部的五金件是实际尺寸的{n}倍（板材为实际尺寸）",
+  "단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "翻页时同步展示各项功能（用 ← → 翻页，按 Esc 停止）",
+  "부품부터 확인해요. 상자 속 부품을 바닥에 펼쳐 개수를 맞춰요": "先检查零件。把盒中零件摊在地上，核对数量",
+  "완성. 설명서 한 권, 어느 나라에서든 끝까지 따라 만들 수 있게": "完成。一本说明书，无论在哪个国家都能跟着做到最后",
+  "재생 멈추기": "停止播放"
  },
  "zh-TW": {
   "N단계": "第N步",
@@ -909,7 +921,11 @@
   "자동 재생": "自動播放",
   "자동 재생 끄기: → 를 눌러 넘겨요": "關閉自動播放：按 → 翻頁",
   "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "開啟自動播放：場景結束後自動跳到下一個",
-  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "底部的五金件為實際的{n}倍大小（板材為實際大小）"
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "底部的五金件為實際的{n}倍大小（板材為實際大小）",
+  "단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "翻頁時也會一併展示功能（用 ← → 翻頁，按 Esc 停止）",
+  "부품부터 확인해요. 상자 속 부품을 바닥에 펼쳐 개수를 맞춰요": "先確認零件。把盒中的零件攤在地上，核對數量",
+  "완성. 설명서 한 권, 어느 나라에서든 끝까지 따라 만들 수 있게": "完成。一本說明書，讓任何國家的人都能從頭做到尾",
+  "재생 멈추기": "停止播放"
  },
  "es": {
   "N단계": "Paso N",
@@ -1137,7 +1153,11 @@
   "자동 재생": "Reproducción automática",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Reproducción automática desactivada: pulsa → para avanzar",
   "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Reproducción automática activada: al terminar la escena, avanza sola",
-  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Los herrajes del suelo se muestran a {n} veces su tamaño real (los tableros, a tamaño real)"
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Los herrajes del suelo se muestran a {n} veces su tamaño real (los tableros, a tamaño real)",
+  "단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Avanza por los pasos y descubre también las funciones (← → para avanzar, Esc para detener)",
+  "부품부터 확인해요. 상자 속 부품을 바닥에 펼쳐 개수를 맞춰요": "Primero, revisa las piezas. Extiende en el suelo las piezas de la caja y comprueba que estén todas",
+  "완성. 설명서 한 권, 어느 나라에서든 끝까지 따라 만들 수 있게": "¡Terminado! Un solo manual para que cualquiera, en cualquier país, pueda montarlo hasta el final",
+  "재생 멈추기": "Detener reproducción"
  },
  "fr": {
   "N단계": "Étape N",
@@ -1365,7 +1385,11 @@
   "자동 재생": "Lecture automatique",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Lecture automatique désactivée : appuyez sur → pour avancer",
   "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Lecture automatique activée : passage automatique à la fin de chaque scène",
-  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "La quincaillerie en bas est représentée à {n} fois sa taille réelle (les panneaux sont à taille réelle)"
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "La quincaillerie en bas est représentée à {n} fois sa taille réelle (les panneaux sont à taille réelle)",
+  "단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Passez les étapes et découvrez les fonctions (← → pour avancer, Esc pour arrêter)",
+  "부품부터 확인해요. 상자 속 부품을 바닥에 펼쳐 개수를 맞춰요": "Vérifiez d'abord les pièces. Étalez les pièces de la boîte au sol et comptez-les",
+  "완성. 설명서 한 권, 어느 나라에서든 끝까지 따라 만들 수 있게": "Terminé. Un seul manuel, pour tout construire jusqu'au bout, dans n'importe quel pays",
+  "재생 멈추기": "Arrêter la lecture"
  },
  "de": {
   "N단계": "Schritt N",
@@ -1593,7 +1617,11 @@
   "자동 재생": "Automatische Wiedergabe",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Automatische Wiedergabe aus: Mit → weiterblättern",
   "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Automatische Wiedergabe an: Nach jeder Szene geht es automatisch weiter",
-  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Die Beschläge unten sind {n}-mal so groß wie in Wirklichkeit dargestellt (Platten in Originalgröße)."
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Die Beschläge unten sind {n}-mal so groß wie in Wirklichkeit dargestellt (Platten in Originalgröße).",
+  "단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Beim Durchblättern der Schritte werden auch die Funktionen gezeigt (mit ← → blättern, mit Esc anhalten)",
+  "부품부터 확인해요. 상자 속 부품을 바닥에 펼쳐 개수를 맞춰요": "Prüfe zuerst die Teile. Breite die Teile aus der Schachtel auf dem Boden aus und zähle sie nach",
+  "완성. 설명서 한 권, 어느 나라에서든 끝까지 따라 만들 수 있게": "Fertig. Eine Anleitung, mit der man in jedem Land bis zum Ende mitbauen kann",
+  "재생 멈추기": "Wiedergabe anhalten"
  },
  "vi": {
   "N단계": "Bước N",
@@ -1821,7 +1849,11 @@
   "자동 재생": "Tự động phát",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Tắt tự động phát: nhấn → để chuyển tiếp",
   "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Bật tự động phát: hết cảnh sẽ tự chuyển tiếp",
-  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Phụ kiện kim loại ở dưới đáy lớn gấp {n} lần kích thước thật (tấm ván là kích thước thật)"
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Phụ kiện kim loại ở dưới đáy lớn gấp {n} lần kích thước thật (tấm ván là kích thước thật)",
+  "단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Xem các tính năng khi chuyển qua từng bước (dùng ← → để chuyển, Esc để dừng)",
+  "부품부터 확인해요. 상자 속 부품을 바닥에 펼쳐 개수를 맞춰요": "Hãy kiểm tra linh kiện trước. Bày linh kiện trong hộp ra sàn và đếm cho đủ số lượng",
+  "완성. 설명서 한 권, 어느 나라에서든 끝까지 따라 만들 수 있게": "Hoàn thành. Chỉ với một cuốn hướng dẫn, ở bất kỳ quốc gia nào cũng có thể làm theo đến cuối cùng",
+  "재생 멈추기": "Dừng phát"
  },
  "id": {
   "N단계": "Langkah N",
@@ -2049,6 +2081,10 @@
   "자동 재생": "Putar otomatis",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Putar otomatis mati: tekan → untuk lanjut",
   "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Putar otomatis aktif: lanjut sendiri saat adegan selesai",
-  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Perangkat logam di bagian bawah ditampilkan {n} kali ukuran sebenarnya (papan dalam ukuran sebenarnya)"
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Perangkat logam di bagian bawah ditampilkan {n} kali ukuran sebenarnya (papan dalam ukuran sebenarnya)",
+  "단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Fitur juga ditampilkan saat berpindah langkah (geser dengan ← →, berhenti dengan Esc)",
+  "부품부터 확인해요. 상자 속 부품을 바닥에 펼쳐 개수를 맞춰요": "Periksa komponen terlebih dahulu. Bentangkan komponen dari kotak di lantai dan cocokkan jumlahnya",
+  "완성. 설명서 한 권, 어느 나라에서든 끝까지 따라 만들 수 있게": "Selesai. Satu buku panduan, bisa diikuti sampai akhir dari negara mana pun",
+  "재생 멈추기": "Hentikan pemutaran"
  }
 }

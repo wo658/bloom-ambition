@@ -23,6 +23,8 @@ body { font-family: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", 
 .op-hero-body { position: relative; width: min(1040px, 90vw); }
 .op-brand { display: flex; align-items: center; gap: .5em; margin: 0 0 14px; font-size: clamp(15px, 1.6vw, 20px); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-dark); }
 .op-hero h1 { margin: 0 0 40px; font-size: clamp(32px, 4.6vw, 60px); line-height: 1.16; font-weight: 800; letter-spacing: -.035em; color: var(--ink); }
+/* 해외 심사위원용 영어 한 줄. 제목 바로 아래에 붙인다(제목의 아래 여백을 당겨 쓴다). */
+.op-en { margin: -26px 0 40px; font-size: clamp(18px, 2.1vw, 28px); font-weight: 700; letter-spacing: -.015em; color: var(--sub); }
 .op-stage-row { display: grid; grid-template-columns: 1fr 240px; gap: 36px; align-items: center; }
 
 .op-drop { height: 230px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
@@ -144,6 +146,7 @@ body { font-family: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", 
 @media (max-width: 760px) {
   .op-hero-body { width: 88vw; }
   .op-hero h1 { margin-bottom: 22px; }
+  .op-en { margin: -14px 0 22px; }
   .op-stage-row { grid-template-columns: 1fr; gap: 18px; }
   .op-desk { order: -1; flex-direction: row; justify-content: center; }
   .op-file { width: 112px; }

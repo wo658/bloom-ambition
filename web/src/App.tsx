@@ -18,9 +18,9 @@ import ChatPanel from "./ChatPanel";
 import ChangeScene, { useCompareView } from "./ChangeScene";
 import ChangeHud, { CompareBadge, CompareCard, CompareTimeline } from "./ChangeHud";
 import LangBar from "./LangBar";
-import DemoTour from "./DemoTour";
+import { GuideCaption, beatAt, playStep, type GuideApi } from "./Guide";
 import { LogoMark } from "./Logo";
-import { afterSpeech, t, useLang, useSpeak } from "./lang";
+import { t, useLang, useSpeak } from "./lang";
 import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
 
 const DEMO = "/demo";
@@ -183,7 +183,7 @@ export default function App() {
     return n >= 1 ? n - 1 : PREP;
   });
   const [playKey, setPlayKey] = useState(0);
-  const [autoplay, setAutoplay] = useState(false);
+  const [autoplay, setAutoplay] = useState(() => new URLSearchParams(location.search).has("tour")); // ?tour=1이면 열자마자 기능 소개와 함께 재생
   const [renderStyle, setRenderStyle] = useState<RenderStyle>("color");
   const [xray, setXray] = useState(() => new URLSearchParams(location.search).has("xray")); // ?xray=1로 투시 켠 채 열기
   const [resetKey, setResetKey] = useState(0);
@@ -224,22 +224,25 @@ export default function App() {
       if (e.key === "ArrowRight") go(1);
       if (e.key === "ArrowLeft") go(-1);
       if (e.key === " ") { e.preventDefault(); setMotion(null); setExplode(null); setPlayKey((k) => k + 1); }
-      if (e.key === "Escape") { setPageZoom(false); setShowList(false); }
+      if (e.key === "Escape") { setPageZoom(false); setShowList(false); setAutoplay(false); }
       if (e.key === "x" || e.key === "X") setXray((v) => !v);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [go]);
 
+  // 자동 재생: 단계 애니메이션이 끝나고 잠깐 쉰 뒤 넘긴다. 기능 소개가 붙은 단계(Guide)에서는 자막과 함께 기능을 보여 준 뒤 넘긴다.
+  // ← → 로 단계를 옮기거나 멈추면 하던 기능을 멈추고 되돌린다.
+  const guideApi = useRef<GuideApi>({ orbit: () => orbitRef.current, setXray, setStyle: setRenderStyle, setInventory: setShowInventory });
   useEffect(() => {
     if (!autoplay || !scene) return;
-    if (stepIndex === scene.steps.length - 1) {
-      setAutoplay(false);
-      return;
-    }
-    // 단계마다 부품을 하나씩 조이는 시간이 달라서, 애니메이션이 끝나고 잠깐 쉰 뒤 넘긴다.
+    const total = scene.steps.length;
     const ms = stepIndex === PREP ? PREP_AUTOPLAY_MS : (stepDuration(scene.steps[stepIndex]) + 1.5) * 1000;
-    return afterSpeech(ms, () => go(1));
+    const ac = new AbortController();
+    playStep(beatAt(stepIndex, total, PREP), ms, guideApi.current, ac.signal)
+      .then(() => (stepIndex === total - 1 ? setAutoplay(false) : go(1)))
+      .catch(() => {});
+    return () => ac.abort("move");
   }, [autoplay, stepIndex, scene, go]);
 
   // 채팅·원본 PDF 위젯에 지금 단계를 알리고, 채팅의 "N단계" 링크로 이동한다.
@@ -409,16 +412,6 @@ export default function App() {
         </div>
         <CompareBadge />
         <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />
-        <DemoTour api={{
-          orbit: () => orbitRef.current,
-          goStep: setStepIndex,
-          setXray,
-          setStyle: setRenderStyle,
-          setInventory: setShowInventory,
-          xrayStep: Math.min(5, total - 1),
-          prepStep: PREP,
-          lastStep: total - 1,
-        }} />
       </header>
 
       {/* 왼쪽 위: 현재 단계 설명 카드(수정안을 보는 동안에는 그 단계 설명이 바뀌는 모습) */}
@@ -495,6 +488,8 @@ export default function App() {
         </button>
       )}
 
+      <GuideCaption onStop={() => setAutoplay(false)} />
+
       {/* 아래: 단계 타임라인과 재생 컨트롤 */}
       <footer className="overlay dock">
         <button className="nav" onClick={() => go(-1)} disabled={prep} aria-label={t("이전 단계")}>‹</button>
@@ -516,7 +511,8 @@ export default function App() {
           </CompareTimeline>
           <div className="playback">
             <button onClick={() => { setMotion(null); setExplode(null); setPlayKey((k) => k + 1); }}>{t("↻ 다시 보기")}</button>
-            <button className={autoplay ? "on" : ""} onClick={() => setAutoplay((a) => !a)}>
+            <button className={autoplay ? "on" : ""} onClick={() => setAutoplay((a) => !a)}
+              title={t("단계를 넘기며 기능도 함께 보여 줘요 (← → 로 넘기기, Esc로 멈춤)")}>
               {t(autoplay ? "⏸ 멈춤" : "▶ 자동 재생")}
             </button>
             <span className="hint">{t("← → 단계 이동 · Space 다시 보기")}</span>

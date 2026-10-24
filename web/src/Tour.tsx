@@ -100,6 +100,7 @@ const SCENES: { text: string; chat?: boolean; run: (c: Ctx) => Promise<void> }[]
     } },
   { text: "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요", chat: true,
     run: async (c) => {
+      c.api.goStep(Math.max(0, c.api.addStep("outer_top"))); // 적용하면 윗판이 붙는 단계로 가므로 처음부터 거기서 시작
       chatCommand({ type: "reset" }); chatOpened = true; await c.wait(400, 1);
       chatCommand({ type: "preset", id: "panel_thickness" });
       await chatDone(c);

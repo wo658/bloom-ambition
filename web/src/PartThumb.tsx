@@ -23,6 +23,9 @@ const POSE: Record<HardwareSpec["model"], THREE.Quaternion> = {
   hammer: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, Math.PI / 2)),
   screwdriver: LONG, pencil: LONG, spirit_level: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0)),
   wall_mark: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0)),
+  // 드릴은 손잡이가 아래로 오게 옆에서 본다.
+  drill: orientation([1, 0, 0], [0, 1, 0]),
+  wall_hole: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0)),
 };
 
 // 내용물을 원점에 모으고, 화면에 투영된 크기에 맞춰 직교 카메라 배율을 정한다.

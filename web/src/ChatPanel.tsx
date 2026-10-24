@@ -2,9 +2,9 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, lastAssistantMessageIsCompleteWithToolCalls, type UIMessage } from "ai";
 import type { Scene } from "./types";
-import { goToStep, playExplode, playPartMotion, useCurrentStep, type MotionTarget } from "./bridge";
+import { chatBus, chatState, goToStep, playExplode, playPartMotion, useCurrentStep, type ChatCommand, type MotionTarget } from "./bridge";
 import { hasMention, mentionRe, onMentionPart, partTag, setTaggedParts, type PartTag } from "./partTags";
-import { useT } from "./lang";
+import { useT, voiceCode } from "./lang";
 import ChatActions, { TagText } from "./ChatActions";
 import { afterAction } from "./actionEffects";
 import { ALL_TAG, withObj, type ActionMeta, type ActionRun } from "./actions";
@@ -88,6 +88,7 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
   const proposalsRef = useRef(new Map<string, { proposal: Proposal; action: ActionMeta | null }>());
   const [, rerender] = useReducer((n: number) => n + 1, 0);
   const playKeyRef = useRef(0);
+  const [listening, setListening] = useState(false);
   const step = useCurrentStep();
   const { t, lang } = useT();
   const langRef = useRef(lang);
@@ -363,6 +364,57 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
     setMessages([]);
   };
 
+  // 음성 입력(STT): 브라우저 내장 음성 인식으로 받아 적고, 말이 끝나면 보낸다. 지원 안 하는 브라우저는 버튼을 숨긴다.
+  const Recognition = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
+  const recRef = useRef<any>(null);
+  const listen = () => {
+    if (listening) { recRef.current?.stop(); return; }
+    const rec = new Recognition();
+    rec.lang = voiceCode();
+    rec.interimResults = true;
+    let heard = "";
+    rec.onresult = (e: any) => {
+      heard = Array.from(e.results as ArrayLike<any>).map((r) => r[0].transcript).join("");
+      setInput(heard);
+    };
+    rec.onend = () => { setListening(false); if (heard.trim()) sendRef.current(heard); };
+    rec.onerror = () => setListening(false);
+    recRef.current = rec;
+    rec.start();
+    setListening(true);
+  };
+
+  // 데모 투어가 보내는 명령. voice는 음성 입력 장면을 재현한다(마이크가 켜진 채 문장이 받아 적히고 보내진다).
+  chatState.busy = busy;
+  const sendRef = useRef(send);
+  const undoRef = useRef(undo);
+  const newChatRef = useRef(newChat);
+  sendRef.current = send;
+  undoRef.current = undo;
+  newChatRef.current = newChat;
+  useEffect(() => {
+    let alive = true;
+    const onCmd = async (e: Event) => {
+      const cmd = (e as CustomEvent<ChatCommand>).detail;
+      if (cmd.type === "open") setOpen(true);
+      if (cmd.type === "close") setOpen(false);
+      if (cmd.type === "reset") newChatRef.current();
+      if (cmd.type === "undo") undoRef.current();
+      if (cmd.type === "voice") {
+        setOpen(true);
+        setListening(true);
+        for (let i = 1; i <= cmd.text.length && alive; i++) {
+          setInput(cmd.text.slice(0, i));
+          await new Promise((r) => setTimeout(r, 55));
+        }
+        setListening(false);
+        if (alive) sendRef.current(cmd.text);
+      }
+    };
+    chatBus.addEventListener("cmd", onCmd);
+    return () => { alive = false; chatBus.removeEventListener("cmd", onCmd); };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // 왼쪽 가장자리를 끌어 채팅 폭(--chat-w)을 바꾼다. 320~720px.
   const startResize = (e: React.PointerEvent) => {
     e.preventDefault();
@@ -599,6 +651,14 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); send(input); }
           }} />
+        {Recognition && (
+          <button type="button" className={`chat-mic ${listening ? "on" : ""}`} onClick={listen} disabled={busy}
+            aria-pressed={listening} title={t(listening ? "듣는 중… 누르면 멈춰요" : "말로 묻기")}>
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden>
+              <rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" />
+            </svg>
+          </button>
+        )}
         {busy
           ? <button type="button" className="chat-send" onClick={stop} aria-label={t("멈춤")}>■</button>
           : <button type="submit" className="chat-send" disabled={!input.trim()} aria-label={t("보내기")}>↑</button>}

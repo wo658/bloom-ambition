@@ -10,6 +10,7 @@ import type { MotionTarget } from "./bridge";
 import { mentionPart, partTag, smallTag, useTaggedParts, type PartTag } from "./partTags";
 import type { HardwareSpec, Scene, SmallPart, Step, Vec3 } from "./types";
 import { oakMaps, woodBox } from "./wood";
+import { RoomDecor, RoomShell, ShelfDecor, WallShade } from "./Room";
 
 export const HIGHLIGHT = "#ff7a1a";
 // 채팅 입력창에 태그된 부품. 지금 단계 강조(주황)와 헷갈리지 않게 파란색으로 칠한다.
@@ -21,15 +22,17 @@ const BOARD: Record<RenderStyle, string> = { technical: "#ffffff", toon: "#fffff
 export const EDGE: Record<RenderStyle, string> = { technical: "#1f1f1f", toon: "#4b4b4b", color: "#7a5532" };
 
 // ghost: 부품 모션을 보여 주는 동안 주인공이 아닌 판을 반투명하게 흐린다.
-export function Material({ style, color, wood, ghost }: { style: RenderStyle; color: string; wood?: boolean; ghost?: boolean }) {
-  // 투명 여부가 바뀌면 셰이더를 다시 만들어야 해서 key에 넣는다.
-  const fade = ghost ? { transparent: true, opacity: GHOST_OPACITY, depthWrite: false } : {};
-  const g = ghost ? "-ghost" : "";
-  if (style === "technical") return <meshBasicMaterial key={`t${g}`} color={color} {...fade} />;
-  if (style === "toon") return <meshToonMaterial key={`o${g}`} color={color} {...fade} />;
-  // 텍스처 유무가 바뀌면 셰이더를 다시 만들어야 해서 key로 재질을 새로 만든다.
-  if (wood) return <meshStandardMaterial key={`wood${g}`} color={color} {...oakMaps()} normalScale={[0.6, 0.6]} roughness={1} metalness={0} {...fade} />;
-  return <meshStandardMaterial key={`plain${g}`} color={color} roughness={0.8} metalness={0} {...fade} />;
+// 투시(see)면 판을 반투명하게 그리고 깊이를 쓰지 않아, 판 안쪽의 나무못·볼트가 비쳐 보인다.
+export function Material({ style, color, wood, ghost, see = 0 }: { style: RenderStyle; color: string; wood?: boolean; ghost?: boolean; see?: number }) {
+  // 둘 다 켜지면 더 옅은 쪽을 쓴다.
+  const opacity = ghost ? Math.min(GHOST_OPACITY, see || 1) : see;
+  const glass = opacity ? { transparent: true, opacity, depthWrite: false } : {};
+  // 텍스처·투명 여부가 바뀌면 셰이더를 다시 만들어야 해서 key로 재질을 새로 만든다.
+  const key = `${style}-${wood ? "wood" : "plain"}-${opacity}`;
+  if (style === "technical") return <meshBasicMaterial key={key} color={color} {...glass} />;
+  if (style === "toon") return <meshToonMaterial key={key} color={color} {...glass} />;
+  if (wood) return <meshStandardMaterial key={key} color={color} {...oakMaps()} normalScale={[0.6, 0.6]} roughness={1} metalness={0} {...glass} />;
+  return <meshStandardMaterial key={key} color={color} roughness={0.8} metalness={0} {...glass} />;
 }
 const GHOST_OPACITY = 0.35;
 const SMALL_TRAVEL = 8;
@@ -50,6 +53,7 @@ const PANEL_TIME = 1.2;
 const TOOL_TIME = 1.1; // 공구로 조이거나 두드리는 부품 하나
 const PLAIN_TIME = 0.6; // 손으로 붙이는 부품 하나
 const PLAIN_STAGGER = 0.3;
+const DRILL_TIME = 2.0; // 드릴로 벽에 구멍 하나 뚫기
 
 type Slot = { start: number; dur: number };
 type Schedule = { panels: Slot | null; parts: Slot[]; total: number };
@@ -68,9 +72,11 @@ export function schedule(step: Step): Schedule {
   let end = cursor;
   const parts = step.small.map((s) => {
     // 걸고 내리는 부품은 두 동작이라 공구 쓰는 부품만큼 시간을 준다.
-    const dur = s.tool || s.drop ? TOOL_TIME : PLAIN_TIME;
+    // 벽 나사는 손으로 돌려 박아도 하나씩 차례로 박는다(카메라가 자리마다 따라간다).
+    const oneByOne = !!s.tool || s.model === "wall_screw";
+    const dur = s.model === "wall_hole" ? DRILL_TIME : oneByOne || s.drop ? TOOL_TIME : PLAIN_TIME;
     const slot = { start: cursor, dur };
-    cursor += s.tool ? dur : PLAIN_STAGGER;
+    cursor += oneByOne ? dur : PLAIN_STAGGER;
     end = Math.max(end, slot.start + dur);
     return slot;
   });
@@ -196,9 +202,9 @@ export function useResetCursor() {
   useEffect(() => () => { document.body.style.cursor = ""; }, []);
 }
 
-function Board({ id, size, pos, from, mode, slot, clock, reseatRatio, style, tag, motion, ghost, onPick }: {
+function Board({ id, size, pos, from, mode, slot, clock, reseatRatio, style, xray, tag, motion, ghost, onPick }: {
   id: string; size: Vec3; pos: Vec3; from: Vec3; mode: "add" | "reseat" | "placed"; slot: Slot | null;
-  clock: Clock; reseatRatio: number; style: RenderStyle; tag?: string; motion?: boolean; ghost?: boolean; onPick?: () => void;
+  clock: Clock; reseatRatio: number; style: RenderStyle; xray: boolean; tag?: string; motion?: boolean; ghost?: boolean; onPick?: () => void;
 }) {
   const ref = useRef<THREE.Mesh>(null);
   const arrow = useRef<THREE.Group>(null);
@@ -218,10 +224,11 @@ function Board({ id, size, pos, from, mode, slot, clock, reseatRatio, style, tag
   });
   return (
     <>
-      <mesh ref={ref} geometry={geometry} position={active ? start : pos} castShadow receiveShadow
+      <mesh ref={ref} geometry={geometry} position={active ? start : pos} castShadow={!xray} receiveShadow={!xray}
         {...pickHandlers(onPick)}>
-        {/* 태그된 판은 지금 단계 강조보다 먼저 파랗게 칠한다. */}
-        <Material style={style} color={tag ? TAGGED : active ? HIGHLIGHT : BOARD[style]} wood={!active && !tag} ghost={ghost} />
+        {/* 태그된 판은 지금 단계 강조보다 먼저 파랗게 칠한다. 투시 중에는 강조된 판을 조금 덜 비치게 한다. */}
+        <Material style={style} color={tag ? TAGGED : active ? HIGHLIGHT : BOARD[style]} wood={!active && !tag} ghost={ghost}
+          see={xray ? (active || tag ? 0.45 : 0.2) : 0} />
         <Edges color={tag ? "#1e3a8a" : active ? "#7a2e00" : EDGE[style]} lineWidth={style === "technical" ? 2 : 1} />
         {(active || tag) && <Outlines thickness={motion ? 5 : 3} color={tag ? TAGGED : HIGHLIGHT} />}
         {tag && <TagBadge label={tag} motion={motion} />}
@@ -231,12 +238,28 @@ function Board({ id, size, pos, from, mode, slot, clock, reseatRatio, style, tag
   );
 }
 
-function hardwareMaterial(style: RenderStyle, color: string, metal: boolean, active: boolean) {
+function hardwareMaterial(style: RenderStyle, color: string, metal: boolean, active: boolean, embed = false) {
   // 현재 단계 부품은 판에 가려져도 보이도록 깊이 테스트를 끄고 맨 위에 그린다.
-  const common = { color, depthTest: !active, transparent: active, side: THREE.DoubleSide };
+  // 벽에 박히는 것(벽 나사, 드릴 날)은 깊이 테스트를 켜 두어 벽 속으로 들어간 만큼 가려지게 한다.
+  const common = { color, depthTest: !active || embed, transparent: active, side: THREE.DoubleSide };
   if (style === "technical") return new THREE.MeshBasicMaterial(common);
   if (style === "toon") return new THREE.MeshToonMaterial(common);
   return new THREE.MeshStandardMaterial({ ...common, metalness: metal ? 0.7 : 0, roughness: metal ? 0.35 : 0.8 });
+}
+
+// 드릴 동작(a: 0→1): 날 끝을 벽에 대고(~APPROACH), 밀어 넣으며 뚫은 뒤(~RETRACT) 빼낸다.
+const DRILL_APPROACH = 0.15;
+const DRILL_RETRACT = 0.8;
+const DRILL_STANDOFF = 5; // 드릴이 다가오기 시작하는 벽과의 거리
+const DRILL_TURNS = 30;
+const DUST = Array.from({ length: 10 }, (_, i) => ({ phase: i / 10, x: Math.sin(i * 12.9898) * 0.5, drift: 0.6 + (i % 3) * 0.3 }));
+const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+function drillMotion(a: number, depth: number) {
+  const bore = clamp01((a - DRILL_APPROACH) / (DRILL_RETRACT - DRILL_APPROACH));
+  const y = a < DRILL_APPROACH ? -DRILL_STANDOFF * (1 - ease(a / DRILL_APPROACH))
+    : a < DRILL_RETRACT ? bore * depth
+    : depth - (depth + DRILL_STANDOFF) * ease((a - DRILL_RETRACT) / (1 - DRILL_RETRACT));
+  return { bore, y, cutting: a > DRILL_APPROACH && a < DRILL_RETRACT };
 }
 
 // 공구가 닿는 곳(부품 로컬 Y). 나사·볼트는 머리 윗면, 나무못은 뒤쪽 끝, 벽 나사는 벽에서 나온 머리.
@@ -283,6 +306,7 @@ function Small({ part, slot, active, clock, style, tool, tagged, badge, motion, 
   const toolSwing = useRef<THREE.Group>(null);
   const ghosts = useRef<(THREE.Group | null)[]>([]);
   const pathArrow = useRef<THREE.Group>(null);
+  const dust = useRef<THREE.Group>(null);
   const turnArrow = useRef<THREE.Group>(null);
   const fx = useRef<FxHandle>(null);
   const badgeEl = useRef<HTMLDivElement | null>(null);
@@ -294,18 +318,22 @@ function Small({ part, slot, active, clock, style, tool, tagged, badge, motion, 
   const color = tagged ? TAGGED : active ? HIGHLIGHT : style === "technical" ? (metal ? "#b5b5b5" : "#e2e2e2") : part.color;
   // 태그된 철물은 판 속에 박혀 있어도 보이게 지금 단계 부품처럼 맨 위에 그린다.
   const front = active || !!tagged;
-  const material = useMemo(() => hardwareMaterial(style, color, metal, front), [style, color, metal, front]);
-  const accent = useMemo(() => hardwareMaterial(style, "#2b2b2b", false, front), [style, front]);
+  // 벽 나사는 벽 속으로, 드릴 날은 뚫는 구멍 속으로 들어가며 가려진다.
+  const embed = part.model === "wall_screw";
+  const drilling = part.model === "wall_hole";
+  const material = useMemo(() => hardwareMaterial(style, color, metal, front, embed), [style, color, metal, front, embed]);
+  const accent = useMemo(() => hardwareMaterial(style, "#2b2b2b", false, front, embed), [style, front, embed]);
   // 공구는 금속 반사 없이 제 색으로 칠해 화살표·판과 구분되게 한다.
-  const toolMaterial = useMemo(() => hardwareMaterial(style, tool?.color ?? "#666", false, true), [style, tool]);
-  const toolAccent = useMemo(() => hardwareMaterial(style, "#3a3a3a", false, true), [style]);
+  const toolMaterial = useMemo(() => hardwareMaterial(style, tool?.color ?? "#666", false, true, drilling), [style, tool, drilling]);
+  const toolAccent = useMemo(() => hardwareMaterial(style, "#3a3a3a", false, true, drilling), [style, drilling]);
   useEffect(() => () => { material.dispose(); accent.dispose(); toolMaterial.dispose(); toolAccent.dispose(); },
     [material, accent, toolMaterial, toolAccent]);
   const baseColor = useMemo(() => new THREE.Color(color), [color]);
 
   // 연출: 공구로 넣는 지금 단계 부품에만. 부품 모션의 주인공(motion)이면 크고 느리게, 평소 재생은 작고 짧게.
   const hammering = part.model === "dowel" && !!tool;
-  const fxOn = active && !!tool && part.model !== "wall_mark";
+  // 드릴로 구멍 뚫기는 자체 연출(떨림·가루)이 있어 타격·딸깍 효과를 붙이지 않는다.
+  const fxOn = active && !!tool && part.model !== "wall_mark" && part.model !== "wall_hole";
   const loud = !!motion;
   const power = loud ? 1 : 0.5;
   // 망치는 자루 끝(손목)을 축으로 젖혔다 내려친다.
@@ -318,10 +346,11 @@ function Small({ part, slot, active, clock, style, tool, tagged, badge, motion, 
   useEffect(() => () => ghostMaterials.forEach((m) => m.dispose()), [ghostMaterials]);
 
   const mark = part.model === "wall_mark";
-  // 공구(수평계)는 원래 커서 키우지 않는다.
-  const magnify = !TOOLS.includes(part.model);
+  const hole = part.model === "wall_hole";
+  // 공구(수평계)는 원래 커서 키우지 않는다. 구멍은 벽에 뚫리는 크기 그대로 보여 준다.
+  const magnify = !TOOLS.includes(part.model) && !hole;
   const length = part.dims.length ?? 2;
-  const travel = mark ? 0 : part.travel ?? Math.max(SMALL_TRAVEL, length + 2);
+  const travel = mark || hole ? 0 : part.travel ?? Math.max(SMALL_TRAVEL, length + 2);
   const dir = part.approach ?? part.axis;
   // drop이 있으면 그만큼 위(hang)로 들어온 뒤 제자리로 내려앉는다.
   const hang = add(part.at, [0, part.drop ?? 0, 0]);
@@ -362,6 +391,8 @@ function Small({ part, slot, active, clock, style, tool, tagged, badge, motion, 
       ? (u < DROP_AT ? lerp(start, hang, ease(u / DROP_AT)) : lerp(hang, part.at, ease((u - DROP_AT) / (1 - DROP_AT))))
       : u < handEnd ? lerp(start, pre, ease(u / handEnd)) : lerp(pre, part.at, depth);
     ref.current.position.set(...pos);
+    // 벽 나사는 차례가 오기 전에는 숨긴다(앞 구멍을 뚫는 드릴과 같은 자리에 떠 있지 않게).
+    if (embed) ref.current.visible = !active || u > 0;
     const scale = !active || !magnify ? 1 : u < 0.85 ? MAGNIFY : MAGNIFY + (1 - MAGNIFY) * ease((u - 0.85) / 0.15);
     // 찌그러짐: 박히는 축(Y)으로 눌리면 옆으로 퍼진다. 부피가 대충 유지되게 옆은 절반만.
     const squash = hp ? hp.squash * (loud ? 0.3 : 0.16) : 0;
@@ -377,6 +408,18 @@ function Small({ part, slot, active, clock, style, tool, tagged, badge, motion, 
     if (draw && spinner.current) {
       draw.strokes.forEach((p, i) => spinner.current!.children[i]?.scale.set(Math.max(p, 0.0001), 1, 1));
     }
+    const drill = hole && active ? drillMotion(a, part.dims.depth ?? 3) : null;
+    // 구멍은 날이 들어가는 만큼 벌어지고 가루가 둘레에 묻는다.
+    if (drill) scaler.current?.scale.setScalar(drill.bore > 0 ? Math.min(1, 0.3 + drill.bore * 1.4) : 0.0001);
+    if (dust.current) {
+      dust.current.visible = !!drill?.cutting;
+      // 뚫는 동안 구멍에서 가루가 나와 벽을 타고 떨어진다(로컬 -Y 앞, -Z 아래).
+      dust.current.children.forEach((m, i) => {
+        const { phase, x, drift } = DUST[i];
+        const p = (a * 8 + phase) % 1;
+        m.position.set(x * (0.4 + p), -0.3 - p * drift, -p * p * 4);
+      });
+    }
     // 나사류는 머리 쪽에서 볼 때 시계 방향(조이는 방향)으로 돈다.
     const turn = spins ? (sp ? sp.turns * SCREW_TURNS * Math.PI * 2 + sp.kick : ease(u) * SCREW_TURNS * Math.PI * 2) : 0;
     if (spinner.current) spinner.current.rotation.y = turn;
@@ -389,6 +432,13 @@ function Small({ part, slot, active, clock, style, tool, tagged, badge, motion, 
         toolRef.current.position.set(draw.tip[0] * s, -draw.lift, draw.tip[1] * s);
       } else {
         toolRef.current.position.y = contact * scale;
+      }
+      if (drill) {
+        // 드릴은 뚫는 동안 살짝 떨리고 날만 빠르게 돈다.
+        toolRef.current.position.y = drill.y;
+        toolRef.current.position.x = drill.cutting ? 0.06 * Math.sin(a * 400) : 0;
+        const bit = toolRef.current.getObjectByName("drill-bit");
+        if (bit) bit.rotation.y = drill.bore * DRILL_TURNS * Math.PI * 2;
       }
     }
     if (toolSpin.current) toolSpin.current.rotation.y = spins ? turn : 0;
@@ -461,6 +511,16 @@ function Small({ part, slot, active, clock, style, tool, tagged, badge, motion, 
         </group>
         {/* 이름표는 scaler 밖에 두어 크게 그렸다 줄어드는 동안에도 크기가 그대로이고 부품을 따라 움직인다. */}
         {badge && <TagBadge label={badge} motion={motion} elRef={badgeEl} />}
+        {active && hole && (
+          <group ref={dust} visible={false}>
+            {DUST.map((_, i) => (
+              <mesh key={i} renderOrder={11}>
+                <boxGeometry args={[0.18, 0.18, 0.18]} />
+                <meshBasicMaterial color="#d8d2c8" depthTest={false} transparent />
+              </mesh>
+            ))}
+          </group>
+        )}
         {active && tool && (
           <group ref={toolRef} visible={false}>
             <group ref={toolSpin} scale={toolScale}>
@@ -487,115 +547,11 @@ function Small({ part, slot, active, clock, style, tool, tagged, badge, motion, 
   );
 }
 
-// 벽: 바닥(y=0)에서 올라가는 불투명한 회반죽 벽. 바닥과 만나는 곳은 살짝 어둡고, 양 끝은 배경으로 흐려진다.
-const WALL_W = 500;
-const WALL_H = 260;
-type WallMaps = { map: THREE.CanvasTexture; bumpMap: THREE.CanvasTexture; alphaMap: THREE.CanvasTexture };
-let wallMaps: WallMaps | null = null;
-function plasterMaps(): WallMaps {
-  if (wallMaps) return wallMaps;
-  const canvas = (w: number, h: number, draw: (g: CanvasRenderingContext2D) => void) => {
-    const c = document.createElement("canvas");
-    c.width = w;
-    c.height = h;
-    draw(c.getContext("2d")!);
-    return new THREE.CanvasTexture(c);
-  };
-  // 회반죽 요철: 잔 알갱이 위에 큰 얼룩을 몇 겹 얹는다(1px ≈ 0.5cm).
-  const bump = canvas(1024, 512, (g) => {
-    const img = g.createImageData(1024, 512);
-    for (let i = 0; i < img.data.length; i += 4) {
-      const v = 200 + Math.random() * 40;
-      img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
-      img.data[i + 3] = 255;
-    }
-    g.putImageData(img, 0, 0);
-    for (let i = 0; i < 900; i++) {
-      g.fillStyle = `rgba(${Math.random() < 0.5 ? "0,0,0" : "255,255,255"},0.05)`;
-      g.beginPath();
-      g.ellipse(Math.random() * 1024, Math.random() * 512, 4 + Math.random() * 14, 3 + Math.random() * 8, Math.random() * Math.PI, 0, Math.PI * 2);
-      g.fill();
-    }
-  });
-  // 색: 요철을 아주 옅게 비치게 하고, 바닥 쪽 20cm 정도에 모서리 그늘을 넣는다.
-  const map = canvas(1024, 512, (g) => {
-    g.fillStyle = "#ffffff";
-    g.fillRect(0, 0, 1024, 512);
-    g.globalAlpha = 0.18;
-    g.drawImage(bump.image as HTMLCanvasElement, 0, 0);
-    g.globalAlpha = 1;
-    const shade = g.createLinearGradient(0, 512, 0, 512 - 40);
-    shade.addColorStop(0, "rgba(60,50,40,0.22)");
-    shade.addColorStop(1, "rgba(60,50,40,0)");
-    g.fillStyle = shade;
-    g.fillRect(0, 0, 1024, 512);
-  });
-  map.colorSpace = THREE.SRGBColorSpace;
-  const alphaMap = canvas(256, 1, (g) => {
-    const fade = g.createLinearGradient(0, 0, 256, 0);
-    fade.addColorStop(0, "#000");
-    fade.addColorStop(0.15, "#fff");
-    fade.addColorStop(0.85, "#fff");
-    fade.addColorStop(1, "#000");
-    g.fillStyle = fade;
-    g.fillRect(0, 0, 256, 1);
-  });
-  wallMaps = { map, bumpMap: bump, alphaMap };
-  return wallMaps;
-}
+// 벽 그늘(WallShade)은 Room.tsx로 옮겼다. 분해도(Explode) 등이 여기서 가져다 쓰므로 다시 내보낸다.
+export { WallShade };
 
-function Wall({ z, style }: { z: number; style: RenderStyle }) {
-  const { map, bumpMap, alphaMap } = plasterMaps();
-  // 원목 보기는 환경광이 강해서 바탕색을 더 어둡게 둬야 흰 배경과 구분된다.
-  const color = style === "technical" ? "#ebe9e4" : style === "toon" ? "#e3dccf" : "#c9bfae";
-  const common = { map, alphaMap, transparent: true, color };
-  return (
-    // 앞면만 그려서 뒤로 돌아가 보면 벽이 가구를 가리지 않는다.
-    <mesh position={[0, WALL_H / 2, z]} receiveShadow renderOrder={-2}>
-      <planeGeometry args={[WALL_W, WALL_H]} />
-      {style === "technical" ? <meshBasicMaterial key="t" {...common} />
-        : style === "toon" ? <meshToonMaterial key="o" {...common} />
-        : <meshStandardMaterial key="c" {...common} bumpMap={bumpMap} bumpScale={0.4} roughness={0.95} metalness={0} />}
-    </mesh>
-  );
-}
-
-// 벽에 붙은 가구 뒤의 그늘: 가구 외곽보다 조금 큰 둥근 사각형을 흐리게 그린 텍스처.
-const WALL_SHADE_PAD = 10;
-let wallShade: THREE.CanvasTexture | null = null;
-function wallShadeMap() {
-  if (wallShade) return wallShade;
-  const c = document.createElement("canvas");
-  c.width = c.height = 256;
-  const g = c.getContext("2d")!;
-  const pad = 256 * 0.12;
-  // alphaMap은 밝기(G 채널)를 불투명도로 쓴다: 검은 바탕에 흰 사각형.
-  g.fillStyle = "#000";
-  g.fillRect(0, 0, 256, 256);
-  g.filter = "blur(14px)";
-  g.fillStyle = "#fff";
-  g.beginPath();
-  g.roundRect(pad, pad, 256 - pad * 2, 256 - pad * 2, 10);
-  g.fill();
-  wallShade = new THREE.CanvasTexture(c);
-  return wallShade;
-}
-
-// 가구 묶음 안에 넣어서, 가구를 옆으로 비키면 그늘도 같이 움직인다.
-export function WallShade({ size, z }: { size: Vec3; z: number }) {
-  const [w, h] = size;
-  // 텍스처 가장자리 여백(12%)이 흐려지는 자리라, 그만큼 크게 펴서 그늘 테두리가 가구 바깥으로 나오게 한다.
-  const scale = 1 / 0.76;
-  return (
-    <mesh position={[0, h / 2, z + 0.05]} renderOrder={-1}>
-      <planeGeometry args={[(w + WALL_SHADE_PAD) * scale, (h + WALL_SHADE_PAD) * scale]} />
-      <meshBasicMaterial alphaMap={wallShadeMap()} color="#2b2118" transparent opacity={0.45} depthWrite={false} />
-    </mesh>
-  );
-}
-
-// 벽에 붙는 것(연필 표시, 벽 나사)은 가구를 옮겨도 제자리에 남는다.
-export const ON_WALL: SmallPart["model"][] = ["wall_mark", "wall_screw"];
+// 벽에 붙는 것(연필 표시, 구멍, 벽 나사)은 가구를 옮겨도 제자리에 남는다.
+export const ON_WALL: SmallPart["model"][] = ["wall_mark", "wall_hole", "wall_screw"];
 
 type Pose = { rot: number; pos: Vec3 };
 export function poses(scene: Scene): Record<Step["pose"], Pose> {
@@ -675,12 +631,23 @@ export function partFocus(scene: Scene, index: number, target: MotionTarget): { 
   return { center: sphere.center, radius: Math.max(sphere.radius, size, 4), axis };
 }
 
+// 벽에만 손대는 단계(구멍 뚫기·벽 나사)는 부품이 작고 서로 멀어서, 카메라가 지금 작업하는 자리를 차례로 따라간다.
+// 자리(벽 좌표 → 월드)와 그 부품 동작이 시작하는 시각(초)을 돌려준다.
+export function wallShots(scene: Scene, index: number): { at: Vec3; start: number }[] | null {
+  const step = scene.steps[index];
+  if (!step.small.length || !step.small.every((s) => ON_WALL.includes(s.model))) return null;
+  const base = poses(scene).upright.pos;
+  const plan = schedule(step);
+  return step.small.map((s, i) => ({ at: add(s.at, base), start: plan.parts[i].start }));
+}
+
 // spotlight: 채팅이 고른 부품 모션의 주인공(이 단계를 보여 주는 동안만 App이 넘긴다).
 // hideUnit: 분해도(Explode)가 같은 자리에 복사본을 그리는 동안 가구 묶음을 숨긴다(벽·벽 철물은 그대로).
 // hidden: 수정안 비교(ChangeScene)가 따로 그리는 판·철물 id. still: 단계 동작 없이 그 단계가 끝난 모습만 보여 준다.
-export default function Assembly({ scene, stepIndex, playKey, renderStyle, spotlight, hideUnit, hidden, still }: {
+// xray: 판을 반투명하게 그려 판 속 철물을 보여 준다.
+export default function Assembly({ scene, stepIndex, playKey, renderStyle, spotlight, hideUnit, hidden, still, xray = false }: {
   scene: Scene; stepIndex: number; playKey: number; renderStyle: RenderStyle; spotlight?: Spotlight | null; hideUnit?: boolean;
-  hidden?: Set<string>; still?: boolean;
+  hidden?: Set<string>; still?: boolean; xray?: boolean;
 }) {
   const [, , d] = scene.size;
   const step = scene.steps[stepIndex];
@@ -748,7 +715,7 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle, spotl
         {scene.panels
           .filter((p) => (addedBefore.has(p.id) || step.adds.includes(p.id)) && !hidden?.has(p.id))
           .map((p) => (
-            <Board key={p.id} {...p} style={renderStyle} clock={clock} slot={plan.panels}
+            <Board key={p.id} {...p} style={renderStyle} xray={xray} clock={clock} slot={plan.panels}
               tag={spot?.panel === p.id ? spot.label : tagged.panels.get(p.id)} motion={spot?.panel === p.id}
               ghost={!!spot && spot.panel !== p.id && !hosts.has(p.id)}
               reseatRatio={scene.reseat_ratio ?? 0.15} onPick={() => mentionPart(partTag(scene, p.id))}
@@ -757,6 +724,7 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle, spotl
         {smallBefore.filter((s) => !ON_WALL.includes(s.model)).map((s) => render(s, null))}
         {current.filter(({ s }) => !ON_WALL.includes(s.model)).map(({ s, i }) => render(s, i))}
         {step.wall && <WallShade size={scene.size} z={wallZ} />}
+        {step.room && <ShelfDecor scene={scene} style={renderStyle} />}
       </group>
       {step.wall && (
         <>
@@ -765,7 +733,8 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle, spotl
             {smallBefore.filter((s) => ON_WALL.includes(s.model)).map((s) => render(s, null))}
             {current.filter(({ s }) => ON_WALL.includes(s.model)).map(({ s, i }) => render(s, i))}
           </group>
-          <Wall z={wallZ} style={renderStyle} />
+          <RoomShell wallZ={wallZ} style={renderStyle} />
+          {step.room && <RoomDecor scene={scene} wallZ={wallZ} style={renderStyle} />}
         </>
       )}
     </>

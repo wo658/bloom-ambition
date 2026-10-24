@@ -14,7 +14,7 @@ import { woodBox } from "./wood";
 // Assembly의 가구 묶음은 숨기고 같은 자리에 가벼운 복사본을 그려서 판·철물을 자유롭게 움직인다.
 // 값은 모두 gsap이 state 객체에 쓰고, useFrame이 매 프레임 메쉬·카메라·DOM 이름표에 옮긴다(React 상태 없음).
 
-const ON_WALL: SmallPart["model"][] = ["wall_mark", "wall_screw"];
+const ON_WALL: SmallPart["model"][] = ["wall_mark", "wall_hole", "wall_screw"];
 const OUT = 32; // 바깥 판이 펼쳐지는 거리(cm)
 const IN_MIN = 30; // 안쪽 판(칸막이·선반)이 앞으로 빠지는 거리. 가운데일수록 더 멀리(IN_MIN+IN_EXTRA).
 const IN_EXTRA = 16;

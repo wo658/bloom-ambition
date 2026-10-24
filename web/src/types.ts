@@ -11,7 +11,7 @@ export interface Panel {
 export type HardwareModel =
   | "connector_screw" | "dowel" | "euro_screw" | "wall_screw"
   | "corner_bracket" | "hook_plate" | "bracket_cover" | "felt_pad" | "hex_key"
-  | "hammer" | "screwdriver" | "pencil" | "wall_mark" | "spirit_level";
+  | "hammer" | "screwdriver" | "pencil" | "wall_mark" | "spirit_level" | "drill" | "wall_hole";
 
 export interface HardwareSpec {
   model: HardwareModel;
@@ -49,6 +49,7 @@ export interface Step {
   small: SmallPart[];
   pose: "lying" | "upright";
   wall: boolean;
+  room?: boolean; // 벽에 건 완성 모습을 물건을 채운 방 안에서 보여 준다
   reseat?: string[]; // 이미 붙은 판을 살짝 뺐다가 다시 끝까지 밀어 넣는다
   unit_offset?: Vec3; // 가구 전체를 잠시 옮겨 두는 거리
 }

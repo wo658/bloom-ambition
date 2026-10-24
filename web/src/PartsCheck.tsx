@@ -56,14 +56,26 @@ export function partsPage(scene: Scene) {
   return pages.length ? Math.min(...pages) : scene.steps[0].page;
 }
 
-// 바닥 배치(cm): 판재는 눕혀서 뒤쪽에 줄지어, 철물은 종류별 칸에 개수만큼 앞쪽에 모은다.
+// 바닥 배치(cm): 판재는 실제 크기로 눕혀서 뒤쪽에 줄지어, 철물은 종류별 칸에 개수만큼 앞쪽에 모은다.
+// 철물은 실제 크기로는 판재 옆에서 안 보여서 모두 같은 배율(HW_SCALE)로 키운다. 같은 배율이라 철물끼리 상대 크기가 맞다.
 const GAP = 8;
 const ROW_MAX = 240;
-const CELL = 36;
-const CELL_COLS = 5;
+export const HW_SCALE = 3;
+
+// 축이 긴 부품은 바닥에 눕힌다(부품 로컬 +Y가 축).
+const LIE: HardwareModel[] = ["connector_screw", "euro_screw", "wall_screw", "dowel", "screwdriver", "pencil", "hammer"];
+
+// 철물 치수(cm)에서 가장 긴 길이와, 눕혔을 때의 굵기를 어림한다.
+function hardwareSize(spec: HardwareSpec) {
+  const d = spec.dims;
+  const long = Math.max(d.length ?? 0, d.height ?? 0, d.long ?? 0, d.width ?? 0, d.wall ?? 0, (d.r ?? 0) * 2, (d.body ?? 0) + (d.bit ?? 0), 1);
+  const thick = Math.max(d.head_d ?? 0, d.d ?? 0, d.across ?? 0, d.thread_d ?? 0, d.shank_d ?? 0, 0.5);
+  return { long, thick };
+}
 
 type PlacedPanel = { item: CheckItem; copy: number; size: Vec3; pos: Vec3 };
-type PlacedCell = { item: CheckItem; pos: Vec3 };
+// cols×rows 격자, px·pz는 한 개가 차지하는 간격(배율 적용 cm), w·d는 칸 전체 크기.
+type PlacedCell = { item: CheckItem; pos: Vec3; cols: number; rows: number; px: number; pz: number; w: number; d: number };
 type Anchor = { item: CheckItem; pos: Vec3 };
 // 좌표는 배치 전체의 가운데가 원점이 되도록 옮겨 둔다.
 export type Layout = { panels: PlacedPanel[]; cells: PlacedCell[]; labels: Anchor[]; radius: number };
@@ -94,14 +106,38 @@ export function layoutParts(items: CheckItem[]): Layout {
     z -= depth + GAP;
   }
   const back = z + GAP;
-  const hardware = items.filter((it) => it.included && it.spec);
-  const cols = Math.min(CELL_COLS, hardware.length);
-  const cells = hardware.map((item, i) => {
-    const c = i % cols, r = Math.floor(i / cols);
-    return { item, pos: [(c - (cols - 1) / 2) * (CELL + 4), 0, GAP + CELL / 2 + r * (CELL + 10)] as Vec3 };
+  const panelWidth = Math.max(0, ...rows.map((row) => row.reduce((w, r) => w + r.size[0] + GAP, -GAP)));
+  // 철물 칸: 크기는 부품 실제 크기 × HW_SCALE와 개수로 정하고, 왼쪽부터 채우다 넘치면 다음 줄로.
+  const sized = items.filter((it) => it.included && it.spec).map((item) => {
+    const { long, thick } = hardwareSize(item.spec!);
+    const lie = LIE.includes(item.spec!.model);
+    const rows = lie ? Math.ceil(item.qty / Math.ceil(item.qty / 6)) : Math.ceil(item.qty / Math.ceil(Math.sqrt(item.qty)));
+    const cols = Math.ceil(item.qty / rows);
+    const px = long * HW_SCALE * 1.15 + 1;
+    const pz = (lie ? thick * 1.8 : long) * HW_SCALE * 1.15 + 1;
+    // 칸이 너무 좁으면 아래 이름표가 옆 칸과 겹쳐서 최소 폭을 둔다.
+    return { item, cols, rows, px, pz, w: Math.max(cols * px, 30), d: rows * pz };
   });
-  const front = cells.length ? Math.max(...cells.map((c) => c.pos[2])) + CELL / 2 : 0;
-  const width = Math.max(...rows.map((row) => row.reduce((w, r) => w + r.size[0] + GAP, -GAP)), cols * (CELL + 4));
+  const lineMax = Math.max(panelWidth, 160);
+  const lines: (typeof sized)[] = [];
+  for (const c of sized) {
+    const line = lines[lines.length - 1];
+    if (line && line.reduce((w, x) => w + x.w + GAP * 2, 0) + c.w <= lineMax) line.push(c);
+    else lines.push([c]);
+  }
+  const cells: PlacedCell[] = [];
+  let cz0 = GAP * 1.5;
+  for (const line of lines) {
+    const depth = Math.max(...line.map((c) => c.d));
+    let x = -(line.reduce((w, c) => w + c.w, 0) + GAP * 2 * (line.length - 1)) / 2;
+    for (const c of line) {
+      cells.push({ ...c, pos: [x + c.w / 2, 0, cz0 + depth / 2] });
+      x += c.w + GAP * 2;
+    }
+    cz0 += depth + GAP * 2.5;
+  }
+  const front = cells.length ? cz0 - GAP * 2.5 : 0;
+  const width = Math.max(panelWidth, ...lines.map((line) => line.reduce((w, c) => w + c.w + GAP * 2, -GAP * 2)));
   const cz = (back + front) / 2;
   const shift = (p: Vec3): Vec3 => [p[0], p[1], p[2] - cz];
   const placedPanels = panels.map((p) => ({ ...p, pos: shift(p.pos) }));
@@ -111,14 +147,14 @@ export function layoutParts(items: CheckItem[]): Layout {
     cells: placedCells,
     labels: [
       ...placedPanels.filter((p) => p.copy === 0).map((p) => ({ item: p.item, pos: [p.pos[0], p.size[1], p.pos[2]] as Vec3 })),
-      ...placedCells.map((c) => ({ item: c.item, pos: [c.pos[0], 0, c.pos[2] + CELL / 2 + 1] as Vec3 })),
+      ...placedCells.map((c) => ({ item: c.item, pos: [c.pos[0], 0, c.pos[2] + c.d / 2 + 2] as Vec3 })),
     ],
     radius: Math.hypot(width / 2, (front - back) / 2),
   };
 }
 
-// 내용물을 size 크기 상자에 맞춰 줄이거나 키우고, 바닥(y=0) 위 가운데에 올려 둔다.
-function Fitted({ size, children }: { size: number; children: ReactNode }) {
+// 내용물을 scale배로 키우고, 바닥(y=0) 위 가운데에 올려 둔다.
+function Fitted({ scale, children }: { scale: number; children: ReactNode }) {
   const outer = useRef<THREE.Group>(null);
   const inner = useRef<THREE.Group>(null);
   useLayoutEffect(() => {
@@ -128,16 +164,12 @@ function Fitted({ size, children }: { size: number; children: ReactNode }) {
     o.scale.setScalar(1);
     o.updateWorldMatrix(true, true);
     const box = new THREE.Box3().setFromObject(i).applyMatrix4(o.matrixWorld.clone().invert());
-    const s = box.getSize(new THREE.Vector3());
     const c = box.getCenter(new THREE.Vector3());
     i.position.set(-c.x, -box.min.y, -c.z);
-    o.scale.setScalar(size / Math.max(s.x, s.y, s.z, 1e-3));
-  }, [size]);
+    o.scale.setScalar(scale);
+  }, [scale]);
   return <group ref={outer}><group ref={inner}>{children}</group></group>;
 }
-
-// 축이 긴 부품은 바닥에 눕힌다(부품 로컬 +Y가 축).
-const LIE: HardwareModel[] = ["connector_screw", "euro_screw", "wall_screw", "dowel", "screwdriver", "pencil", "hammer"];
 
 // 상자에서 떨어지듯 위에서 내려앉는다. playKey가 바뀌면 다시.
 function useDrop(ref: React.RefObject<THREE.Group | null>, delay: number, playKey: number) {
@@ -173,7 +205,7 @@ function hardwareMaterial(style: RenderStyle, color: string, metal: boolean) {
   return new THREE.MeshStandardMaterial({ color, metalness: metal ? 0.7 : 0, roughness: metal ? 0.35 : 0.8, side: THREE.DoubleSide });
 }
 
-// 철물 한 종류: 칸 안에 개수만큼 격자로 늘어놓는다. 실제 크기로는 너무 작아서 칸에 맞춰 키운다.
+// 철물 한 종류: 칸 안에 개수만큼 격자로 늘어놓는다. 모든 철물을 같은 배율(HW_SCALE)로 키운다.
 function HardwareCell({ placed, style, lit, tagged, delay, playKey, onPick }: {
   placed: PlacedCell; style: RenderStyle; lit: boolean; tagged: boolean; delay: number; playKey: number; onPick?: () => void;
 }) {
@@ -185,16 +217,14 @@ function HardwareCell({ placed, style, lit, tagged, delay, playKey, onPick }: {
   const accent = useMemo(() => hardwareMaterial(style, "#2b2b2b", false), [style]);
   useEffect(() => () => { material.dispose(); accent.dispose(); }, [material, accent]);
   useDrop(ref, delay, playKey);
-  const cols = Math.ceil(Math.sqrt(item.qty));
-  const rows = Math.ceil(item.qty / cols);
-  const pitch = CELL / Math.max(cols, rows);
+  const { cols, rows, px, pz } = placed;
   const lie = LIE.includes(spec.model);
   return (
     <group ref={ref}>
       <group position={placed.pos} {...pickHandlers(onPick)}>
         {Array.from({ length: item.qty }, (_, i) => (
-          <group key={i} position={[((i % cols) - (cols - 1) / 2) * pitch, 0, (Math.floor(i / cols) - (rows - 1) / 2) * pitch]}>
-            <Fitted size={pitch * 0.78}>
+          <group key={i} position={[((i % cols) - (cols - 1) / 2) * px, 0, (Math.floor(i / cols) - (rows - 1) / 2) * pz]}>
+            <Fitted scale={HW_SCALE}>
               <group rotation={lie ? [0, 0, -Math.PI / 2] : [0, 0, 0]}>
                 <HardwareMesh part={spec} material={material} accent={accent} renderOrder={0} />
               </group>
@@ -282,6 +312,7 @@ export function PartsChecklist({ items, checked, page, onToggle, onHover, onAll,
         <span className="ck-count">{t("{done} / {total}종 확인", { done, total: inBox.length })}</span>
       </div>
       <button className="ck-page" onClick={onPage}>{t("설명서 {n}쪽 부품 그림 보기", { n: page })}</button>
+      <p className="ck-scale">{t("바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)", { n: HW_SCALE })}</p>
       <div className="inv-bar" style={{ marginTop: 6 }}><span style={{ width: `${(done / Math.max(inBox.length, 1)) * 100}%` }} /></div>
       <ul className="ck-list">
         {inBox.map((it) => (

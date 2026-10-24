@@ -5,10 +5,11 @@ import gsap from "gsap";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import Assembly, { motionTiming, partFocus, stepDuration, stepFocus, type RenderStyle, type Spotlight } from "./Assembly";
+import Assembly, { motionTiming, partFocus, stepDuration, stepFocus, wallShots, type RenderStyle, type Spotlight } from "./Assembly";
 import { HardwareThumb, PanelThumb } from "./PartThumb";
 import PartsInventory from "./PartsInventory";
 import type { Scene } from "./types";
+import { ROOM_VIEW } from "./Room";
 import { onGoToStep, onPlayExplode, onPlayPartMotion, onReplayStep, playExplode, playPartMotion, setCurrentStep, type MotionTarget } from "./bridge";
 import Explode from "./Explode";
 import { mentionPart, partTag, smallTag } from "./partTags";
@@ -17,6 +18,8 @@ import ChatPanel from "./ChatPanel";
 import ChangeScene, { useCompareView } from "./ChangeScene";
 import ChangeHud, { CompareBadge, CompareCard, CompareTimeline } from "./ChangeHud";
 import LangBar from "./LangBar";
+import DemoTour from "./DemoTour";
+import { LogoMark } from "./Logo";
 import { afterSpeech, t, useLang, useSpeak } from "./lang";
 import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
 
@@ -47,6 +50,9 @@ const PREP_DIRECTION = new THREE.Vector3(0.15, 1.25, 1).normalize();
 const PREP = -1; // 1단계 앞의 부품 확인 단계
 const PREP_AUTOPLAY_MS = 4000;
 const PREP_CAPTION = "부품을 모두 꺼내 바닥에 펼치세요.\n목록과 개수를 하나씩 맞춰 보며 체크하세요.\n모자라면 조립을 시작하기 전에 매장에 문의하세요.";
+const WALL_SHOT = 48; // 벽에 구멍을 뚫고 나사를 박는 자리를 따라갈 때의 거리
+// 벽 작업은 옆에서 비스듬히 봐야 드릴·나사가 벽 속으로 들어가는 깊이가 보이고, 드릴이 화면을 가리지 않는다.
+const WALL_SHOT_DIRECTION = new THREE.Vector3(1, 0.3, 0.75).normalize();
 
 // 채팅이 고른 부품 모션. key는 같은 부품을 다시 눌러도 카메라·애니메이션이 다시 돌게 한다.
 type Motion = { target: MotionTarget; stepIndex: number; label: string; key: number };
@@ -68,9 +74,9 @@ function motionStep(scene: Scene, t: MotionTarget) {
 // 단계가 바뀌면 그 단계에서 움직이는 부품 쪽으로 다가가고, 시점 초기화 버튼을 누르면 기본 위치로 돌아간다.
 // 부품 모션이 오면(motionKey가 바뀌면) 단계 전체 대신 그 부품 하나에 바짝 다가간다.
 // 분해도(exploding)·수정안 비교(comparing)가 카메라를 쥐고 있는 동안에는 단계 비행을 하지 않고, 비교가 끝나면 단계 시점으로 돌아온다.
-function CameraRig({ resetKey, scene, stepIndex, prep, motion, motionKey, exploding, comparing }: {
-  resetKey: number; scene: Scene; stepIndex: number; prep: Layout; motion: Motion | null; motionKey: number; exploding: boolean;
-  comparing: boolean;
+function CameraRig({ resetKey, scene, stepIndex, prep, playKey, motion, motionKey, exploding, comparing }: {
+  resetKey: number; scene: Scene; stepIndex: number; prep: Layout; playKey: number; motion: Motion | null; motionKey: number;
+  exploding: boolean; comparing: boolean;
 }) {
   const { camera, controls } = useThree();
   const fly = (position: THREE.Vector3, target: THREE.Vector3, duration = 0.9) => {
@@ -83,8 +89,34 @@ function CameraRig({ resetKey, scene, stepIndex, prep, motion, motionKey, explod
   const home = () => fly(new THREE.Vector3(...HOME_CAMERA), new THREE.Vector3(...HOME_TARGET));
   // 단계 전체(움직이는 부품들)를 담는 시점.
   const stepView = (duration?: number) => {
+    if (scene.steps[stepIndex].room) {
+      // 완성: 방 안에 걸린 모습을 한 화면에 담는다.
+      const target = new THREE.Vector3(...ROOM_VIEW.target);
+      const direction = new THREE.Vector3(...ROOM_VIEW.direction).normalize();
+      return fly(target.clone().addScaledVector(direction, ROOM_VIEW.distance), target, duration);
+    }
     const focus = stepFocus(scene, stepIndex);
     if (!focus) return home();
+    const shots = wallShots(scene, stepIndex);
+    if (shots) {
+      // 단계 애니메이션과 같은 시계로: 부품마다 그 동작이 시작하기 조금 전에 그 자리로 옮겨 가고, 끝나면 전체를 본다.
+      const orbit = controls as unknown as OrbitControlsImpl | null;
+      const tl = gsap.timeline({ onUpdate: () => orbit?.update() });
+      const move = (target: THREE.Vector3, distance: number, direction: THREE.Vector3, at: number) => {
+        const position = target.clone().addScaledVector(direction, distance);
+        tl.to(camera.position, { x: position.x, y: position.y, z: position.z, duration: 0.8, ease: "power2.inOut" }, at);
+        if (orbit) tl.to(orbit.target, { x: target.x, y: target.y, z: target.z, duration: 0.8, ease: "power2.inOut" }, at);
+      };
+      let last = "";
+      shots.forEach(({ at, start }) => {
+        if (at.join() === last) return;
+        last = at.join();
+        move(new THREE.Vector3(...at), WALL_SHOT, WALL_SHOT_DIRECTION, Math.max(0, start - 0.8));
+      });
+      const end = stepDuration(scene.steps[stepIndex]);
+      move(new THREE.Vector3(...focus.center), Math.max(FOCUS_MIN, focus.radius * 3), FRONT_DIRECTION, end + 0.2);
+      return () => { tl.kill(); };
+    }
     const target = new THREE.Vector3(...focus.center);
     const distance = Math.min(HOME_DISTANCE, Math.max(FOCUS_MIN, focus.radius * 4.5));
     const direction = scene.steps[stepIndex].pose === "upright" ? FRONT_DIRECTION : HOME_DIRECTION.clone().normalize();
@@ -123,7 +155,9 @@ function CameraRig({ resetKey, scene, stepIndex, prep, motion, motionKey, explod
     let pull: (() => void) | null = null;
     const timer = gsap.delayedCall(motionTiming(step, motion.target).focusEnd, () => { pull = stepView(1.6); });
     return () => { back(); timer.kill(); pull?.(); };
-  }, [scene, stepIndex, prep, motionKey, comparing]); // eslint-disable-line react-hooks/exhaustive-deps
+    // 첫 렌더에는 OrbitControls가 아직 없어서, ?step=으로 바로 열면 controls가 생긴 뒤에 다시 겨눈다.
+    // playKey: 다시 보기 때 벽 작업 클로즈업을 단계 애니메이션과 같은 시계로 처음부터 다시 따라간다.
+  }, [scene, stepIndex, prep, controls, playKey, motionKey, comparing]); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 
@@ -143,10 +177,15 @@ function StudioEnvironment({ on }: { on: boolean }) {
 
 export default function App() {
   const [scene, setScene] = useState<Scene | null>(null);
-  const [stepIndex, setStepIndex] = useState(PREP);
+  // ?step=13 처럼 단계 번호를 주면 그 단계부터 연다. 없으면 부품 확인부터.
+  const [stepIndex, setStepIndex] = useState(() => {
+    const n = Number(new URLSearchParams(location.search).get("step"));
+    return n >= 1 ? n - 1 : PREP;
+  });
   const [playKey, setPlayKey] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
   const [renderStyle, setRenderStyle] = useState<RenderStyle>("color");
+  const [xray, setXray] = useState(() => new URLSearchParams(location.search).has("xray")); // ?xray=1로 투시 켠 채 열기
   const [resetKey, setResetKey] = useState(0);
   const [showList, setShowList] = useState(false);
   const [showPage, setShowPage] = useState(true);
@@ -162,6 +201,7 @@ export default function App() {
   const explodeKey = useRef(0);
   const labelEls = useRef(new Map<string, HTMLElement>());
   const appRef = useRef<HTMLDivElement>(null);
+  const orbitRef = useRef<OrbitControlsImpl>(null);
   const { lang, voiceOn, translating } = useLang(DEMO, scene);
   const now = scene?.steps[Math.min(stepIndex, scene.steps.length - 1)];
   const spoken = stepIndex === PREP ? [PREP_CAPTION] : now ? [now.caption_ko, now.warning_ko] : [];
@@ -185,6 +225,7 @@ export default function App() {
       if (e.key === "ArrowLeft") go(-1);
       if (e.key === " ") { e.preventDefault(); setMotion(null); setExplode(null); setPlayKey((k) => k + 1); }
       if (e.key === "Escape") { setPageZoom(false); setShowList(false); }
+      if (e.key === "x" || e.key === "X") setXray((v) => !v);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -336,19 +377,19 @@ export default function App() {
           shadow-camera-top={120} shadow-camera-bottom={-120} />
         {compareView
           ? <Assembly key={compareView.key} scene={compareView.scene} stepIndex={compareView.stepIndex} playKey={0}
-              renderStyle={renderStyle} hidden={compareView.hidden} still />
+              renderStyle={renderStyle} xray={xray} hidden={compareView.hidden} still />
           : prep
           ? <>
               <PartsLayout layout={layout} style={renderStyle} hover={hoverPart} playKey={playKey}
                 onPick={(key) => mentionPart(partTag(scene, key))} />
               <LabelTracker layout={layout} els={labelEls} />
             </>
-          : <Assembly scene={scene} stepIndex={stepIndex} playKey={playKey} renderStyle={renderStyle}
+          : <Assembly scene={scene} stepIndex={stepIndex} playKey={playKey} renderStyle={renderStyle} xray={xray}
               spotlight={motion?.stepIndex === stepIndex ? motion as Spotlight : null} hideUnit={!!exploding} />}
         <ContactShadows position={[0, 0.1, 0]} scale={220} blur={2.4} opacity={0.3} />
-        <OrbitControls target={HOME_TARGET} makeDefault
+        <OrbitControls ref={orbitRef} target={HOME_TARGET} makeDefault
           onStart={() => setDragging(true)} onEnd={() => setDragging(false)} />
-        <CameraRig resetKey={resetKey} scene={scene} stepIndex={stepIndex} prep={layout}
+        <CameraRig resetKey={resetKey} scene={scene} stepIndex={stepIndex} prep={layout} playKey={playKey}
           motion={motion} motionKey={motionKey.current} exploding={!!exploding} comparing={!!compareView} />
         {/* 카메라 비행보다 뒤에 두어, 같은 렌더에서 시작한 단계 비행을 분해도가 멈추고 카메라를 넘겨받는다. */}
         {exploding && !compareView && <Explode key={exploding.key} scene={scene} style={renderStyle} onDone={endExplode} />}
@@ -362,11 +403,22 @@ export default function App() {
       <header className="overlay topbar">
         <button className="icon" title={t("전체 단계")} onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
+          <span className="brand"><LogoMark size={14} />Stepcast</span>
           <span className="product">{scene.product}</span>
           <span className="progress-text">{prep ? t("부품 확인") : t("{n} / {total} 단계", { n: step.number, total })}</span>
         </div>
         <CompareBadge />
         <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />
+        <DemoTour api={{
+          orbit: () => orbitRef.current,
+          goStep: setStepIndex,
+          setXray,
+          setStyle: setRenderStyle,
+          setInventory: setShowInventory,
+          xrayStep: Math.min(5, total - 1),
+          prepStep: PREP,
+          lastStep: total - 1,
+        }} />
       </header>
 
       {/* 왼쪽 위: 현재 단계 설명 카드(수정안을 보는 동안에는 그 단계 설명이 바뀌는 모습) */}
@@ -426,6 +478,11 @@ export default function App() {
             </button>
           ))}
         </div>
+        <button className={`icon xray ${xray ? "on" : ""}`} title={t("투시 (X)")} aria-pressed={xray} onClick={() => setXray((v) => !v)}>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+            <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z" /><circle cx="12" cy="12" r="3" />
+          </svg>
+        </button>
         <button className={`icon ${showPage ? "on" : ""}`} title={t("원본 페이지")} onClick={() => setShowPage((v) => !v)}>📄</button>
         <button className="icon" title={t("전체 화면")} onClick={toggleFullscreen}>⛶</button>
       </div>

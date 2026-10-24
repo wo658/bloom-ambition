@@ -10,6 +10,7 @@ import type { KitPartKind, KitScene, KitStep } from "./kitTypes";
 import { onGoToStep, setCurrentStep } from "./bridge";
 import DemoSwitcher from "./DemoSwitcher";
 import LangBar from "./LangBar";
+import { LogoMark } from "./Logo";
 import { afterSpeech, t, useLang, useSpeak } from "./lang";
 import "./kit.css";
 
@@ -137,6 +138,7 @@ export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene
       <header className="overlay topbar">
         <button className="icon" title={t("전체 단계")} onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
+          <span className="brand"><LogoMark size={14} />Stepcast</span>
           <span className="product">{scene.product}</span>
           <span className="progress-text">{t("{n} / {total} 단계", { n: index + 1, total })}{mk ? ` · ${t("마킹")} ${mk}` : ""}</span>
         </div>

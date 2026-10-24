@@ -1,0 +1,163 @@
+/* 오프닝(?intro) 전용 스타일. 모든 클래스는 op- 로 시작해서 기존 화면 스타일과 겹치지 않는다. */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap");
+
+:root { --op-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace; }
+body { font-family: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", system-ui, sans-serif; }
+
+.op-root { position: fixed; inset: 0; z-index: 100; overflow: hidden; background: #eef1f5; transition: opacity .3s ease; }
+.op-root.leaving { opacity: 0; pointer-events: none; }
+.op-canvas { position: absolute !important; inset: 0; }
+
+/* ── 첫 화면 ── */
+.op-hero { position: absolute; inset: 0; z-index: 10; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, #ffffff 0%, #f1f4f8 55%, #dfe4eb 100%); transition: opacity .55s ease, visibility .55s; }
+.op-hero.leaving { opacity: 0; visibility: hidden; pointer-events: none; }
+.op-wall { position: absolute; inset: -12%; display: grid; grid-template-columns: repeat(8, 1fr); gap: 18px; padding: 18px;
+  transform: rotate(-7deg) scale(1.08); opacity: .2; filter: blur(1.6px) grayscale(1);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, #000 45%, transparent 85%);
+  mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, #000 45%, transparent 85%);
+  pointer-events: none; }
+.op-wall img { width: 100%; display: block; background: #fff; box-shadow: 0 2px 10px rgba(20, 30, 50, .12); }
+
+.op-hero-body { position: relative; width: min(1040px, 90vw); }
+.op-brand { display: flex; align-items: center; gap: .5em; margin: 0 0 14px; font-size: clamp(15px, 1.6vw, 20px); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-dark); }
+.op-hero h1 { margin: 0 0 40px; font-size: clamp(32px, 4.6vw, 60px); line-height: 1.16; font-weight: 800; letter-spacing: -.035em; color: var(--ink); }
+.op-stage-row { display: grid; grid-template-columns: 1fr 240px; gap: 36px; align-items: center; }
+
+.op-drop { height: 230px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  border: 2px dashed #b7c0cd; border-radius: 22px; background: rgba(255, 255, 255, .72); backdrop-filter: blur(6px);
+  color: var(--sub); cursor: pointer; transition: border-color .2s, background .2s, transform .2s; }
+.op-drop b { font-size: 18px; color: var(--ink); font-weight: 700; }
+.op-drop:hover { border-color: #9aa5b5; }
+.op-sample { margin-top: 4px; border: 0; border-radius: 999px; background: var(--accent); color: #fff; padding: 10px 18px;
+  font-size: 14px; font-weight: 700; box-shadow: 0 6px 16px rgba(255, 122, 26, .3); transition: background .15s, transform .15s; }
+.op-sample:hover { background: var(--accent-dark); transform: translateY(-1px); }
+/* 시범 동작이 상자에 닿는 순간 */
+.op-drop.hint { border-color: var(--accent); background: #fff6ee; }
+.op-drop.hint .op-drop-icon { color: var(--accent); transform: translateY(3px); }
+.op-drop.taken { border-style: solid; justify-content: flex-end; padding-bottom: 30px; cursor: default; }
+.op-drop-done { font-size: 15px !important; font-family: var(--op-mono); }
+.op-drop-icon { font-size: 30px; line-height: 1; color: #9aa5b5; transition: color .2s, transform .2s; }
+.op-drop.over { border-color: var(--accent); background: #fff6ee; transform: scale(1.015); }
+.op-drop.over .op-drop-icon { color: var(--accent); transform: translateY(3px); }
+.op-drop.taken { border-style: solid; }
+
+.op-desk { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.op-file { width: 176px; display: flex; flex-direction: column; gap: 4px; padding: 0; border: 0; background: none; text-align: left; cursor: grab;
+  touch-action: none; user-select: none; transform: rotate(-3deg); animation: op-bob 3.2s ease-in-out infinite;
+  transition: filter .2s; }
+.op-file:active { cursor: grabbing; animation: none; }
+.op-file:hover { filter: drop-shadow(0 10px 18px rgba(255, 122, 26, .25)); }
+/* 종이 몇 장이 겹친 PDF 문서: 접힌 오른쪽 위 모서리 + 빨간 PDF 딱지 */
+.op-doc { position: relative; display: block; width: 100%; aspect-ratio: 641 / 910; background: #fff;
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%);
+  box-shadow: 0 1px 0 #e3e7ee inset, 0 0 0 1px #e3e7ee inset; }
+.op-paper { display: block; filter: drop-shadow(5px 5px 0 #f4f5f7) drop-shadow(1px 1px 0 #d7dce4) drop-shadow(5px 5px 0 #eef0f3)
+  drop-shadow(1px 1px 0 #d7dce4) drop-shadow(0 14px 22px rgba(20, 30, 50, .18)); }
+.op-doc::after { content: ""; position: absolute; top: 0; right: 0; width: 26px; height: 26px;
+  background: linear-gradient(225deg, transparent 50%, #e7eaef 50%, #f6f7f9 100%); }
+.op-doc img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.op-pdf-badge { position: absolute; left: 8px; bottom: 8px; padding: 3px 7px; border-radius: 4px; background: #e5322d; color: #fff;
+  font: 800 11px/1 var(--op-mono); font-style: normal; letter-spacing: .04em; }
+.op-hint { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--ink); color: #fff;
+  font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.op-ghost { position: absolute; z-index: 2; opacity: 0; pointer-events: none; transform-origin: 0 0; }
+.op-ghost .op-paper { opacity: .9; }
+.op-hand { position: absolute; right: -14px; bottom: -14px; filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .25)); }
+.op-file-name { margin-top: 4px; font-family: var(--op-mono); font-size: 11.5px; font-weight: 600; color: var(--ink); word-break: break-all; }
+.op-file-meta { font-family: var(--op-mono); font-size: 11px; color: #8a93a3; }
+@keyframes op-bob { 50% { translate: 0 -6px; } }
+
+/* ── 위 진행 표시, 건너뛰기 ── */
+.op-journey { position: absolute; z-index: 11; top: 16px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: 999px; background: rgba(255, 255, 255, .86); backdrop-filter: blur(8px); box-shadow: var(--shadow);
+  font-size: 12.5px; color: #8a93a3; }
+.op-journey .on { color: var(--accent-dark); font-weight: 700; }
+.op-journey i { font-style: normal; color: #c3cad5; }
+.op-skip { position: absolute; z-index: 11; left: 16px; bottom: 18px; border: 1px solid var(--line); border-radius: 999px;
+  background: rgba(255, 255, 255, .86); padding: 7px 14px; font-size: 13px; color: var(--sub); }
+.op-skip:hover { border-color: var(--accent); color: var(--accent-dark); }
+
+/* ── 읽기: 인식 꼬리표 ── */
+.op-tag { transform: translate(-1px, calc(-100% - 3px)); padding: 2px 6px; border-radius: 4px; background: var(--accent); color: #fff;
+  font-family: var(--op-mono); font-size: 11px; font-weight: 600; white-space: nowrap; transition: opacity .1s; }
+
+/* ── 필요한 부품 목록 ── */
+/* App 부품 확인 체크리스트(.checklist)와 같은 자리·폭: 나중에 그 자리에서 체크리스트로 바뀐다. */
+.op-list { position: absolute; z-index: 4; top: 16px; right: 72px; width: 330px; padding: 14px 16px 8px; animation: rise .35s ease-out;
+  transition: opacity .4s ease; }
+.op-list.gone { opacity: 0; }
+
+.op-list-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+.op-list-head h2 { margin: 0; font-size: 13px; color: var(--sub); font-weight: 600; }
+.op-count { font-family: var(--op-mono); font-size: 12px; color: var(--accent-dark); font-weight: 600; }
+.op-list ul { list-style: none; margin: 0; padding: 0; }
+.op-list li { display: flex; align-items: center; gap: 10px; padding: 5px 0; border-top: 1px solid var(--line); }
+
+.op-list li:first-child { border-top: 0; }
+.op-list li > :not(.op-thumb) { opacity: 0; transform: translateX(-6px); transition: opacity .25s, transform .25s; }
+.op-list li.in > * { opacity: 1; transform: none; }
+.op-thumb { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 8px; background: #fff; border: 1px solid var(--line); }
+.op-thumb > span { display: block; background-repeat: no-repeat; opacity: 0; }
+.op-list li.in .op-thumb > span { opacity: 1; }
+.op-name { flex: 1; min-width: 0; display: flex; flex-direction: column; font-size: 13px; line-height: 1.3; }
+.op-name code { font-family: var(--op-mono); font-size: 10.5px; color: var(--sub); }
+.op-qty { font-family: var(--op-mono); font-size: 14px; font-weight: 600; }
+.op-fly-layer { position: fixed; inset: 0; z-index: 8; pointer-events: none; }
+.op-fly { position: fixed; background-color: #fff; background-repeat: no-repeat; border-radius: 4px; outline: 2px solid var(--accent);
+  box-shadow: 0 10px 26px rgba(20, 30, 50, .22); will-change: left, top, width, height, transform; }
+
+/* ── 도착: App 부품 확인 화면의 체크리스트·이름표를 같은 틀(.viewer) 안에 띄운다 ── */
+.op-arrive-frame { position: absolute !important; inset: 0; z-index: 4; width: 100%; height: 100%; background: none !important; pointer-events: none; }
+.op-arrive-frame .lay-labels { opacity: 0; transition: opacity .4s ease; }
+.op-arrive-frame.labels-on .lay-labels { opacity: 1; }
+.op-arrive-frame .lay-labels .lay-label, .op-arrive-frame .checklist { pointer-events: none; }
+.op-arrive { animation: op-in .5s ease-out both; }
+@keyframes op-in { from { opacity: 0; } }
+
+/* ── 진행 문구 ── */
+.op-status { position: absolute; z-index: 6; left: 50%; bottom: 22px; transform: translateX(-50%); width: min(360px, 86vw);
+  padding: 12px 16px; border-radius: 14px; background: rgba(255, 255, 255, .9); backdrop-filter: blur(8px); box-shadow: var(--shadow); }
+.op-status-row { display: flex; align-items: center; gap: 8px; font-family: var(--op-mono); font-size: 13px; }
+.op-status-row b { font-weight: 600; }
+.op-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: op-pulse 1s ease-in-out infinite; }
+.op-status.done .op-dot { background: #16a34a; animation: none; }
+@keyframes op-pulse { 50% { opacity: .3; } }
+.op-bar { height: 3px; margin: 9px 0 8px; border-radius: 2px; background: #e6e9ef; overflow: hidden; }
+.op-bar span { display: block; height: 100%; background: var(--accent); transition: width .3s linear; }
+.op-status.done .op-bar span { background: #16a34a; }
+.op-facts { display: flex; gap: 6px; font-family: var(--op-mono); font-size: 11px; }
+.op-facts span { padding: 2px 7px; border-radius: 4px; background: #f1f3f6; color: #b3bac6; transition: background .3s, color .3s; }
+.op-facts span.on { background: #fff1e6; color: var(--accent-dark); }
+
+.op-wait { position: absolute; z-index: 12; left: 50%; bottom: 22px; transform: translateX(-50%); padding: 8px 14px; border-radius: 999px;
+  background: #fff; box-shadow: var(--shadow); font-family: var(--op-mono); font-size: 13px; }
+
+/* ── 도착 후 한 줄 안내 ── */
+.op-toast { position: fixed; z-index: 45; top: 60px; left: 50%; transform: translateX(-50%); padding: 9px 18px; border-radius: 999px;
+  background: var(--ink); color: #fff; font-size: 14px; font-weight: 600; box-shadow: var(--shadow);
+  animation: op-toast 4.5s ease both; pointer-events: none; }
+@keyframes op-toast { 0% { opacity: 0; transform: translate(-50%, -8px); } 8%, 85% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; } }
+
+/* ── 휴대폰: 부품 목록은 위쪽 썸네일 띠로 줄이고, 건너뛰기는 위로 옮긴다 ── */
+@media (max-width: 760px) {
+  .op-hero-body { width: 88vw; }
+  .op-hero h1 { margin-bottom: 22px; }
+  .op-stage-row { grid-template-columns: 1fr; gap: 18px; }
+  .op-desk { order: -1; flex-direction: row; justify-content: center; }
+  .op-file { width: 112px; }
+  .op-drop { height: 170px; }
+  .op-drop b { font-size: 15px; text-align: center; }
+  .op-journey { top: 10px; font-size: 11.5px; }
+  .op-skip { top: 10px; bottom: auto; left: auto; right: 10px; padding: 5px 10px; font-size: 12px; }
+  .op-journey { left: 10px; transform: none; }
+  .op-tag { display: none; }
+  .op-list { top: 48px; left: 8px; right: 8px; width: auto; padding: 8px 10px; }
+  .op-list ul { display: flex; gap: 4px; }
+  .op-list li { flex: 1; min-width: 0; justify-content: center; padding: 0; border: 0; }
+  .op-list li > :not(.op-thumb) { display: none; }
+  .op-thumb { width: 100%; max-width: 34px; height: 34px; }
+  .op-list-head { margin-bottom: 4px; }
+  .op-status { bottom: 14px; padding: 9px 12px; }
+}

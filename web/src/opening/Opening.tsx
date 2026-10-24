@@ -297,7 +297,7 @@ function Status({ steps }: { steps: number }) {
       <div className="op-bar"><span style={{ width: `${pct}%` }} /></div>
       <div className="op-facts">
         <span className={facts >= 1 ? "on" : ""}>24쪽 읽음</span>
-        <span className={facts >= 2 ? "on" : ""}>부품 {FINDS.length}종</span>
+        <span className={facts >= 2 ? "on" : ""}>부품 {KINDS}종</span>
         <span className={facts >= 3 ? "on" : ""}>조립 {steps}단계</span>
       </div>
     </div>

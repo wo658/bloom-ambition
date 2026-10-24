@@ -8,12 +8,7 @@
   transition: left .7s cubic-bezier(.4,0,.2,1), top .7s cubic-bezier(.4,0,.2,1), width .7s cubic-bezier(.4,0,.2,1), height .7s cubic-bezier(.4,0,.2,1); }
 .kit-page.no-anim { transition: none; }
 .kit-page img, .kit-page svg { position: absolute; inset: 0; width: 100%; height: 100%; user-select: none; }
-.kit-page svg rect.hit { fill: rgba(255,122,26,.18); stroke: var(--accent); stroke-width: .0025; opacity: 0;
-  animation: kit-pop .45s ease-out forwards; transform-box: fill-box; transform-origin: center; }
-.kit-page svg rect.hit.checked { fill: rgba(22,163,74,.16); stroke: #16a34a; }
-.kit-page svg rect.hit.hover { fill: rgba(255,122,26,.5); stroke: var(--accent); stroke-width: .004; }
 .kit-page svg rect.region { fill: none; stroke: #2563eb; stroke-width: .003; stroke-dasharray: .01 .006; }
-@keyframes kit-pop { from { opacity: 0; transform: scale(1.8); } to { opacity: 1; transform: scale(1); } }
 
 /* 상단 가운데: 마킹 선택 (가구의 안전 안내 자리) */
 .marking-pill { top: 16px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 4px; max-width: 46vw;
@@ -41,45 +36,17 @@
 .sub-badge { display: inline-grid; place-items: center; width: 18px; height: 18px; border: 2px solid currentColor; font-style: normal; font-weight: 700;
   font-size: 11px; font-family: Georgia, serif; line-height: 1; }
 
-/* 부품 카드: 도구 막대 위에서 끝나도록 높이를 제한한다. */
-.kit-parts { max-height: calc(50vh - 120px); overflow-y: auto; }
-.kit-parts .sprue h3 { margin: 10px 0 2px; font-size: 11px; font-weight: 700; color: var(--sub); letter-spacing: .02em; }
-.kit-parts .sprue:first-of-type h3 { margin-top: 0; }
-.kit-parts li { padding: 6px 0; }
-.kit-parts li label { flex: 1; display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.kit-parts li.checked .thumb { opacity: .5; }
-.kit-parts li.checked .part-id { text-decoration: line-through; color: var(--sub); }
-.kit-parts .thumb { width: 56px; height: 56px; background: #fff; }
-.kit-parts .part-id { font-size: 15px; font-weight: 700; color: var(--ink); }
-.kit-parts .tags { display: flex; flex-wrap: wrap; gap: 3px; }
-.kit-parts input[type="checkbox"] { width: 18px; height: 18px; accent-color: #16a34a; cursor: pointer; }
-.page-crop { display: block; width: 56px; height: 56px; background-repeat: no-repeat; }
-.thumb-missing { font-weight: 700; color: #b91c1c; }
-.tag { font-size: 11px; padding: 1px 5px; border-radius: 4px; background: #f3f4f6; color: #555; }
-.tag.miss { background: #fee2e2; color: #b91c1c; }
-.tag.mk, .flag.mk { color: #0369a1; background: #e0f2fe; }
-
-.kit-inventory .chips { display: flex; flex-wrap: wrap; gap: 4px; }
-.kit-inventory .chip { display: inline-flex; align-items: baseline; gap: 3px; padding: 2px 6px; border: 1px solid var(--line); border-radius: 4px; background: #f9fafb;
-  font: 12px ui-monospace, monospace; }
-.kit-inventory .chip small { font-size: 10px; color: #999; }
-.kit-inventory .chip.now { border-color: var(--accent); background: #fff1e6; }
-.kit-inventory .muted { margin-top: 8px; }
+.flag.mk { color: #0369a1; background: #e0f2fe; }
 
 /* 원본 페이지 썸네일 위에 지금 단계 영역을 표시한다. */
 .source-frame { position: relative; display: block; }
 .source-region { position: absolute; border: 2px solid var(--accent); background: rgba(255,122,26,.12); border-radius: 2px; transition: all .4s; }
-
-/* 타임라인: 부품을 모두 체크한 단계 */
-.seg.checked::before { content: "✓"; position: absolute; top: -1px; left: 3px; font-size: 9px; color: #16a34a; }
-.seg.on.checked::before { color: #fff; }
 
 /* 서랍 */
 .drawer-head .count { margin-left: 4px; font-weight: 600; color: var(--sub); }
 .drawer .tags { grid-column: 2; display: flex; gap: 4px; }
 .drawer .tags .flag { grid-column: auto; }
 .drawer .cap .sub-badge { margin-right: 6px; vertical-align: 1px; }
-.drawer .cap .ok { color: #16a34a; }
 .drawer-foot .notes { font-size: 12px; color: var(--sub); }
 .drawer-foot .notes b { color: var(--ink); }
 .drawer-foot .notes ul { margin: 4px 0 0; padding-left: 18px; }

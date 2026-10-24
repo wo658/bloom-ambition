@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import type { Box, KitGuideData, KitPartRef, KitStep } from "./kitTypes";
+import type { Box, KitGuideData, KitStep } from "./kitTypes";
 import "./kit.css";
 import { onGoToStep, setCurrentStep } from "./bridge";
 import DemoSwitcher from "./DemoSwitcher";
@@ -12,15 +12,11 @@ function appliesTo(markings: string[] | null, marking: string) {
   return marking === ALL || !markings || markings.includes(marking);
 }
 
-function sprue(id: string) {
-  return id.startsWith("PE") ? "PE 에칭" : `${id[0]} 틀`;
-}
-
 // 가구 뷰어처럼 카드가 화면 위에 떠 있으므로, 카드에 가리지 않는 가운데 영역에 단계를 맞춘다.
 function safeArea(w: number, h: number) {
   const side = w > 1100;
   const left = side ? Math.min(452, w * 0.34 + 32) : 16;
-  const right = side ? 320 : 16;
+  const right = side ? 80 : 16;
   return { left, right, top: 76, bottom: Math.min(140, h * 0.2) };
 }
 
@@ -48,35 +44,18 @@ function useFit(region: Box, aspect: number, whole: boolean) {
   return { ref, pageW, pageH, left: safe.left + aw / 2 - cx, top: safe.top + ah / 2 - cy };
 }
 
-// 부품 번호가 적힌 자리 주변을 페이지에서 잘라 썸네일로 보여 준다.
-function PageCrop({ src, box, aspect }: { src: string; box: Box | undefined; aspect: number }) {
-  if (!box) return <span className="thumb-missing">?</span>;
-  const T = 56;
-  const s = 0.11;
-  const W = T / s;
-  const cx = ((box[0] + box[2]) / 2) * W;
-  const cy = ((box[1] + box[3]) / 2) * W * aspect;
-  return (
-    <span className="page-crop" style={{
-      backgroundImage: `url(${src})`, backgroundSize: `${W}px ${W * aspect}px`,
-      backgroundPosition: `${T / 2 - cx}px ${T / 2 - cy}px`,
-    }} />
-  );
-}
-
 export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide: KitGuideData; pageUrl: (page: number) => string }) {
   const [marking, setMarking] = useState(ALL);
   const [index, setIndex] = useState(0);
   const [whole, setWhole] = useState(false);
-  const [hover, setHover] = useState<string | null>(null);
-  const [done, setDone] = useState<Record<string, boolean>>({});
   const [playKey, setPlayKey] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
-  const [inventory, setInventory] = useState<null | "used" | "left">(null);
   const [showList, setShowList] = useState(false);
   const [showPage, setShowPage] = useState(true);
   const [pageZoom, setPageZoom] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  // 다시 보기: 페이지 전체에서 단계 영역으로 다시 확대해 들어간다.
+  const [intro, setIntro] = useState(false);
   // 가구 뷰어의 카메라 조작처럼 페이지를 끌어 옮기고 휠로 확대한다. T(p) = k·p + (x, y)
   const [view, setView] = useState({ k: 1, x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
@@ -87,9 +66,16 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
   const step: KitStep = steps[Math.min(index, steps.length - 1)];
   const total = steps.length;
   const byId = useMemo(() => new Map(guide.steps.map((s) => [s.id, s])), [guide]);
-  const fit = useFit(step.region, guide.page_aspect, whole);
+  const fit = useFit(step.region, guide.page_aspect, whole || intro);
 
-  useEffect(() => setView({ k: 1, x: 0, y: 0 }), [step.id, whole, resetKey]);
+  useEffect(() => setView({ k: 1, x: 0, y: 0 }), [step.id, whole, resetKey, playKey]);
+
+  useEffect(() => {
+    if (playKey === 0 || whole) return;
+    setIntro(true);
+    const timer = setTimeout(() => setIntro(false), 120);
+    return () => clearTimeout(timer);
+  }, [playKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const go = useCallback((delta: number) => setIndex((i) => Math.min(steps.length - 1, Math.max(0, i + delta))), [steps]);
   const jump = (id: string) => {
@@ -171,28 +157,6 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
     });
   };
 
-  const parts = step.parts.filter((p) => appliesTo(p.markings, marking));
-  const groups = Object.entries(
-    parts.reduce<Record<string, KitPartRef[]>>((acc, p) => ((acc[sprue(p.id)] ??= []).push(p), acc), {}),
-  ).sort(([a], [b]) => a.localeCompare(b));
-  const hitOrder = new Map(parts.map((p, i) => [p.id, i]));
-  // 부품 번호별로 처음 쓰이는 단계. 선택한 마킹에 해당하는 단계·부품만 센다.
-  const firstUse = useMemo(() => {
-    const map = new Map<string, { part: KitPartRef; at: number; step: KitStep }>();
-    steps.forEach((s, i) => s.parts.forEach((part) => {
-      if (appliesTo(part.markings, marking) && !map.has(part.id)) map.set(part.id, { part, at: i, step: s });
-    }));
-    return map;
-  }, [steps, marking]);
-  const usedParts = [...firstUse.values()].filter((u) => u.at <= index);
-  const leftParts = [...firstUse.values()].filter((u) => u.at > index);
-  const bySprue = <T extends { part: KitPartRef }>(list: T[]) => Object.entries(
-    list.reduce<Record<string, T[]>>((acc, u) => ((acc[sprue(u.part.id)] ??= []).push(u), acc), {}),
-  ).sort(([a], [b]) => a.localeCompare(b));
-
-  const stepParts = (s: KitStep) => s.parts.filter((p) => appliesTo(p.markings, marking));
-  const stepChecked = (s: KitStep) => stepParts(s).length > 0 && stepParts(s).every((p) => done[`${s.id}/${p.id}`]);
-  const checkedCount = parts.filter((p) => done[`${step.id}/${p.id}`]).length;
   const lowConfidence = step.confidence < 0.5;
   const markingTitle = guide.markings.find((m) => m.id === marking)?.title_ko;
   const page = {
@@ -205,17 +169,12 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
     <div ref={appRef} className={`viewer kit-viewer ${dragging ? "dragging" : ""}`}>
       <div className="kit-stage" ref={fit.ref} onPointerDown={onPointerDown} onPointerMove={onPointerMove}
         onPointerUp={onPointerUp} onPointerCancel={onPointerUp} onWheel={onWheel}>
-        <div className={`kit-page ${dragging ? "no-anim" : ""}`} style={page}>
+        <div className={`kit-page ${dragging || intro ? "no-anim" : ""}`} style={page}>
           <img src={pageUrl(step.page)} alt={`설명서 ${step.page}쪽`} draggable={false} />
-          <svg viewBox="0 0 1 1" preserveAspectRatio="none" key={`${step.id}-${playKey}`}>
-            {whole && <rect className="region" x={step.region[0]} y={step.region[1]}
-              width={step.region[2] - step.region[0]} height={step.region[3] - step.region[1]} />}
-            {step.hits.filter((h) => hitOrder.has(h.id)).map((h, i) => (
-              <rect key={`${h.id}-${i}`} className={`hit ${hover === h.id ? "hover" : ""} ${done[`${step.id}/${h.id}`] ? "checked" : ""}`}
-                style={{ animationDelay: `${0.35 + (hitOrder.get(h.id) ?? 0) * 0.14}s` }}
-                x={h.box[0] - 0.004} y={h.box[1] - 0.003} width={h.box[2] - h.box[0] + 0.008} height={h.box[3] - h.box[1] + 0.006} />
-            ))}
-          </svg>
+          {whole && <svg viewBox="0 0 1 1" preserveAspectRatio="none">
+            <rect className="region" x={step.region[0]} y={step.region[1]}
+              width={step.region[2] - step.region[0]} height={step.region[3] - step.region[1]} />
+          </svg>}
         </div>
       </div>
 
@@ -266,75 +225,6 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
         </div>
       </section>
 
-      {/* 오른쪽 위: 이 단계에 필요한 부품 */}
-      <section className="overlay card parts kit-parts">
-        <div className="parts-head">
-          <h2>{inventory ? "부품 현황" : `이 단계에 필요한 부품 ${parts.length > 0 ? `${checkedCount}/${parts.length}` : ""}`}</h2>
-          <button className={`mini ${inventory ? "on" : ""}`} title="지금까지 쓴 부품과 남은 부품"
-            onClick={() => setInventory((v) => (v ? null : "used"))}>{inventory ? "이 단계" : "📦 현황"}</button>
-        </div>
-        {inventory && (
-          <div className="kit-inventory">
-            <div className="inv-progress">
-              <div className="bar"><span style={{ width: `${(usedParts.length / Math.max(firstUse.size, 1)) * 100}%` }} /></div>
-              <small>{usedParts.length} / {firstUse.size}개 사용{marking !== ALL ? ` · 마킹 ${marking}` : ""}</small>
-            </div>
-            <div className="inv-tabs">
-              <button className={inventory === "used" ? "on" : ""} onClick={() => setInventory("used")}>사용함 {usedParts.length}</button>
-              <button className={inventory === "left" ? "on" : ""} onClick={() => setInventory("left")}>남음 {leftParts.length}</button>
-            </div>
-            {bySprue(inventory === "used" ? usedParts : leftParts).map(([group, list]) => (
-              <div key={group} className="sprue">
-                <h3>{group} · {list.length}개</h3>
-                <div className="chips">
-                  {list.map((u) => (
-                    <button key={u.part.id} className={`chip ${u.at === index ? "now" : ""}`}
-                      title={`${u.step.number}단계 · ${u.step.title_ko}`} onClick={() => setIndex(u.at)}>
-                      {u.part.id}<small>{u.step.number}</small>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-            {(inventory === "used" ? usedParts : leftParts).length === 0 && (
-              <p className="muted">{inventory === "used" ? "아직 쓴 부품이 없어요." : "남은 부품이 없어요. 다 썼어요!"}</p>
-            )}
-            <p className="muted">작은 숫자는 그 부품을 처음 쓰는 단계예요. 누르면 그 단계로 이동해요.</p>
-          </div>
-        )}
-        {!inventory && parts.length === 0 && <p className="muted">새 부품 없이 앞 조립품을 결합하는 단계예요.</p>}
-        {!inventory && groups.map(([group, list]) => (
-          <div key={group} className="sprue">
-            <h3>{group}</h3>
-            <ul>
-              {list.map((p) => {
-                const key = `${step.id}/${p.id}`;
-                return (
-                  <li key={p.id} className={done[key] ? "checked" : ""}
-                    onMouseEnter={() => setHover(p.id)} onMouseLeave={() => setHover(null)}>
-                    <label>
-                      <span className="thumb">
-                        <PageCrop src={pageUrl(step.page)} box={step.hits.find((h) => h.id === p.id)?.box} aspect={guide.page_aspect} />
-                      </span>
-                      <span className="name">
-                        <code className="part-id">{p.id}</code>
-                        <span className="tags">
-                          {p.optional && <span className="tag">선택</span>}
-                          {p.markings && <span className="tag mk">마킹 {p.markings.join("·")}</span>}
-                          {step.missing.includes(p.id) && <span className="tag miss">위치 못 찾음</span>}
-                        </span>
-                      </span>
-                      <input type="checkbox" checked={!!done[key]} aria-label={`${p.id} 붙임`}
-                        onChange={(e) => setDone((d) => ({ ...d, [key]: e.target.checked }))} />
-                    </label>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ))}
-      </section>
-
       {/* 오른쪽 가운데: 보기 도구 */}
       <div className="overlay toolbar">
         <button className="icon" title="시점 초기화" onClick={() => setResetKey((k) => k + 1)}>⌂</button>
@@ -367,7 +257,7 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
           <div className="timeline">
             {steps.map((s, i) => (
               <button key={s.id} title={`${s.number}. ${s.title_ko}`}
-                className={`seg ${i < index ? "done" : ""} ${i === index ? "on" : ""} ${s.confidence < 0.5 ? "flag" : ""} ${stepChecked(s) ? "checked" : ""}`}
+                className={`seg ${i < index ? "done" : ""} ${i === index ? "on" : ""} ${s.confidence < 0.5 ? "flag" : ""}`}
                 onClick={() => setIndex(i)}>
                 <span>{s.number}</span>
               </button>
@@ -398,7 +288,6 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
                 onClick={() => { setIndex(i); setShowList(false); }}>
                 <span className="num">{s.number}</span>
                 <span className="cap">
-                  {stepChecked(s) && <b className="ok">✓ </b>}
                   {s.label && <i className="sub-badge">{s.label}</i>}
                   {s.title_ko}
                 </span>
@@ -416,7 +305,7 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
               <b>기호 안내</b>
               <ul>{guide.notes_ko.map((n) => <li key={n}>{n}</li>)}</ul>
             </div>
-            <p className="meta">추출: {guide.extracted_by}<br />OCR 위치 검출률 {Math.round(guide.ocr_recall * 100)}%</p>
+            <p className="meta">추출: {guide.extracted_by}</p>
           </div>
         </aside>
       )}

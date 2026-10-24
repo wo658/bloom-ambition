@@ -7,7 +7,7 @@ import { hasMention, mentionRe, onMentionPart, partTag, setTaggedParts, type Par
 import { useT, voiceCode } from "./lang";
 import ChatActions, { TagText } from "./ChatActions";
 import { afterAction } from "./actionEffects";
-import { ALL_TAG, withObj, type ActionMeta, type ActionRun } from "./actions";
+import { ALL_TAG, PRESETS, runAction as buildRun, withObj, type ActionMeta, type ActionRun } from "./actions";
 import { getCompare, setCompare, setProposalDecider, updateCompare, type Decision, type Proposal, type ProposalStatus, type SceneDiff } from "./compare";
 import { diffScenes } from "./sceneDiff";
 import "./chat.css";
@@ -391,6 +391,8 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
   const newChatRef = useRef(newChat);
   sendRef.current = send;
   undoRef.current = undo;
+  const runActionRef = useRef(runAction);
+  runActionRef.current = runAction;
   newChatRef.current = newChat;
   useEffect(() => {
     let alive = true;
@@ -400,6 +402,11 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
       if (cmd.type === "close") setOpen(false);
       if (cmd.type === "reset") newChatRef.current();
       if (cmd.type === "undo") undoRef.current();
+      if (cmd.type === "preset") {
+        const meta = PRESETS.find((m) => m.id === cmd.id);
+        setOpen(true);
+        if (meta) { try { runActionRef.current(buildRun(sceneRef.current, meta, t)); } catch (err) { console.warn("[preset]", err); } }
+      }
       if (cmd.type === "voice") {
         setOpen(true);
         setListening(true);

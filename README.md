@@ -4,7 +4,8 @@
 
 브랜드가 가진 종이·PDF 조립 설명서를 올리면, AI가 부품과 조립 순서를 읽어 고객이 따라 하는 3D 조립 안내로 바꿔 줍니다.
 
-- 데모: https://bloom-ambition.vercel.app/
+- 데모: https://bloom-ambition.vercel.app/ (열면 기능 소개 재생이 바로 시작됩니다. ← → 로 장면 이동, Esc로 멈춤)
+- 재생 없이 보기: https://bloom-ambition.vercel.app/?tour=0
 - 심사위원용 오프닝: https://bloom-ambition.vercel.app/?intro
 
 ## 무엇을 하나

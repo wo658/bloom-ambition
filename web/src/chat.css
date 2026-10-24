@@ -1,7 +1,7 @@
 /* 오른쪽에 붙는 AI 채팅 사이드바(ElevenLabs 에이전트 위젯 느낌) */
 :root { --chat-w: 400px; }
 body.chat-open .viewer { width: calc(100vw - var(--chat-w)); }
-body.chat-open .dock { width: min(980px, calc(100vw - var(--chat-w) - 32px)); }
+body.chat-open .dock { width: min(980px, calc(100vw - var(--chat-w) - 260px)); }
 body.chat-open .pdf-launcher { right: calc(var(--chat-w) + 16px); }
 
 .chat-orb { flex: none; width: 34px; height: 34px; border-radius: 50%;

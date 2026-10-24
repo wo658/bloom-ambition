@@ -70,7 +70,7 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
           setHistory((h) => [...h, sceneRef.current]);
           sceneRef.current = next;
           setScene(next);
-          addToolOutput({ tool: "patch_scene", toolCallId: toolCall.toolCallId, output: `적용 완료(${ops.length}건)` });
+          addToolOutput({ tool: "patch_scene", toolCallId: toolCall.toolCallId, output: `적용 완료(${ops.length}건). 함께 보내는 scene에 이미 반영됨.` });
         } catch (e) {
           addToolOutput({ tool: "patch_scene", toolCallId: toolCall.toolCallId, output: `적용 실패: ${(e as Error).message}` });
         }
@@ -153,7 +153,7 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
                     <span>{p.state === "output-available" ? (failed ? "✕" : "✓") : "…"}</span>
                     <div>
                       <b>{input?.summary ?? "도면 수정 중"}</b>
-                      {p.state === "output-available" && <small>{String(p.output)}</small>}
+                      {p.state === "output-available" && <small>{String(p.output).split(". ")[0]}</small>}
                     </div>
                   </div>
                 );

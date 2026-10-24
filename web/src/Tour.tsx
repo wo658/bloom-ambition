@@ -204,7 +204,7 @@ export async function startTour(api: TourApi) {
     } catch (e) {
       move = String(e);
     }
-    i = move === "prev" ? Math.max(0, i - 1) : i + 1;
+    i = move === "prev" ? Math.max(0, i - 1) : move === "stop" ? i : i + 1; // 멈춘 장면은 이어서 틀 때 처음부터 다시
   }
   INPUTS.forEach((type) => window.removeEventListener(type, handsOn, { capture: true }));
   resumeFrom = state.stopped && i < TOTAL ? i : 0;

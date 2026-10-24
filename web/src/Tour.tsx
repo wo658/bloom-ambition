@@ -2,7 +2,7 @@ import { useEffect, useSyncExternalStore } from "react";
 import gsap from "gsap";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import type { RenderStyle } from "./Assembly";
-import { chatCommand, chatState, playExplode, playPartMotion } from "./bridge";
+import { chatCommand, playExplode, playPartMotion } from "./bridge";
 import { decideProposal, getCompare } from "./compare";
 import { getLang, isVoiceOn, setLang, t, toggleVoice } from "./lang";
 
@@ -32,17 +32,6 @@ type Ctx = {
   zoom: (factor: number, seconds: number) => Promise<void>;
   setVoice: (on: boolean) => void;
 };
-
-// 어시스턴트 답이 끝날 때까지: 바빠졌다가, 도구 호출 사이 잠깐 쉬는 것까지 넘겨 1.5초 조용하면 끝으로 본다.
-async function chatDone(c: Ctx) {
-  await c.until(() => chatState.busy, 10000);
-  let quiet = 0;
-  await c.until(() => {
-    if (chatState.busy) { quiet = 0; return false; }
-    quiet ||= performance.now();
-    return performance.now() - quiet > 1500;
-  }, 45000);
-}
 
 // 데모가 적용한 수정안. 장면을 건너뛰어도 되돌릴 수 있게 기억한다.
 let appliedId: string | null = null;
@@ -91,14 +80,6 @@ const SCENES: { text: string; chat?: boolean; run: (c: Ctx) => Promise<void> }[]
       chatCommand({ type: "reset" }); await c.wait(400, 1);
       chatCommand({ type: "preset", id: "merge_steps" });
       await reviewProposal(c, 3800);
-    } },
-  { text: "말로 물어보면 AI가 수정안을 만들어 줘요 (음성 입력 재현)", chat: true,
-    run: async (c) => {
-      c.api.goStep(2);
-      chatCommand({ type: "reset" }); await c.wait(400, 1);
-      chatCommand({ type: "voice", text: t("지금 단계 설명을 더 쉽게 바꿔 줘") });
-      await chatDone(c);
-      await reviewProposal(c, 3200);
     } },
   { text: "분해도: 판을 펼쳤다가 다시 맞물려요",
     run: async (c) => { playExplode(); await c.wait(7000, 1); } },

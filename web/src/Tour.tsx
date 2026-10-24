@@ -151,6 +151,16 @@ export async function startTour(api: TourApi) {
     if (!keepChat) chatCommand({ type: "close" });
   };
 
+  // 사용자가 화면을 만지면(클릭·드래그·휠·키) 데모는 바로 멈추고 손을 뗀다. 자막과 재생 버튼은 예외다.
+  const handsOn = (e: Event) => {
+    const el = e.target as HTMLElement | null;
+    if (el?.closest?.(".tour-caption, .playback")) return;
+    if (e instanceof KeyboardEvent && ["ArrowLeft", "ArrowRight", "Escape"].includes(e.key)) return;
+    stopTour();
+  };
+  const INPUTS = ["pointerdown", "wheel", "touchstart", "keydown"] as const;
+  INPUTS.forEach((type) => window.addEventListener(type, handsOn, { capture: true, passive: true }));
+
   let i = 0;
   while (i < TOTAL && !state.stopped) {
     state.scene = new AbortController();
@@ -165,6 +175,7 @@ export async function startTour(api: TourApi) {
     }
     i = move === "prev" ? Math.max(0, i - 1) : i + 1;
   }
+  INPUTS.forEach((type) => window.removeEventListener(type, handsOn, { capture: true }));
   base(false);
   control = null;
   setView(null);

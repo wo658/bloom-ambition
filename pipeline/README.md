@@ -5,11 +5,11 @@
 | 모드 | 대상 | 3단계 | 뷰어 |
 |---|---|---|---|
 | `furniture` | 판재 가구 (KALLAX) | `layout.py`: 판 역할 → 3D 위치 | 3D 조립 애니메이션 (`/`) |
-| `kit` | 부품이 많고 곡면인 프라모델 (Eduard 82212) | `kit_locate.py`: OCR로 부품 번호 위치 | 원본 페이지 위 2D 단계 가이드 (`/?demo=<이름>`) |
+| `kit` | 프라모델 비행기 (Eduard 82212 제로센) | `kit_layout.py`: 부품 자리 → 3D 형상·위치 | 3D 조립 애니메이션 (`/?demo=<이름>`) |
 
 ```
-PDF/사진 ─render.py─▶ 페이지 PNG ─extract.py(Claude 비전)─▶ manual.json ─┬ layout.py ─▶ scene.json (3D)
-                                                                          └ kit_locate.py(ocrmac) ─▶ scene.json (2D)
+PDF/사진 ─render.py─▶ 페이지 PNG ─extract.py(Claude 비전)─▶ manual.json ─┬ layout.py ─────▶ scene.json (가구 3D)
+                                                                          └ kit_layout.py ─▶ scene.json (키트 3D)
 ```
 
 | 단계 | 파일 | 하는 일 |
@@ -34,7 +34,8 @@ pipeline/run.sh data/samples/eduard-82212/82212.pdf eduard-82212 kit pipeline/fi
 cd web && npm run dev   # ←/→ 단계 이동, 스페이스 다시 보기
 ```
 
-`kit` 모드의 PDF는 글자가 곡선으로 바뀌어 있어 텍스트 추출이 안 된다. macOS Vision OCR(`ocrmac`)로 읽고,
-추출된 단계별 부품 목록에 있는 번호만 받아들여 오탐을 막는다. Eduard 82212 기준 부품 위치 검출률 97%.
+`kit` 모드도 가구와 같은 흐름이다. 추출 단계에서 부품마다 완성된 기체에서의 자리(`role`: 왼쪽 동체, 아래 주날개, 카울링 왼쪽 등)를 고르면,
+`kit_layout.py`가 1/48 실측에 맞춘 근사 형상과 최종 위치·삽입 방향을 정한다. 주날개·꼬리날개·엔진·카울링·착륙장치·프로펠러·캐노피 같은
+서브조립은 기체 옆에서 따로 만들다가, 설명서에서 그 서브조립을 끼우는 단계에 제자리로 들어간다. 작은 부품(에칭 등)은 자리 주변에 나눠 놓는다.
 
 `data/out/`, `web/public/demo/`에는 원본 페이지 이미지가 들어가므로 커밋하지 않는다.

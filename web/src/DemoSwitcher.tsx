@@ -1,9 +1,9 @@
 import "./demoSwitcher.css";
 
-// 볼 수 있는 설명서 목록. demo가 없으면 가구 3D 뷰어(/), 있으면 키트 2D 가이드(/?demo=<이름>).
+// 볼 수 있는 설명서 목록. demo가 없으면 가구 3D 뷰어(/), 있으면 키트 3D 조립(/?demo=<이름>).
 const DEMOS = [
   { demo: null, name: "IKEA KALLAX 2x2", kind: "가구 · 3D 조립", thumb: "/demo/pages/page-01.png" },
-  { demo: "eduard-82212", name: "Eduard 제로센 21형", kind: "프라모델 · 2D 가이드", thumb: "/demo/eduard-82212/pages/page-01.png" },
+  { demo: "eduard-82212", name: "Eduard 제로센 21형", kind: "프라모델 · 3D 조립", thumb: "/demo/eduard-82212/pages/page-01.png" },
 ];
 
 // 사이드바 맨 위의 설명서 전환 메뉴. 링크라서 새 탭으로도 열 수 있다.

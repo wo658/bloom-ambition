@@ -1,105 +1,76 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import type { Box, KitGuideData, KitStep } from "./kitTypes";
-import "./kit.css";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { ContactShadows, OrbitControls } from "@react-three/drei";
+import gsap from "gsap";
+import * as THREE from "three";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import type { RenderStyle } from "./Assembly";
+import KitAssembly, { appliesTo } from "./KitAssembly";
+import type { KitPartKind, KitScene, KitStep } from "./kitTypes";
 import { onGoToStep, setCurrentStep } from "./bridge";
 import DemoSwitcher from "./DemoSwitcher";
+import "./kit.css";
 
 const ALL = "전체";
-const PAD = 0.03;
-const AUTOPLAY_MS = 5000;
+const AUTOPLAY_MS = 4500;
+const HOME_DIR = new THREE.Vector3(1.15, 0.8, 1.3).normalize();
+const FOV = 40;
+const STYLES: { id: RenderStyle; label: string }[] = [
+  { id: "technical", label: "도면" },
+  { id: "toon", label: "툰" },
+  { id: "color", label: "컬러" },
+];
+const KIND_LABEL: Record<KitPartKind, string> = { plastic: "사출", photo_etch: "에칭", clear: "투명", jig: "지그" };
 
-function appliesTo(markings: string[] | null, marking: string) {
-  return marking === ALL || !markings || markings.includes(marking);
+// 단계가 바뀌면 부품이 날아오는 쪽에서 그 단계 부품이 화면에 들어오도록 카메라를 옮긴다.
+function FocusRig({ scene, step, resetKey }: { scene: KitScene; step: KitStep; resetKey: number }) {
+  const { camera, controls } = useThree();
+  const lastReset = useRef(resetKey);
+  useEffect(() => {
+    const orbit = controls as unknown as OrbitControlsImpl | null;
+    if (!orbit) return;
+    const pose = scene.poses[step.pose];
+    const [x, y, z, r] = step.focus;
+    const tilt = new THREE.Euler(-pose.pitch, 0, 0);
+    const target = new THREE.Vector3(x, y, z).applyEuler(tilt).add(new THREE.Vector3(0, pose.height, 0));
+    const reset = lastReset.current !== resetKey;
+    lastReset.current = resetKey;
+    const dir = reset ? HOME_DIR.clone() : new THREE.Vector3(...step.view).applyEuler(tilt);
+    const dist = Math.max(8, (r / Math.sin((FOV / 2) * (Math.PI / 180))) * 1.35);
+    const eye = target.clone().add(dir.multiplyScalar(dist));
+    const tl = gsap.timeline({ onUpdate: () => orbit.update() });
+    tl.to(orbit.target, { x: target.x, y: target.y, z: target.z, duration: 1.1, ease: "power2.inOut" }, 0);
+    tl.to(camera.position, { x: eye.x, y: eye.y, z: eye.z, duration: 1.1, ease: "power2.inOut" }, 0);
+    return () => { tl.kill(); };
+  }, [step, resetKey, controls]); // eslint-disable-line react-hooks/exhaustive-deps
+  return null;
 }
 
-// 가구 뷰어처럼 카드가 화면 위에 떠 있으므로, 카드에 가리지 않는 가운데 영역에 단계를 맞춘다.
-function safeArea(w: number, h: number) {
-  const side = w > 1100;
-  const left = side ? Math.min(452, w * 0.34 + 32) : 16;
-  const right = side ? 80 : 16;
-  return { left, right, top: 76, bottom: Math.min(140, h * 0.2) };
-}
-
-// 단계 영역이 안전 영역에 꽉 차도록 페이지 이미지를 확대·이동하는 값.
-function useFit(region: Box, aspect: number, whole: boolean) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState({ w: 1200, h: 800 });
-  useLayoutEffect(() => {
-    if (!ref.current) return;
-    const observer = new ResizeObserver(([entry]) =>
-      setSize({ w: entry.contentRect.width, h: entry.contentRect.height }));
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-  const safe = safeArea(size.w, size.h);
-  const aw = size.w - safe.left - safe.right;
-  const ah = size.h - safe.top - safe.bottom;
-  const [x0, y0, x1, y1] = whole ? [0, 0, 1, 1] : region;
-  const rw = x1 - x0 + PAD * 2;
-  const rh = (y1 - y0 + PAD * 2) * aspect;
-  const pageW = Math.min(aw / rw, ah / rh);
-  const pageH = pageW * aspect;
-  const cx = ((x0 + x1) / 2) * pageW;
-  const cy = ((y0 + y1) / 2) * pageH;
-  return { ref, pageW, pageH, left: safe.left + aw / 2 - cx, top: safe.top + ah / 2 - cy };
-}
-
-export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide: KitGuideData; pageUrl: (page: number) => string }) {
+export default function KitGuide({ demo, scene, pageUrl }: { demo: string; scene: KitScene; pageUrl: (page: number) => string }) {
   const [marking, setMarking] = useState(ALL);
   const [index, setIndex] = useState(0);
-  const [whole, setWhole] = useState(false);
   const [playKey, setPlayKey] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
+  const [renderStyle, setRenderStyle] = useState<RenderStyle>("technical");
+  const [resetKey, setResetKey] = useState(0);
   const [showList, setShowList] = useState(false);
   const [showPage, setShowPage] = useState(true);
   const [pageZoom, setPageZoom] = useState(false);
-  const [resetKey, setResetKey] = useState(0);
-  // 다시 보기: 페이지 전체에서 단계 영역으로 다시 확대해 들어간다.
-  const [intro, setIntro] = useState(false);
-  // 가구 뷰어의 카메라 조작처럼 페이지를 끌어 옮기고 휠로 확대한다. T(p) = k·p + (x, y)
-  const [view, setView] = useState({ k: 1, x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
-  const drag = useRef<{ px: number; py: number } | null>(null);
+  const [hoverPart, setHoverPart] = useState<string | null>(null);
   const appRef = useRef<HTMLDivElement>(null);
 
-  const steps = useMemo(() => guide.steps.filter((s) => appliesTo(s.markings, marking)), [guide, marking]);
-  const step: KitStep = steps[Math.min(index, steps.length - 1)];
-  const total = steps.length;
-  const byId = useMemo(() => new Map(guide.steps.map((s) => [s.id, s])), [guide]);
-  const fit = useFit(step.region, guide.page_aspect, whole || intro);
+  const mk = marking === ALL ? null : marking;
+  // 선택한 마킹에 해당하는 단계만 이어서 본다. 원본 단계 인덱스(cur)로 3D 장면을 그린다.
+  const order = useMemo(() => scene.steps.map((s, i) => ({ s, i })).filter(({ s }) => appliesTo(s.markings, mk)), [scene, mk]);
+  const { s: step, i: cur } = order[Math.min(index, order.length - 1)];
+  const total = order.length;
 
-  useEffect(() => setView({ k: 1, x: 0, y: 0 }), [step.id, whole, resetKey, playKey]);
-
-  useEffect(() => {
-    if (playKey === 0 || whole) return;
-    setIntro(true);
-    const timer = setTimeout(() => setIntro(false), 120);
-    return () => clearTimeout(timer);
-  }, [playKey]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const go = useCallback((delta: number) => setIndex((i) => Math.min(steps.length - 1, Math.max(0, i + delta))), [steps]);
+  const go = useCallback((delta: number) => setIndex((i) => Math.min(order.length - 1, Math.max(0, i + delta))), [order]);
   const jump = (id: string) => {
-    const i = steps.findIndex((s) => s.id === id);
+    const i = order.findIndex(({ s }) => s.id === id);
     if (i >= 0) setIndex(i);
   };
-
-  // 채팅 위젯이 지금 보는 단계를 알고, 답변 속 "N단계" 링크로 이동할 수 있게 한다.
-  useEffect(() => {
-    setCurrentStep({ index, number: step.number, page: step.page, title: step.title_ko });
-  }, [step]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => onGoToStep((n) => {
-    let i = steps.findIndex((s) => s.number === n);
-    if (i < 0) {
-      // 선택한 마킹에서 빠진 단계면 필터를 풀고 이동한다.
-      const j = guide.steps.findIndex((s) => s.number === n);
-      if (j < 0) return;
-      setMarking(ALL);
-      i = j;
-    }
-    setWhole(false);
-    setIndex(i);
-  }), [steps, guide]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -122,76 +93,57 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
     return () => clearTimeout(timer);
   }, [autoplay, index, total, go]);
 
+  // 채팅·원본 PDF 위젯에 지금 단계를 알리고, 채팅의 "N단계" 링크로 이동한다.
+  useEffect(() => {
+    setCurrentStep({ index, number: step.number, page: step.page, title: step.title_ko });
+  }, [step]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => onGoToStep((n) => {
+    const i = order.findIndex(({ s }) => s.number === n);
+    if (i >= 0) return setIndex(i);
+    // 선택한 마킹에서 빠진 단계면 필터를 풀고 이동한다.
+    const j = scene.steps.findIndex((s) => s.number === n);
+    if (j >= 0) { setMarking(ALL); setIndex(j); }
+  }), [order, scene]);
+
   const toggleFullscreen = () => {
     if (document.fullscreenElement) document.exitFullscreen();
     else appRef.current?.requestFullscreen();
   };
 
-  const onPointerDown = (e: React.PointerEvent) => {
-    if (e.button !== 0) return;
-    drag.current = { px: e.clientX, py: e.clientY };
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  };
-  const onPointerMove = (e: React.PointerEvent) => {
-    const d = drag.current;
-    if (!d) return;
-    const dx = e.clientX - d.px;
-    const dy = e.clientY - d.py;
-    if (!dragging && Math.hypot(dx, dy) < 3) return;
-    setDragging(true);
-    drag.current = { px: e.clientX, py: e.clientY };
-    setView((v) => ({ ...v, x: v.x + dx, y: v.y + dy }));
-  };
-  const onPointerUp = () => {
-    drag.current = null;
-    setDragging(false);
-  };
-  const onWheel = (e: React.WheelEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const cx = e.clientX - rect.left;
-    const cy = e.clientY - rect.top;
-    setView((v) => {
-      const k = Math.min(6, Math.max(0.3, v.k * Math.exp(-e.deltaY * 0.0015)));
-      const f = k / v.k;
-      return { k, x: f * (v.x - cx) + cx, y: f * (v.y - cy) + cy };
-    });
-  };
-
+  const parts = step.adds.filter((p) => appliesTo(p.markings, mk));
+  const byId = new Map(scene.steps.map((s) => [s.id, s]));
   const lowConfidence = step.confidence < 0.5;
-  const markingTitle = guide.markings.find((m) => m.id === marking)?.title_ko;
-  const page = {
-    width: fit.pageW * view.k, height: fit.pageH * view.k,
-    left: fit.left * view.k + view.x, top: fit.top * view.k + view.y,
-  };
+  const markingTitle = scene.markings.find((m) => m.id === marking)?.title_ko;
 
   return (
-    // 페이지를 끄는 동안에는 오버레이를 흐리게 해서 그림을 가리지 않게 한다(가구 뷰어와 같은 autohide).
-    <div ref={appRef} className={`viewer kit-viewer ${dragging ? "dragging" : ""}`}>
-      <div className="kit-stage" ref={fit.ref} onPointerDown={onPointerDown} onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp} onPointerCancel={onPointerUp} onWheel={onWheel}>
-        <div className={`kit-page ${dragging || intro ? "no-anim" : ""}`} style={page}>
-          <img src={pageUrl(step.page)} alt={`설명서 ${step.page}쪽`} draggable={false} />
-          {whole && <svg viewBox="0 0 1 1" preserveAspectRatio="none">
-            <rect className="region" x={step.region[0]} y={step.region[1]}
-              width={step.region[2] - step.region[0]} height={step.region[3] - step.region[1]} />
-          </svg>}
-        </div>
-      </div>
+    // 카메라를 돌리는 동안에는 2D 오버레이를 흐리게 해서 모델을 가리지 않게 한다(가구 뷰어와 같은 autohide).
+    <div ref={appRef} className={`viewer ${dragging ? "dragging" : ""}`}>
+      <Canvas shadows gl={{ alpha: true }} camera={{ position: HOME_DIR.clone().multiplyScalar(40).toArray(), fov: FOV, near: 0.2, far: 400 }}>
+        <ambientLight intensity={renderStyle === "technical" ? 1.1 : 0.65} />
+        <directionalLight position={[20, 40, 25]} intensity={renderStyle === "technical" ? 0.8 : 1.6} castShadow
+          shadow-mapSize={[2048, 2048]} shadow-camera-left={-20} shadow-camera-right={20}
+          shadow-camera-top={20} shadow-camera-bottom={-20} />
+        <KitAssembly scene={scene} cur={cur} playKey={playKey} renderStyle={renderStyle} marking={mk} hoverPart={hoverPart} />
+        <ContactShadows position={[0, 0.02, 0]} scale={60} blur={2.4} opacity={0.3} />
+        <OrbitControls makeDefault onStart={() => setDragging(true)} onEnd={() => setDragging(false)} />
+        <FocusRig scene={scene} step={step} resetKey={resetKey} />
+      </Canvas>
 
       {/* 상단: 제품명과 진행 상황 */}
       <header className="overlay topbar">
         <button className="icon" title="전체 단계" onClick={() => setShowList((v) => !v)}>☰</button>
         <div className="title">
-          <span className="product">{guide.product}</span>
-          <span className="progress-text">{index + 1} / {total} 단계{marking !== ALL ? ` · 마킹 ${marking}` : ""}</span>
+          <span className="product">{scene.product}</span>
+          <span className="progress-text">{index + 1} / {total} 단계{mk ? ` · 마킹 ${mk}` : ""}</span>
         </div>
       </header>
 
-      {/* 상단 가운데: 마킹(도색 사양) 선택 */}
+      {/* 상단 가운데: 마킹(도색 사양) 선택 — 가구의 안전 안내 자리 */}
       <div className="overlay marking-pill" title={markingTitle}>
         <span className="label">마킹</span>
-        {[ALL, ...guide.markings.map((m) => m.id)].map((id) => (
-          <button key={id} className={marking === id ? "on" : ""} title={guide.markings.find((m) => m.id === id)?.title_ko}
+        {[ALL, ...scene.markings.map((m) => m.id)].map((id) => (
+          <button key={id} className={marking === id ? "on" : ""} title={scene.markings.find((m) => m.id === id)?.title_ko}
             onClick={() => { setMarking(id); setIndex(0); setAutoplay(false); }}>{id}</button>
         ))}
         {markingTitle && <em>{markingTitle}</em>}
@@ -204,14 +156,13 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
           <p className="step-title">
             {step.label && <i className="sub-badge" title="이 단계에서 만든 조립품 기호">{step.label}</i>}
             {step.title_ko}
-            <small>원본 {step.page}쪽</small>
           </p>
           <p className="text">{step.caption_ko}</p>
           {step.warning_ko && <p className="warn">⚠ {step.warning_ko}</p>}
           {step.paints_ko.length > 0 && <p className="paint">🎨 {step.paints_ko.join("\n")}</p>}
           {step.uses_steps.length > 0 && (
             <p className="uses-steps">
-              <span>들어가는 조립품</span>
+              <span>끼우는 조립품</span>
               {step.uses_steps.map((id) => (
                 <button key={id} onClick={() => jump(id)}>
                   {byId.get(id)?.label && <i className="sub-badge">{byId.get(id)?.label}</i>}
@@ -225,28 +176,44 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
         </div>
       </section>
 
+      {/* 오른쪽 위: 이 단계에 붙는 부품 */}
+      <section className="overlay card parts kit-parts">
+        <div className="parts-head">
+          <h2>{parts.length > 0 ? `이 단계에 붙는 부품 ${parts.length}` : "이 단계에 붙는 부품"}</h2>
+        </div>
+        {parts.length === 0 && <p className="muted">새 부품 없이 앞에서 만든 조립품을 끼워요.</p>}
+        <ul>
+          {parts.map((p) => (
+            <li key={p.id} className={p.optional ? "alt" : ""} onMouseEnter={() => setHoverPart(p.id)} onMouseLeave={() => setHoverPart(null)}>
+              <span className={`kind-dot ${p.kind}`} title={KIND_LABEL[p.kind]} />
+              <span className="name">
+                {p.name_ko}
+                <code>{p.id} · {KIND_LABEL[p.kind]}</code>
+              </span>
+              {p.markings && <span className="tag mk">{p.markings.join("·")}</span>}
+              {p.optional && <span className="tag">다른 선택</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+
       {/* 오른쪽 가운데: 보기 도구 */}
       <div className="overlay toolbar">
         <button className="icon" title="시점 초기화" onClick={() => setResetKey((k) => k + 1)}>⌂</button>
         <div className="style-switch">
-          <button className={!whole ? "on" : ""} onClick={() => setWhole(false)}>단계</button>
-          <button className={whole ? "on" : ""} onClick={() => setWhole(true)}>페이지</button>
+          {STYLES.map((s) => (
+            <button key={s.id} className={renderStyle === s.id ? "on" : ""} onClick={() => setRenderStyle(s.id)}>{s.label}</button>
+          ))}
         </div>
         <button className={`icon ${showPage ? "on" : ""}`} title="원본 페이지" onClick={() => setShowPage((v) => !v)}>📄</button>
         <button className="icon" title="전체 화면" onClick={toggleFullscreen}>⛶</button>
       </div>
 
-      {/* 오른쪽 아래: 원본 페이지와 이 단계 위치 */}
+      {/* 오른쪽 아래: 원본 설명서 페이지 */}
       {showPage && (
         <button className="overlay card source" onClick={() => setPageZoom(true)} title="크게 보기">
           <span className="source-label">원본 {step.page}쪽</span>
-          <span className="source-frame">
-            <img src={pageUrl(step.page)} alt={`설명서 ${step.page}쪽`} />
-            <span className="source-region" style={{
-              left: `${step.region[0] * 100}%`, top: `${step.region[1] * 100}%`,
-              width: `${(step.region[2] - step.region[0]) * 100}%`, height: `${(step.region[3] - step.region[1]) * 100}%`,
-            }} />
-          </span>
+          <img src={pageUrl(step.page)} alt={`설명서 ${step.page}쪽`} />
         </button>
       )}
 
@@ -255,7 +222,7 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
         <button className="nav" onClick={() => go(-1)} disabled={index === 0} aria-label="이전 단계">‹</button>
         <div className="middle">
           <div className="timeline">
-            {steps.map((s, i) => (
+            {order.map(({ s }, i) => (
               <button key={s.id} title={`${s.number}. ${s.title_ko}`}
                 className={`seg ${i < index ? "done" : ""} ${i === index ? "on" : ""} ${s.confidence < 0.5 ? "flag" : ""}`}
                 onClick={() => setIndex(i)}>
@@ -268,7 +235,7 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
             <button className={autoplay ? "on" : ""} onClick={() => setAutoplay((a) => !a)}>
               {autoplay ? "⏸ 멈춤" : "▶ 자동 재생"}
             </button>
-            <span className="hint">← → 단계 이동 · Space 다시 보기 · 끌어서 이동 · 휠로 확대</span>
+            <span className="hint">← → 단계 이동 · Space 다시 보기</span>
           </div>
         </div>
         <button className="nav primary" onClick={() => go(1)} disabled={index === total - 1} aria-label="다음 단계">›</button>
@@ -283,9 +250,8 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
             <button className="icon" onClick={() => setShowList(false)} aria-label="닫기">✕</button>
           </div>
           <nav>
-            {steps.map((s, i) => (
-              <button key={s.id} className={i === index ? "on" : ""}
-                onClick={() => { setIndex(i); setShowList(false); }}>
+            {order.map(({ s }, i) => (
+              <button key={s.id} className={i === index ? "on" : ""} onClick={() => { setIndex(i); setShowList(false); }}>
                 <span className="num">{s.number}</span>
                 <span className="cap">
                   {s.label && <i className="sub-badge">{s.label}</i>}
@@ -301,11 +267,17 @@ export default function KitGuide({ demo, guide, pageUrl }: { demo: string; guide
             ))}
           </nav>
           <div className="drawer-foot">
+            {scene.issues.length > 0 && (
+              <div className="issues">
+                <b>검증 경고</b>
+                {scene.issues.map((issue) => <p key={issue}>{issue}</p>)}
+              </div>
+            )}
             <div className="notes">
               <b>기호 안내</b>
-              <ul>{guide.notes_ko.map((n) => <li key={n}>{n}</li>)}</ul>
+              <ul>{scene.notes_ko.map((n) => <li key={n}>{n}</li>)}</ul>
             </div>
-            <p className="meta">추출: {guide.extracted_by}</p>
+            <p className="meta">추출: {scene.extracted_by}</p>
           </div>
         </aside>
       )}

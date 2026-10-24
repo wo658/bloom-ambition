@@ -1,14 +1,5 @@
-/* 키트 2D 가이드. 틀(.viewer, .card, .dock, .drawer …)은 가구 뷰어(style.css)와 같이 쓰고, 여기엔 키트 전용 규칙만 둔다. */
+/* 키트 3D 조립. 틀(.viewer, .card, .dock, .drawer …)은 가구 뷰어(style.css)와 같이 쓰고, 여기엔 키트 전용 규칙만 둔다. */
 .kit-loading { padding: 40px; }
-
-/* 무대: 3D 캔버스 자리에 원본 페이지를 띄운다. */
-.kit-stage { position: absolute; inset: 0; overflow: hidden; cursor: grab; touch-action: none; }
-.kit-viewer.dragging .kit-stage { cursor: grabbing; }
-.kit-page { position: absolute; background: #fff; border-radius: 4px; box-shadow: 0 10px 40px rgba(20, 30, 50, .18);
-  transition: left .7s cubic-bezier(.4,0,.2,1), top .7s cubic-bezier(.4,0,.2,1), width .7s cubic-bezier(.4,0,.2,1), height .7s cubic-bezier(.4,0,.2,1); }
-.kit-page.no-anim { transition: none; }
-.kit-page img, .kit-page svg { position: absolute; inset: 0; width: 100%; height: 100%; user-select: none; }
-.kit-page svg rect.region { fill: none; stroke: #2563eb; stroke-width: .003; stroke-dasharray: .01 .006; }
 
 /* 상단 가운데: 마킹 선택 (가구의 안전 안내 자리) */
 .marking-pill { top: 16px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 4px; max-width: 46vw;
@@ -36,11 +27,18 @@
 .sub-badge { display: inline-grid; place-items: center; width: 18px; height: 18px; border: 2px solid currentColor; font-style: normal; font-weight: 700;
   font-size: 11px; font-family: Georgia, serif; line-height: 1; }
 
-.flag.mk { color: #0369a1; background: #e0f2fe; }
+.tag.mk, .flag.mk { color: #0369a1; background: #e0f2fe; }
 
-/* 원본 페이지 썸네일 위에 지금 단계 영역을 표시한다. */
-.source-frame { position: relative; display: block; }
-.source-region { position: absolute; border: 2px solid var(--accent); background: rgba(255,122,26,.12); border-radius: 2px; transition: all .4s; }
+/* 부품 카드: 도구 막대 위에서 끝나도록 높이를 제한한다. */
+.kit-parts { max-height: calc(50vh - 120px); overflow-y: auto; }
+.kit-parts li { gap: 10px; padding: 7px 0; }
+.kit-parts li.alt { opacity: .55; }
+.kit-parts .name { font-size: 13px; }
+.kind-dot { flex: none; width: 12px; height: 12px; border-radius: 3px; border: 1px solid #0003; background: #d9d6c4; }
+.kind-dot.photo_etch { background: #b8b39e; border-radius: 1px; height: 4px; }
+.kind-dot.clear { background: #cfe6ff; border-radius: 50%; }
+.kind-dot.jig { background: #8ec9f0; }
+.tag { font-size: 11px; padding: 1px 5px; border-radius: 4px; background: #f3f4f6; color: #555; white-space: nowrap; }
 
 /* 서랍 */
 .drawer-head .count { margin-left: 4px; font-weight: 600; color: var(--sub); }

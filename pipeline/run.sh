@@ -2,7 +2,7 @@
 # 설명서 PDF/사진 → 시연 데이터.
 # 사용법: pipeline/run.sh <입력파일> <이름> [furniture|kit] [fixture.json]
 #   furniture: 판재 가구 → 3D 조립 애니메이션
-#   kit: 프라모델처럼 부품이 많은 설명서 → 원본 페이지 위 2D 단계 가이드
+#   kit: 프라모델(비행기) → 부품 자리별 3D 조립 애니메이션
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -13,7 +13,6 @@ fixture=${4:-}
 out=data/out/$name
 py=.venv/bin/python
 dpi=110
-[[ $mode == kit ]] && dpi=160
 
 echo "[1/4] 페이지 렌더링"
 $py pipeline/render.py "$src" "$out/pages" $dpi >/dev/null
@@ -29,17 +28,16 @@ else
   exit 1
 fi
 
+echo "[3/4] 3D 배치 계산"
 if [[ $mode == kit ]]; then
-  echo "[3/4] OCR로 부품 번호 위치 찾기"
-  (cd pipeline && ../$py kit_locate.py "../$out/manual.json" "../$src" "../$out/scene.json")
+  (cd pipeline && ../$py kit_layout.py "../$out/manual.json" "../$out/scene.json")
 else
-  echo "[3/4] 3D 배치 계산"
   $py pipeline/layout.py "$out/manual.json" "$out/scene.json"
 fi
 
 echo "[4/4] 뷰어로 복사"
 if [[ $mode == kit ]]; then
-  dest=web/public/demo/$name   # 키트 가이드: /?demo=<이름>
+  dest=web/public/demo/$name   # 키트 3D 조립: /?demo=<이름>
 else
   dest=web/public/demo         # 가구 뷰어(App.tsx)는 /demo/scene.json을 읽는다
 fi

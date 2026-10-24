@@ -63,11 +63,16 @@ HARDWARE = {
     "screwdriver": {"model": "screwdriver", "color": "#d9480f", "dims": {"shaft": 10, "shaft_d": 0.5, "grip": 10, "grip_d": 3}},
     "pencil": {"model": "pencil", "color": "#f2b705", "dims": {"length": 16, "d": 0.8}},
     "level": {"model": "spirit_level", "color": "#e8b923", "dims": {"long": 40, "width": 3.0, "t": 2.0}},
+    "drill": {"model": "drill", "color": "#2f7d6d", "dims": {
+        "bit": 6, "bit_d": 0.6, "chuck": 2, "body": 12, "body_d": 4, "grip": 9, "grip_w": 2.6}},
     "wall_mark": {"model": "wall_mark", "color": "#374151", "dims": {"size": 2.0, "line": 0.18}},
+    # 벽에 뚫린 나사 구멍. 지름은 벽 나사 나사산보다 조금 크고, 깊이는 나사가 박히는 길이만큼.
+    "wall_hole": {"model": "wall_hole", "color": "#2b2622", "dims": {"d": 0.6, "depth": 3.5}},
 }
 # 철물 종류별로 그림에 나오는 공구. 단계의 uses에 그 공구가 있을 때만 붙인다.
 TOOL_FOR = {"connector_screw": "100001", "dowel": "hammer", "euro_screw": "screwdriver",
-            "wall_screw": "screwdriver", "wall_mark": "pencil"}
+            "wall_screw": "screwdriver", "wall_mark": "pencil",
+            "wall_hole": "drill"}
 # 부품 번호를 모르면 종류별 대표 부품으로 그린다.
 KIND_FALLBACK = {"dowel": "101339", "cam_screw": "104321", "screw": "100372",
                  "bracket": "115753", "cover": "115754", "pad": "10002300", "tool": "100001"}
@@ -186,7 +191,7 @@ class Placer:
         if model == "spirit_level":
             # 왼쪽 옆판 바깥 면에 세로로 대고 수직을 본다(19쪽). 그 단계에서만 보인다.
             return [{"at": [-self.w / 2, self.h / 2, 0], "axis": [1, 0, 0], "up": [0, 1, 0], "transient": True}]
-        if model == "wall_mark":
+        if model in ("wall_mark", "wall_hole"):
             return [{"at": [x + s * b["wall"] / 2, y + wall_screw_dy(), self.wall_z], "axis": [0, 0, -1]}
                     for (x, y, _), s in sides][:qty]
         return []
@@ -233,6 +238,8 @@ def build_scene(manual: Manual) -> dict:
     steps = []
     placed: dict[str, list[dict]] = {}  # 모델별로 이미 놓인 철물(나중에 다시 조일 때)
     last_added: list[str] = []
+    wall_from = min((s.number for s in manual.steps
+                     if any(kinds[u.part_id].kind == "bracket" for u in s.uses)), default=None)
     for i, step in enumerate(manual.steps):
         tools = {u.part_id for u in step.uses if kinds[u.part_id].kind == "tool"}
         models = []
@@ -245,6 +252,10 @@ def build_scene(manual: Manual) -> dict:
             models.append(("level", "tool", 1))
         if "pencil" in tools and all(pid == "level" for pid, _, _ in models):
             models.append(("wall_mark", "tool", len(placer.bracket_origins)))
+        # 드릴을 쓰는 단계: 벽 나사를 박기 전에 표시한 자리마다 구멍부터 뚫는다(19쪽).
+        if "drill" in tools:
+            screws = sum(qty for pid, kind, qty in models if hardware(pid, kind)["model"] == "wall_screw")
+            models.insert(0, ("wall_hole", "tool", screws))
         small = []
         for part_id, kind, qty in models:
             spec = hardware(part_id, kind)
@@ -262,7 +273,8 @@ def build_scene(manual: Manual) -> dict:
                 small += [{**s, "tool": "screwdriver", "travel": 0.3} for s in placed.get("wall_screw", [])]
         # 이미 붙은 판을 다시 끝까지 밀어 넣는 단계(15쪽 7단계는 5단계 그림 반복).
         # 벽에 건 뒤 아무것도 쓰지 않는 마지막 단계는 걸린 완성 모습만 보여 준다.
-        wall = step.number >= 12
+        # 벽은 벽 고정 브래킷을 다는 단계부터 보인다(그때부터 선반이 벽 앞에 선다).
+        wall = wall_from is not None and step.number >= wall_from
         reseat = last_added[-1:] if not step.adds and not small and not wall else []
         last_added += step.adds
         pulls_wall_screws = any(s["model"] == "wall_screw" and "travel" not in s for s in small)
@@ -273,6 +285,8 @@ def build_scene(manual: Manual) -> dict:
             "reseat": reseat,
             "pose": "lying" if step.number <= lying_until else "upright",
             "wall": wall,
+            # 벽에 건 뒤 아무것도 하지 않는 마지막 단계는 물건을 채운 방 안 모습으로 보여 준다.
+            "room": wall and i == len(manual.steps) - 1 and not step.uses and not step.adds,
             # 벽 나사를 박을 때는 선반을 옆으로 비켜 둔다(19쪽 13단계 그림에 가구가 없다).
             "unit_offset": [UNIT_PULL, 0, 0] if pulls_wall_screws else [0, 0, 0],
         })

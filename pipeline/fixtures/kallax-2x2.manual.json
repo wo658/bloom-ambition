@@ -22,7 +22,8 @@
     {"id": "hammer", "kind": "tool", "name_ko": "망치 (미포함)", "qty": 1, "role": null, "page": 12},
     {"id": "screwdriver", "kind": "tool", "name_ko": "십자 드라이버 (미포함)", "qty": 1, "role": null, "page": 18},
     {"id": "pencil", "kind": "tool", "name_ko": "연필 (미포함)", "qty": 1, "role": null, "page": 19},
-    {"id": "level", "kind": "tool", "name_ko": "수평계 (미포함)", "qty": 1, "role": null, "page": 19}
+    {"id": "level", "kind": "tool", "name_ko": "수평계 (미포함)", "qty": 1, "role": null, "page": 19},
+    {"id": "drill", "kind": "tool", "name_ko": "전동 드릴 (미포함)", "qty": 1, "role": null, "page": 19}
   ],
   "steps": [
     {"number": 1, "page": 11, "caption_ko": "바닥에 담요를 까세요.\n바닥판과 왼쪽 옆판을 ㄱ자로 맞대세요.\n작은 구멍이 있는 모서리가 담요 쪽으로 가게 놓으세요.\n바닥판 바깥 구멍으로 긴 연결 볼트 2개를 넣고 육각 렌치로 시계 방향으로 조이세요.", "adds": ["outer_bottom", "outer_left"], "uses": [{"part_id": "104321", "qty": 2}, {"part_id": "100001", "qty": 1}], "warning_ko": null, "confidence": 0.8},
@@ -35,9 +36,9 @@
     {"number": 8, "page": 15, "caption_ko": "오른쪽 옆판을 선반 끝의 나무못에 맞춰 밀어 끼우세요.\n확대 그림처럼 구멍이 있는 면이 안쪽을 향하게 하세요.", "adds": ["outer_right"], "uses": [], "warning_ko": null, "confidence": 0.8},
     {"number": 9, "page": 16, "caption_ko": "윗판을 칸막이 끝 나무못에 맞춰 얹으세요.\n남은 세 모서리에 긴 연결 볼트를 2개씩, 모두 6개를 육각 렌치로 시계 방향으로 끝까지 조이세요.", "adds": ["outer_top"], "uses": [{"part_id": "104321", "qty": 6}, {"part_id": "100001", "qty": 1}], "warning_ko": null, "confidence": 0.6},
     {"number": 10, "page": 17, "caption_ko": "틀을 눕힌 채로 바닥판 바깥 면 네 모서리에 펠트 패드 4개를 붙이세요.\n그다음 선반을 세우세요.\n벽에 걸어 쓰려면 21쪽부터 따라 하세요.", "adds": [], "uses": [{"part_id": "10002300", "qty": 4}], "warning_ko": null, "confidence": 0.8},
-    {"number": 11, "page": 18, "caption_ko": "왼쪽 옆판 안쪽 면과 가운데 칸막이 오른쪽 면의 윗판 바로 아래 뒤쪽 모서리에 벽 고정 브래킷을 하나씩 대세요.\n짧은 나사를 2개씩, 모두 4개를 십자 드라이버로 조이세요.", "adds": [], "uses": [{"part_id": "115753", "qty": 2}, {"part_id": "100372", "qty": 4}, {"part_id": "screwdriver", "qty": 1}], "warning_ko": "가구가 넘어지면 크게 다칠 수 있어요.\n반드시 벽에 고정하고, 아이가 올라타거나 매달리지 않게 하세요.", "confidence": 0.8},
+    {"number": 11, "page": 18, "caption_ko": "왼쪽·오른쪽 옆판 안쪽 면의 윗판 바로 아래 뒤쪽 모서리에 벽 고정 브래킷을 하나씩 대세요.\n짧은 나사를 2개씩, 모두 4개를 십자 드라이버로 조이세요.", "adds": [], "uses": [{"part_id": "115753", "qty": 2}, {"part_id": "100372", "qty": 4}, {"part_id": "screwdriver", "qty": 1}], "warning_ko": "가구가 넘어지면 크게 다칠 수 있어요.\n반드시 벽에 고정하고, 아이가 올라타거나 매달리지 않게 하세요.", "confidence": 0.8},
     {"number": 12, "page": 19, "caption_ko": "선반을 벽에 붙여 똑바로 세우고 수평계로 수직을 확인하세요.\n벽 고정 브래킷 2개의 가운데 구멍에 연필을 넣어 벽에 위치를 표시하세요.", "adds": [], "uses": [{"part_id": "level", "qty": 1}, {"part_id": "pencil", "qty": 1}], "warning_ko": null, "confidence": 0.6},
-    {"number": 13, "page": 19, "caption_ko": "선반을 잠시 옆으로 비켜 두세요.\n표시한 두 곳에 머리가 둥근 벽용 나사를 박되, 머리가 조금 튀어나오게 남겨 두세요.\n접시머리 나사는 쓰지 마세요.", "adds": [], "uses": [{"part_id": "wall_screw", "qty": 2}], "warning_ko": "벽용 나사는 들어 있지 않아요.\n벽 재질에 맞는 나사를 따로 준비하세요.", "confidence": 0.7},
+    {"number": 13, "page": 19, "caption_ko": "선반을 잠시 옆으로 비켜 두세요.\n표시한 두 곳에 드릴로 구멍을 뚫고, 머리가 둥근 벽용 나사를 박되, 머리가 조금 튀어나오게 남겨 두세요.\n접시머리 나사는 쓰지 마세요.", "adds": [], "uses": [{"part_id": "drill", "qty": 1}, {"part_id": "wall_screw", "qty": 2}], "warning_ko": "벽용 나사는 들어 있지 않아요.\n벽 재질에 맞는 나사를 따로 준비하세요.", "confidence": 0.7},
     {"number": 14, "page": 20, "caption_ko": "선반을 다시 벽에 붙이세요.\n벽 나사 머리에 고리 판을 끼워 걸고 위치를 맞춘 뒤 드라이버로 벽 나사를 시계 방향으로 조이세요.\n2곳 모두 같은 방법으로 하고, 마지막으로 브래킷 커버를 옆에서 밀어 끼우세요.", "adds": [], "uses": [{"part_id": "103693", "qty": 2}, {"part_id": "115754", "qty": 2}, {"part_id": "screwdriver", "qty": 1}], "warning_ko": null, "confidence": 0.7},
     {"number": 15, "page": 20, "caption_ko": "완성이에요.\n선반이 벽에 걸린 모습을 확인하고, 앞으로 살짝 당겨 단단히 고정됐는지 살펴보세요.", "adds": [], "uses": [], "warning_ko": null, "confidence": 1.0}
   ],

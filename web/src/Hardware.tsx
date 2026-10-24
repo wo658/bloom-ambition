@@ -11,7 +11,7 @@ type Props = { dims: Dims; material: THREE.Material; accent: THREE.Material; ren
 export const METAL: HardwareModel[] = ["connector_screw", "euro_screw", "wall_screw", "hook_plate", "hex_key"];
 export const SPINS: HardwareModel[] = ["connector_screw", "euro_screw", "wall_screw"];
 // 부품에 들어 있지 않거나 소모되지 않는 공구. 단계 동작을 보여 줄 때만 잠깐 그린다.
-export const TOOLS: HardwareModel[] = ["hex_key", "hammer", "screwdriver", "pencil", "spirit_level"];
+export const TOOLS: HardwareModel[] = ["hex_key", "hammer", "screwdriver", "pencil", "spirit_level", "drill"];
 
 const v2 = (x: number, y: number) => new THREE.Vector2(x, y);
 
@@ -323,6 +323,54 @@ function WallMark({ dims: d, material, renderOrder }: Props) {
   );
 }
 
+// 전동 드릴: 원점이 드릴 날 끝, 날·척·몸통은 -Y로 뻗고 손잡이는 몸통 뒤쪽에서 -Z(아래)로 내려온다.
+// 날만 "drill-bit"라는 이름의 묶음에 넣어 장면에서 따로 돌릴 수 있게 한다.
+function Drill({ dims: d, material, accent, renderOrder }: Props) {
+  const back = d.bit + d.chuck;
+  return (
+    <>
+      <group name="drill-bit">
+        <mesh position={[0, -d.bit / 2, 0]} material={accent} renderOrder={renderOrder}>
+          <cylinderGeometry args={[d.bit_d / 2, d.bit_d / 2, d.bit, 10]} />
+        </mesh>
+        {/* 비틀린 홈 대신 납작한 날개를 하나 붙여서 도는 게 보이게 한다. */}
+        <mesh position={[0, -d.bit / 2 + 0.3, 0]} material={accent} renderOrder={renderOrder}>
+          <boxGeometry args={[d.bit_d * 1.25, d.bit - 0.6, d.bit_d * 0.3]} />
+        </mesh>
+      </group>
+      <mesh position={[0, -d.bit - d.chuck / 2, 0]} material={accent} renderOrder={renderOrder}>
+        <cylinderGeometry args={[d.body_d * 0.22, d.body_d * 0.3, d.chuck, 16]} />
+      </mesh>
+      <mesh position={[0, -back - d.body / 2, 0]} material={material} renderOrder={renderOrder}>
+        <cylinderGeometry args={[d.body_d / 2 * 0.9, d.body_d / 2, d.body, 20]} />
+      </mesh>
+      <mesh position={[0, -back - d.body * 0.75, -d.body_d / 2 - d.grip / 2 + 0.6]} rotation={[0.25, 0, 0]}
+        material={material} renderOrder={renderOrder}>
+        <boxGeometry args={[d.grip_w * 0.8, d.grip_w, d.grip]} />
+      </mesh>
+      {/* 손잡이 아래 배터리 */}
+      <mesh position={[0, -back - d.body * 0.82, -d.body_d / 2 - d.grip - 0.6]} material={accent} renderOrder={renderOrder}>
+        <boxGeometry args={[d.grip_w * 1.3, d.grip_w * 2.2, 2]} />
+      </mesh>
+    </>
+  );
+}
+
+// 벽에 뚫은 구멍: 벽 면(원점)에 그린 어두운 원과 그 둘레에 묻은 옅은 가루.
+function WallHole({ dims: d, material, renderOrder }: Props) {
+  return (
+    <>
+      <mesh position={[0, -0.03, 0]} rotation={[Math.PI / 2, 0, 0]} material={material} renderOrder={renderOrder + 1}>
+        <circleGeometry args={[d.d / 2, 20]} />
+      </mesh>
+      <mesh position={[0, -0.02, 0]} rotation={[Math.PI / 2, 0, 0]} renderOrder={renderOrder}>
+        <ringGeometry args={[d.d / 2, d.d * 1.3, 20]} />
+        <meshBasicMaterial color="#d8d2c8" transparent opacity={0.8} side={THREE.DoubleSide} />
+      </mesh>
+    </>
+  );
+}
+
 const MODELS: Record<HardwareModel, (p: Props) => React.JSX.Element> = {
   connector_screw: ConnectorScrew,
   euro_screw: EuroScrew,
@@ -338,6 +386,8 @@ const MODELS: Record<HardwareModel, (p: Props) => React.JSX.Element> = {
   pencil: Pencil,
   wall_mark: WallMark,
   spirit_level: SpiritLevel,
+  drill: Drill,
+  wall_hole: WallHole,
 };
 
 export function HardwareMesh({ part, ...props }: Omit<Props, "dims"> & { part: Pick<SmallPart, "model" | "dims"> }) {

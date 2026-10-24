@@ -242,6 +242,19 @@ export default function App() {
 
   // ▶ 재생 = 데모 시나리오(Tour). 부품 확인부터 완성까지 단계를 넘기며 기능을 차례로 보여 주고 자막이 따라간다.
   // 열자마자 튼다. 오프닝이 켜져 있으면(기본, App을 뒤에 미리 띄워 둔다) 오프닝이 끝난 뒤에 튼다. ?step=N·?tour=0이면 틀지 않는다.
+  // 드래그가 끝났다는 신호(OrbitControls onEnd)를 놓치면 화면 카드가 흐린 채 클릭을 안 받는다(재생 버튼도). 손을 떼면 늘 풀어 준다.
+  useEffect(() => {
+    const release = () => setDragging(false);
+    window.addEventListener("pointerup", release);
+    window.addEventListener("pointercancel", release);
+    window.addEventListener("blur", release);
+    return () => {
+      window.removeEventListener("pointerup", release);
+      window.removeEventListener("pointercancel", release);
+      window.removeEventListener("blur", release);
+    };
+  }, []);
+
   const tourView = useTourView();
   const resumeAt = useTourResume(); // 사용자가 조작해 멈춘 장면(0이면 처음부터)
   useTourKeys();

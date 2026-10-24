@@ -240,7 +240,8 @@ export default function App() {
     return afterSpeech(ms, () => go(1));
   }, [autoplay, stepIndex, scene, go]);
 
-  // ▶ 재생 = 데모 시나리오(Tour). 부품 확인부터 완성까지 단계를 넘기며 기능을 차례로 보여 주고 자막이 따라간다. ?tour=1이면 열자마자 튼다.
+  // ▶ 재생 = 데모 시나리오(Tour). 부품 확인부터 완성까지 단계를 넘기며 기능을 차례로 보여 주고 자막이 따라간다.
+  // 열자마자 튼다. 단, 오프닝(?intro: App을 뒤에 미리 띄워 둔다)·특정 단계 링크(?step=N)·?tour=0이면 틀지 않는다.
   const tourView = useTourView();
   useTourKeys();
   const sceneRef = useRef(scene);
@@ -257,7 +258,8 @@ export default function App() {
     startTour(api);
   }, []);
   useEffect(() => {
-    if (scene && new URLSearchParams(location.search).has("tour")) playTour();
+    const q = new URLSearchParams(location.search);
+    if (scene && q.get("tour") !== "0" && !q.has("intro") && !q.has("step")) playTour();
   }, [!!scene]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 채팅·원본 PDF 위젯에 지금 단계를 알리고, 채팅의 "N단계" 링크로 이동한다.

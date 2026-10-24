@@ -128,7 +128,8 @@
   "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "A demo that shows every feature in turn (press → to advance)",
   "자동 재생": "Autoplay",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Autoplay off: press → to advance",
-  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Autoplay on: advances automatically when each scene ends"
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Autoplay on: advances automatically when each scene ends",
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "The hardware at the bottom is shown at {n} times actual size (panels are actual size)."
  },
  "ja": {
   "N단계": "Nステップ",
@@ -259,7 +260,8 @@
   "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "すべての機能を順に紹介するデモ（→ で進む）",
   "자동 재생": "自動再生",
   "자동 재생 끄기: → 를 눌러 넘겨요": "自動再生オフ：→ を押して進みます",
-  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "自動再生オン：シーンが終わると自動で進みます"
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "自動再生オン：シーンが終わると自動で進みます",
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "底面の金具は実物の{n}倍の大きさです（板材は実物大）"
  },
  "zh-CN": {
   "N단계": "第N步",
@@ -390,7 +392,8 @@
   "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "依次展示所有功能的演示（按 → 翻页）",
   "자동 재생": "自动播放",
   "자동 재생 끄기: → 를 눌러 넘겨요": "关闭自动播放：按 → 翻页",
-  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "开启自动播放：场景结束后自动翻页"
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "开启自动播放：场景结束后自动翻页",
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "底部的五金件是实际尺寸的{n}倍（板材为实际尺寸）"
  },
  "zh-TW": {
   "N단계": "第N步",
@@ -521,7 +524,8 @@
   "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "依序展示所有功能的示範（按 → 翻頁）",
   "자동 재생": "自動播放",
   "자동 재생 끄기: → 를 눌러 넘겨요": "關閉自動播放：按 → 翻頁",
-  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "開啟自動播放：場景結束後自動跳到下一個"
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "開啟自動播放：場景結束後自動跳到下一個",
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "底部的五金件為實際的{n}倍大小（板材為實際大小）"
  },
  "es": {
   "N단계": "Paso N",
@@ -652,7 +656,8 @@
   "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "Demo que muestra todas las funciones en orden (pasa con →)",
   "자동 재생": "Reproducción automática",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Reproducción automática desactivada: pulsa → para avanzar",
-  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Reproducción automática activada: al terminar la escena, avanza sola"
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Reproducción automática activada: al terminar la escena, avanza sola",
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Los herrajes del suelo se muestran a {n} veces su tamaño real (los tableros, a tamaño real)"
  },
  "fr": {
   "N단계": "Étape N",
@@ -783,7 +788,8 @@
   "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "Démo qui présente toutes les fonctions une à une (→ pour avancer)",
   "자동 재생": "Lecture automatique",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Lecture automatique désactivée : appuyez sur → pour avancer",
-  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Lecture automatique activée : passage automatique à la fin de chaque scène"
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Lecture automatique activée : passage automatique à la fin de chaque scène",
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "La quincaillerie en bas est représentée à {n} fois sa taille réelle (les panneaux sont à taille réelle)"
  },
  "de": {
   "N단계": "Schritt N",
@@ -914,7 +920,8 @@
   "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "Demo, die alle Funktionen nacheinander zeigt (mit → weiterblättern)",
   "자동 재생": "Automatische Wiedergabe",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Automatische Wiedergabe aus: Mit → weiterblättern",
-  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Automatische Wiedergabe an: Nach jeder Szene geht es automatisch weiter"
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Automatische Wiedergabe an: Nach jeder Szene geht es automatisch weiter",
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Die Beschläge unten sind {n}-mal so groß wie in Wirklichkeit dargestellt (Platten in Originalgröße)."
  },
  "vi": {
   "N단계": "Bước N",
@@ -1045,7 +1052,8 @@
   "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "Bản demo lần lượt giới thiệu mọi tính năng (nhấn → để chuyển tiếp)",
   "자동 재생": "Tự động phát",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Tắt tự động phát: nhấn → để chuyển tiếp",
-  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Bật tự động phát: hết cảnh sẽ tự chuyển tiếp"
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Bật tự động phát: hết cảnh sẽ tự chuyển tiếp",
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Phụ kiện kim loại ở dưới đáy lớn gấp {n} lần kích thước thật (tấm ván là kích thước thật)"
  },
  "id": {
   "N단계": "Langkah N",
@@ -1176,6 +1184,7 @@
   "모든 기능을 차례로 보여 주는 데모 (→ 로 넘기기)": "Demo yang menampilkan semua fitur secara berurutan (geser dengan →)",
   "자동 재생": "Putar otomatis",
   "자동 재생 끄기: → 를 눌러 넘겨요": "Putar otomatis mati: tekan → untuk lanjut",
-  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Putar otomatis aktif: lanjut sendiri saat adegan selesai"
+  "자동 재생 켜기: 장면이 끝나면 저절로 넘어가요": "Putar otomatis aktif: lanjut sendiri saat adegan selesai",
+  "바닥의 철물은 실제의 {n}배 크기예요(판재는 실제 크기)": "Perangkat logam di bagian bawah ditampilkan {n} kali ukuran sebenarnya (papan dalam ukuran sebenarnya)"
  }
 }

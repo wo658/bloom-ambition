@@ -158,6 +158,7 @@ function Hero({ onDropped, leaving }: { onDropped: () => void; leaving: boolean 
       <div className="op-hero-body">
         <p className="op-brand"><LogoMark size={28} />Stepcast</p>
         <h1>브랜드의 PDF 설명서를,<br />고객이 따라 하는 3D 안내로.</h1>
+        <p className="op-en" lang="en">Paper manuals in. 3D guides out.</p>
         <div className="op-stage-row">
           <div ref={zone} className={`op-drop ${over ? "over" : ""} ${taken ? "taken" : ""}`} onClick={accept}
             onPointerEnter={() => setTouched(true)}>

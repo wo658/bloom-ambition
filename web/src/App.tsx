@@ -2,8 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { ContactShadows, OrbitControls } from "@react-three/drei";
 import gsap from "gsap";
+import * as THREE from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import Assembly, { type RenderStyle } from "./Assembly";
+import Assembly, { stepDuration, stepFocus, type RenderStyle } from "./Assembly";
 import { HardwareThumb, PanelThumb } from "./PartThumb";
 import PartsInventory from "./PartsInventory";
 import type { Scene } from "./types";
@@ -23,17 +24,35 @@ function pageUrl(page: number) {
   return `${DEMO}/pages/page-${String(page).padStart(2, "0")}.png`;
 }
 
-// 시점 초기화 버튼을 누를 때마다 카메라를 기본 위치로 부드럽게 돌려놓는다.
-function CameraRig({ resetKey }: { resetKey: number }) {
+const HOME_DIRECTION = new THREE.Vector3(...HOME_CAMERA).sub(new THREE.Vector3(...HOME_TARGET));
+const HOME_DISTANCE = HOME_DIRECTION.length();
+// 세운 뒤에는 칸 안쪽(브래킷)과 벽이 보이도록 앞에서 윗판보다 낮게 들여다본다.
+const FRONT_DIRECTION = new THREE.Vector3(0.4, -0.06, 1).normalize();
+const FOCUS_MIN = 70; // 작은 부품에 다가갈 때 가장 가까운 거리
+
+// 단계가 바뀌면 그 단계에서 움직이는 부품 쪽으로 다가가고, 시점 초기화 버튼을 누르면 기본 위치로 돌아간다.
+function CameraRig({ resetKey, scene, stepIndex }: { resetKey: number; scene: Scene; stepIndex: number }) {
   const { camera, controls } = useThree();
-  useEffect(() => {
-    if (resetKey === 0) return;
+  const fly = (position: THREE.Vector3, target: THREE.Vector3) => {
     const orbit = controls as unknown as OrbitControlsImpl | null;
     const tl = gsap.timeline({ onUpdate: () => orbit?.update() });
-    tl.to(camera.position, { x: HOME_CAMERA[0], y: HOME_CAMERA[1], z: HOME_CAMERA[2], duration: 0.9, ease: "power2.inOut" }, 0);
-    if (orbit) tl.to(orbit.target, { x: HOME_TARGET[0], y: HOME_TARGET[1], z: HOME_TARGET[2], duration: 0.9, ease: "power2.inOut" }, 0);
+    tl.to(camera.position, { x: position.x, y: position.y, z: position.z, duration: 0.9, ease: "power2.inOut" }, 0);
+    if (orbit) tl.to(orbit.target, { x: target.x, y: target.y, z: target.z, duration: 0.9, ease: "power2.inOut" }, 0);
     return () => { tl.kill(); };
+  };
+  const home = () => fly(new THREE.Vector3(...HOME_CAMERA), new THREE.Vector3(...HOME_TARGET));
+  useEffect(() => {
+    if (resetKey === 0) return;
+    return home();
   }, [resetKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const focus = stepFocus(scene, stepIndex);
+    if (!focus) return home();
+    const target = new THREE.Vector3(...focus.center);
+    const distance = Math.min(HOME_DISTANCE, Math.max(FOCUS_MIN, focus.radius * 4.5));
+    const direction = scene.steps[stepIndex].pose === "upright" ? FRONT_DIRECTION : HOME_DIRECTION.clone().normalize();
+    return fly(target.clone().addScaledVector(direction, distance), target);
+  }, [scene, stepIndex]); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 
@@ -81,7 +100,8 @@ export default function App() {
       setAutoplay(false);
       return;
     }
-    const timer = setTimeout(() => go(1), 3500);
+    // 단계마다 부품을 하나씩 조이는 시간이 달라서, 애니메이션이 끝나고 잠깐 쉰 뒤 넘긴다.
+    const timer = setTimeout(() => go(1), (stepDuration(scene.steps[stepIndex]) + 1.5) * 1000);
     return () => clearTimeout(timer);
   }, [autoplay, stepIndex, scene, go]);
 
@@ -129,7 +149,7 @@ export default function App() {
         <ContactShadows position={[0, 0.1, 0]} scale={220} blur={2.4} opacity={0.3} />
         <OrbitControls target={HOME_TARGET} makeDefault
           onStart={() => setDragging(true)} onEnd={() => setDragging(false)} />
-        <CameraRig resetKey={resetKey} />
+        <CameraRig resetKey={resetKey} scene={scene} stepIndex={stepIndex} />
       </Canvas>
 
       {/* 상단: 제품명과 진행 상황 */}

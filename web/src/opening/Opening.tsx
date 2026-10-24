@@ -304,10 +304,16 @@ function Status({ steps }: { steps: number }) {
   );
 }
 
+// 생성(설명서 → 3D) → 검수(초안 준비 완료) → 고객 체험(부품 확인 화면). 시계에 맞춰 지금 단계에 불이 들어온다.
+const JOURNEY = ["생성", "검수", "고객 체험"];
 function Journey() {
+  const stage = useClock((t) => (t >= T.checklist ? 2 : t >= T.ready ? 1 : 0));
   return (
     <nav className="op-journey" aria-label="체험 순서">
-      <span className="on">생성</span><i>→</i><span>검수</span><i>→</i><span>고객 체험</span>
+      {JOURNEY.flatMap((name, i) => [
+        ...(i ? [<i key={`to-${i}`}>→</i>] : []),
+        <span key={name} className={i === stage ? "on" : ""}>{name}</span>,
+      ])}
     </nav>
   );
 }

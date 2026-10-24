@@ -5,13 +5,17 @@ import gsap from "gsap";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import Assembly, { stepDuration, stepFocus, type RenderStyle } from "./Assembly";
+import Assembly, { motionTiming, partFocus, stepDuration, stepFocus, type RenderStyle, type Spotlight } from "./Assembly";
 import { HardwareThumb, PanelThumb } from "./PartThumb";
 import PartsInventory from "./PartsInventory";
 import type { Scene } from "./types";
-import { onGoToStep, setCurrentStep } from "./bridge";
+import { onGoToStep, onPlayExplode, onPlayPartMotion, onReplayStep, playExplode, playPartMotion, setCurrentStep, type MotionTarget } from "./bridge";
+import Explode from "./Explode";
+import { mentionPart, partTag, smallTag } from "./partTags";
 import DemoSwitcher from "./DemoSwitcher";
 import ChatPanel from "./ChatPanel";
+import ChangeScene, { useCompareView } from "./ChangeScene";
+import ChangeHud, { CompareBadge, CompareCard, CompareTimeline } from "./ChangeHud";
 import LangBar from "./LangBar";
 import { afterSpeech, t, useLang, useSpeak } from "./lang";
 import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
@@ -34,40 +38,92 @@ const HOME_DISTANCE = HOME_DIRECTION.length();
 // 세운 뒤에는 칸 안쪽(브래킷)과 벽이 보이도록 앞에서 윗판보다 낮게 들여다본다.
 const FRONT_DIRECTION = new THREE.Vector3(0.4, -0.06, 1).normalize();
 const FOCUS_MIN = 70; // 작은 부품에 다가갈 때 가장 가까운 거리
+const PART_MIN = 45; // 부품 모션으로 나무못 하나에 다가갈 때 가장 가까운 거리
+const PART_FILL = 0.5; // 부품 모션 클로즈업에서 주인공(과 공구)이 화면 짧은 쪽을 차지하는 비율
+const UP = new THREE.Vector3(0, 1, 0);
+const SPOTLIGHT_HOLD_MS = 3000; // 부품 모션이 끝나고 강조를 남겨 두는 시간
 // 부품 확인은 바닥에 펼친 부품을 비스듬히 내려다본다.
 const PREP_DIRECTION = new THREE.Vector3(0.15, 1.25, 1).normalize();
 const PREP = -1; // 1단계 앞의 부품 확인 단계
 const PREP_AUTOPLAY_MS = 4000;
 const PREP_CAPTION = "부품을 모두 꺼내 바닥에 펼치세요.\n목록과 개수를 하나씩 맞춰 보며 체크하세요.\n모자라면 조립을 시작하기 전에 매장에 문의하세요.";
 
+// 채팅이 고른 부품 모션. key는 같은 부품을 다시 눌러도 카메라·애니메이션이 다시 돌게 한다.
+type Motion = { target: MotionTarget; stepIndex: number; label: string; key: number };
+
+// 보여 줄 단계: 판은 처음 끼우는 단계(없으면 다시 끼우는 단계), 철물 하나는 그것이 처음 나오는 단계,
+// 철물 종류는 처음 박는 단계(3D가 없으면 목록에 처음 나오는 단계).
+function motionStep(scene: Scene, t: MotionTarget) {
+  const find = (f: (s: Scene["steps"][number]) => boolean) => scene.steps.findIndex(f);
+  if (t.kind === "panel") {
+    const i = find((s) => s.adds.includes(t.id));
+    return i >= 0 ? i : find((s) => !!s.reseat?.includes(t.id));
+  }
+  const i = t.instance ? find((s) => s.small.some((x) => x.id === t.instance)) : -1;
+  if (i >= 0) return i;
+  const j = find((s) => s.small.some((x) => x.part_id === t.id));
+  return j >= 0 ? j : find((s) => s.uses.some((u) => u.part_id === t.id));
+}
+
 // 단계가 바뀌면 그 단계에서 움직이는 부품 쪽으로 다가가고, 시점 초기화 버튼을 누르면 기본 위치로 돌아간다.
-function CameraRig({ resetKey, scene, stepIndex, prep }: { resetKey: number; scene: Scene; stepIndex: number; prep: Layout }) {
+// 부품 모션이 오면(motionKey가 바뀌면) 단계 전체 대신 그 부품 하나에 바짝 다가간다.
+// 분해도(exploding)·수정안 비교(comparing)가 카메라를 쥐고 있는 동안에는 단계 비행을 하지 않고, 비교가 끝나면 단계 시점으로 돌아온다.
+function CameraRig({ resetKey, scene, stepIndex, prep, motion, motionKey, exploding, comparing }: {
+  resetKey: number; scene: Scene; stepIndex: number; prep: Layout; motion: Motion | null; motionKey: number; exploding: boolean;
+  comparing: boolean;
+}) {
   const { camera, controls } = useThree();
-  const fly = (position: THREE.Vector3, target: THREE.Vector3) => {
+  const fly = (position: THREE.Vector3, target: THREE.Vector3, duration = 0.9) => {
     const orbit = controls as unknown as OrbitControlsImpl | null;
     const tl = gsap.timeline({ onUpdate: () => orbit?.update() });
-    tl.to(camera.position, { x: position.x, y: position.y, z: position.z, duration: 0.9, ease: "power2.inOut" }, 0);
-    if (orbit) tl.to(orbit.target, { x: target.x, y: target.y, z: target.z, duration: 0.9, ease: "power2.inOut" }, 0);
+    tl.to(camera.position, { x: position.x, y: position.y, z: position.z, duration, ease: "power2.inOut" }, 0);
+    if (orbit) tl.to(orbit.target, { x: target.x, y: target.y, z: target.z, duration, ease: "power2.inOut" }, 0);
     return () => { tl.kill(); };
   };
   const home = () => fly(new THREE.Vector3(...HOME_CAMERA), new THREE.Vector3(...HOME_TARGET));
-  useEffect(() => {
-    if (resetKey === 0) return;
-    return home();
-  }, [resetKey]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (stepIndex === PREP) {
-      // 오른쪽 체크리스트에 가리지 않도록 중심을 조금 오른쪽에 두어 부품이 화면 왼쪽으로 오게 한다.
-      const target = new THREE.Vector3(prep.radius * 0.42, 0, prep.radius * 0.1);
-      return fly(target.clone().addScaledVector(PREP_DIRECTION, prep.radius * 2.8), target);
-    }
+  // 단계 전체(움직이는 부품들)를 담는 시점.
+  const stepView = (duration?: number) => {
     const focus = stepFocus(scene, stepIndex);
     if (!focus) return home();
     const target = new THREE.Vector3(...focus.center);
     const distance = Math.min(HOME_DISTANCE, Math.max(FOCUS_MIN, focus.radius * 4.5));
     const direction = scene.steps[stepIndex].pose === "upright" ? FRONT_DIRECTION : HOME_DIRECTION.clone().normalize();
-    return fly(target.clone().addScaledVector(direction, distance), target);
-  }, [scene, stepIndex, prep]); // eslint-disable-line react-hooks/exhaustive-deps
+    return fly(target.clone().addScaledVector(direction, distance), target, duration);
+  };
+  useEffect(() => {
+    if (resetKey === 0) return;
+    return home();
+  }, [resetKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (exploding || comparing) return;
+    if (stepIndex === PREP) {
+      // 오른쪽 체크리스트에 가리지 않도록 중심을 조금 오른쪽에 두어 부품이 화면 왼쪽으로 오게 한다.
+      const target = new THREE.Vector3(prep.radius * 0.42, 0, prep.radius * 0.1);
+      return fly(target.clone().addScaledVector(PREP_DIRECTION, prep.radius * 2.8), target);
+    }
+    // 강조가 시간이 지나 꺼져도(motion=null) 카메라는 그대로 두고, 단계·motionKey가 바뀔 때만 다시 난다.
+    const part = motion?.stepIndex === stepIndex ? partFocus(scene, stepIndex, motion.target) : null;
+    if (!motion || !part) return stepView();
+    // 부품 모션: 주인공에 바짝 다가가 느린 동작을 보여 주고, 끝나면 천천히 물러나 단계 전체를 보여 준다.
+    const step = scene.steps[stepIndex];
+    const target = new THREE.Vector3(...part.center);
+    let direction = step.pose === "upright" ? FRONT_DIRECTION.clone() : HOME_DIRECTION.clone().normalize();
+    if (part.axis && step.pose !== "upright") {
+      // 누운 가구는 위가 칸 입구라 위에서 내려다보면 판에 가리지 않는다. 박는 축과는 비스듬히 서서 망치질을 옆에서 본다.
+      const axis = new THREE.Vector3(...part.axis).normalize();
+      direction.addScaledVector(axis, -direction.dot(axis)).normalize()
+        .addScaledVector(UP, 0.8).addScaledVector(axis, -0.25).normalize();
+    }
+    // 채팅을 열어 화면이 좁아져도 잘리지 않게 좁은 쪽 시야각으로 거리를 잡는다.
+    const cam = camera as THREE.PerspectiveCamera;
+    const half = THREE.MathUtils.degToRad(cam.fov / 2);
+    const narrow = Math.min(half, Math.atan(Math.tan(half) * cam.aspect));
+    const distance = Math.min(HOME_DISTANCE, Math.max(PART_MIN, part.radius / PART_FILL / Math.tan(narrow)));
+    const back = fly(target.clone().addScaledVector(direction, distance), target, 1.1);
+    let pull: (() => void) | null = null;
+    const timer = gsap.delayedCall(motionTiming(step, motion.target).focusEnd, () => { pull = stepView(1.6); });
+    return () => { back(); timer.kill(); pull?.(); };
+  }, [scene, stepIndex, prep, motionKey, comparing]); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 
@@ -99,6 +155,11 @@ export default function App() {
   const [showInventory, setShowInventory] = useState(false);
   const [checked, setChecked] = useState<Set<string>>(() => new Set());
   const [hoverPart, setHoverPart] = useState<string | null>(null);
+  const [motion, setMotion] = useState<Motion | null>(null);
+  const motionKey = useRef(0);
+  // 분해도 연출. key가 바뀌면 처음부터 다시 튼다. step은 시작한 단계(마지막 단계)라, 다른 단계로 가면 바로 끝난다.
+  const [explode, setExplode] = useState<{ key: number; step: number } | null>(null);
+  const explodeKey = useRef(0);
   const labelEls = useRef(new Map<string, HTMLElement>());
   const appRef = useRef<HTMLDivElement>(null);
   const { lang, voiceOn, translating } = useLang(DEMO, scene);
@@ -122,7 +183,7 @@ export default function App() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") go(1);
       if (e.key === "ArrowLeft") go(-1);
-      if (e.key === " ") { e.preventDefault(); setPlayKey((k) => k + 1); }
+      if (e.key === " ") { e.preventDefault(); setMotion(null); setExplode(null); setPlayKey((k) => k + 1); }
       if (e.key === "Escape") { setPageZoom(false); setShowList(false); }
     };
     window.addEventListener("keydown", onKey);
@@ -156,6 +217,75 @@ export default function App() {
     if (i >= 0) setStepIndex(i);
   }), [scene]);
 
+  // 채팅이 고친 단계를 처음부터 다시 튼다(단계 합치기·철물 개수 바꾸기 뒤). 부품 모션 강조는 끈다.
+  useEffect(() => onReplayStep((n) => {
+    const i = scene?.steps.findIndex((s) => s.number === n) ?? -1;
+    if (i < 0) return;
+    setMotion(null);
+    setExplode(null);
+    setAutoplay(false);
+    setStepIndex(i);
+    setPlayKey((k) => k + 1);
+  }), [scene]);
+
+  // 채팅(액션·AI 도구)이 고른 부품의 조립 모션: 그 단계로 가서 애니메이션을 처음부터 다시 틀고,
+  // 카메라는 그 부품에 다가가며 부품을 파랗게 강조하고 이름표를 띄운다.
+  useEffect(() => onPlayPartMotion((target) => {
+    if (!scene) return null;
+    const i = motionStep(scene, target);
+    if (i < 0) return null;
+    const tag = target.kind === "panel" ? partTag(scene, target.id)
+      : (target.instance && smallTag(scene, target.instance)) || partTag(scene, target.id);
+    motionKey.current += 1;
+    setMotion({ target, stepIndex: i, label: tag?.label ?? target.id, key: motionKey.current });
+    setExplode(null);
+    setAutoplay(false);
+    setStepIndex(i);
+    setPlayKey((k) => k + 1);
+    return scene.steps[i].number;
+  }), [scene]);
+
+  // 사용자가 다른 단계로 가면 강조를 끄고, 그대로 있으면 애니메이션이 끝나고 잠깐 뒤에 끈다.
+  useEffect(() => {
+    if (!motion) return;
+    if (motion.stepIndex !== stepIndex || !scene?.steps[stepIndex]) return setMotion(null);
+    const id = setTimeout(() => setMotion(null), motionTiming(scene.steps[stepIndex], motion.target).total * 1000 + SPOTLIGHT_HOLD_MS);
+    return () => clearTimeout(id);
+  }, [motion, stepIndex, scene]);
+
+  // 분해도(채팅 예시 버튼·AI 도구): 마지막 단계(완성품)로 건너뛰고 자동 재생·부품 강조를 끈 뒤 펼쳤다 다시 조립한다.
+  // 다시 부르면 처음부터 다시 튼다.
+  useEffect(() => onPlayExplode(() => {
+    if (!scene) return false;
+    const last = scene.steps.length - 1;
+    explodeKey.current += 1;
+    setMotion(null);
+    setAutoplay(false);
+    setShowInventory(false);
+    setStepIndex(last);
+    setExplode({ key: explodeKey.current, step: last });
+    return true;
+  }), [scene]);
+
+  // 다른 단계로 가면 분해도를 끝낸다(그 렌더에서 바로 꺼지도록 아래에서 단계로도 거른다).
+  useEffect(() => {
+    if (explode && explode.step !== stepIndex) setExplode(null);
+  }, [explode, stepIndex]);
+
+  // 개발 중에는 콘솔·Playwright에서 부품 모션·분해도를 바로 불러 볼 수 있게 열어 둔다.
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+    // __gsap은 Playwright가 시간을 늦춰(timeScale) 연출을 프레임별로 찍을 때 쓴다.
+    const w = window as unknown as { __playPartMotion?: typeof playPartMotion; __playExplode?: typeof playExplode; __gsap?: typeof gsap };
+    w.__playPartMotion = playPartMotion;
+    w.__playExplode = playExplode;
+    w.__gsap = gsap;
+    return () => { delete w.__playPartMotion; delete w.__playExplode; delete w.__gsap; };
+  }, []);
+  const endExplode = useCallback(() => setExplode(null), []);
+  // 수정안 비교 중에는 뷰어가 지금 scene 대신 proposal.before / after 의 바뀐 단계를 그린다(ChangeScene.tsx).
+  const compareView = useCompareView(scene, stepIndex);
+
   const items = useMemo(() => (scene ? checkItems(scene) : []), [scene]);
   const layout = useMemo(() => layoutParts(items), [items]);
   const toggleChecked = useCallback((key: string) => setChecked((prev) => {
@@ -178,6 +308,7 @@ export default function App() {
 
   if (!scene) return <div className="loading">scene.json 불러오는 중…</div>;
   const prep = stepIndex === PREP;
+  const exploding = explode && explode.step === stepIndex ? explode : null;
   const step = scene.steps[Math.min(Math.max(stepIndex, 0), scene.steps.length - 1)];
   const total = scene.steps.length;
   const lowConfidence = !prep && step.confidence < 0.5;
@@ -196,25 +327,36 @@ export default function App() {
 
   return (
     // 카메라를 돌리는 동안에는 2D 오버레이를 흐리게 해서 모델을 가리지 않게 한다(Cadasio의 autohide).
-    <div ref={appRef} className={`viewer ${dragging ? "dragging" : ""}`}>
+    <div ref={appRef} className={`viewer ${dragging ? "dragging" : ""} ${exploding ? "explode-on" : ""}`}>
       <Canvas shadows gl={{ alpha: true }} camera={{ position: HOME_CAMERA, fov: 40, near: 1, far: 2000 }}>
         <ambientLight intensity={renderStyle === "technical" ? 1.1 : renderStyle === "color" ? 0.25 : 0.6} />
         <StudioEnvironment on={renderStyle === "color"} />
         <directionalLight position={[80, 160, 100]} intensity={renderStyle === "technical" ? 0.8 : 1.6} castShadow
           shadow-mapSize={[2048, 2048]} shadow-camera-left={-120} shadow-camera-right={120}
           shadow-camera-top={120} shadow-camera-bottom={-120} />
-        {prep
+        {compareView
+          ? <Assembly key={compareView.key} scene={compareView.scene} stepIndex={compareView.stepIndex} playKey={0}
+              renderStyle={renderStyle} hidden={compareView.hidden} still />
+          : prep
           ? <>
-              <PartsLayout layout={layout} style={renderStyle} hover={hoverPart} playKey={playKey} />
+              <PartsLayout layout={layout} style={renderStyle} hover={hoverPart} playKey={playKey}
+                onPick={(key) => mentionPart(partTag(scene, key))} />
               <LabelTracker layout={layout} els={labelEls} />
             </>
-          : <Assembly scene={scene} stepIndex={stepIndex} playKey={playKey} renderStyle={renderStyle} />}
+          : <Assembly scene={scene} stepIndex={stepIndex} playKey={playKey} renderStyle={renderStyle}
+              spotlight={motion?.stepIndex === stepIndex ? motion as Spotlight : null} hideUnit={!!exploding} />}
         <ContactShadows position={[0, 0.1, 0]} scale={220} blur={2.4} opacity={0.3} />
         <OrbitControls target={HOME_TARGET} makeDefault
           onStart={() => setDragging(true)} onEnd={() => setDragging(false)} />
-        <CameraRig resetKey={resetKey} scene={scene} stepIndex={stepIndex} prep={layout} />
+        <CameraRig resetKey={resetKey} scene={scene} stepIndex={stepIndex} prep={layout}
+          motion={motion} motionKey={motionKey.current} exploding={!!exploding} comparing={!!compareView} />
+        {/* 카메라 비행보다 뒤에 두어, 같은 렌더에서 시작한 단계 비행을 분해도가 멈추고 카메라를 넘겨받는다. */}
+        {exploding && !compareView && <Explode key={exploding.key} scene={scene} style={renderStyle} onDone={endExplode} />}
+        {/* 수정안: 도면이 Before → After 로 바뀌는 과정 */}
+        <ChangeScene scene={scene} style={renderStyle} view={compareView} />
       </Canvas>
-      {prep && <PartsLabels layout={layout} checked={checked} els={labelEls} onToggle={toggleChecked} />}
+      <ChangeHud />
+      {prep && !compareView && <PartsLabels layout={layout} checked={checked} els={labelEls} onToggle={toggleChecked} />}
 
       {/* 상단: 제품명과 진행 상황 */}
       <header className="overlay topbar">
@@ -223,10 +365,12 @@ export default function App() {
           <span className="product">{scene.product}</span>
           <span className="progress-text">{prep ? t("부품 확인") : t("{n} / {total} 단계", { n: step.number, total })}</span>
         </div>
+        <CompareBadge />
         <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />
       </header>
 
-      {/* 왼쪽 위: 현재 단계 설명 카드 */}
+      {/* 왼쪽 위: 현재 단계 설명 카드(수정안을 보는 동안에는 그 단계 설명이 바뀌는 모습) */}
+      <CompareCard>
       <section className="overlay card instruction" key={stepIndex}>
         <div className="step-badge">{prep ? "✓" : step.number}</div>
         <div className="body">
@@ -235,9 +379,10 @@ export default function App() {
           {lowConfidence && <span className="conf low">{t("확인 필요 · 원본 그림과 비교해 보세요")}</span>}
         </div>
       </section>
+      </CompareCard>
 
-      {/* 오른쪽 위: 이 단계에 필요한 부품(부품 확인 단계에서는 상자 속 전체 목록) */}
-      {prep ? (
+      {/* 오른쪽 위: 이 단계에 필요한 부품(부품 확인 단계에서는 상자 속 전체 목록). 부품 확인 중 수정안을 볼 때는 체크리스트를 숨긴다. */}
+      {prep && compareView ? null : prep ? (
         <PartsChecklist items={items} checked={checked} page={page} onPage={() => setPageZoom(true)}
           onToggle={toggleChecked} onHover={setHoverPart}
           onAll={() => setChecked(new Set(items.filter((it) => it.included).map((it) => it.key)))}
@@ -252,7 +397,10 @@ export default function App() {
           {parts.length === 0 && <p className="muted">{t("새 부품 없음")}</p>}
           <ul>
             {parts.map((p) => (
-              <li key={p.key}>
+              // 줄을 누르면 그 부품을 AI 채팅 입력창에 태그한다.
+              <li key={p.key} className="pick" role="button" tabIndex={0} title={t("AI 채팅에 태그하기")}
+                onClick={() => mentionPart(partTag(scene, p.key))}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); mentionPart(partTag(scene, p.key)); } }}>
                 <span className="thumb">
                   {p.panel ? <PanelThumb size={p.panel.size} active still={`card:${p.key}`} />
                     : p.spec ? <HardwareThumb spec={p.spec} still={`card:hw:${p.key}`} /> : "⚙"}
@@ -270,7 +418,7 @@ export default function App() {
 
       {/* 오른쪽 가운데: 보기 도구 */}
       <div className="overlay toolbar">
-        <button className="icon" title={t("시점 초기화")} onClick={() => setResetKey((k) => k + 1)}>⌂</button>
+        <button className="icon" title={t("시점 초기화")} onClick={() => { setExplode(null); setResetKey((k) => k + 1); }}>⌂</button>
         <div className="style-switch">
           {STYLES.map((s) => (
             <button key={s.id} className={renderStyle === s.id ? "on" : ""} onClick={() => setRenderStyle(s.id)}>
@@ -294,6 +442,8 @@ export default function App() {
       <footer className="overlay dock">
         <button className="nav" onClick={() => go(-1)} disabled={prep} aria-label={t("이전 단계")}>‹</button>
         <div className="middle">
+          {/* 수정안을 보는 동안에는 수정안의 단계 칸(합쳐지는 칸이 모이는 모습) */}
+          <CompareTimeline>
           <div className="timeline">
             <button title={t("부품 확인")} className={`seg prep ${prep ? "on" : "done"}`} onClick={() => setStepIndex(PREP)}>
               <span>✓</span>
@@ -306,8 +456,9 @@ export default function App() {
               </button>
             ))}
           </div>
+          </CompareTimeline>
           <div className="playback">
-            <button onClick={() => setPlayKey((k) => k + 1)}>{t("↻ 다시 보기")}</button>
+            <button onClick={() => { setMotion(null); setExplode(null); setPlayKey((k) => k + 1); }}>{t("↻ 다시 보기")}</button>
             <button className={autoplay ? "on" : ""} onClick={() => setAutoplay((a) => !a)}>
               {t(autoplay ? "⏸ 멈춤" : "▶ 자동 재생")}
             </button>

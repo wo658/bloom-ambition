@@ -50,6 +50,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .parts ul { list-style: none; margin: 0; padding: 0; }
 .parts li { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); }
 .parts li:first-child { border-top: 0; }
+.parts li.pick { margin: 0 -6px; padding: 8px 6px; border-radius: 8px; cursor: pointer; }
+.parts li.pick:hover { background: #fff4ec; }
 .thumb { flex: none; width: 64px; height: 64px; display: grid; place-items: center; border-radius: 10px; background: #f1f3f6; border: 1px solid var(--line); color: var(--sub); overflow: hidden; }
 .thumb-canvas, .thumb .thumb-img { width: 100% !important; height: 100% !important; object-fit: contain; }
 .parts .name { flex: 1; display: flex; flex-direction: column; font-size: 14px; }
@@ -221,3 +223,60 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .dock { gap: 10px; padding: 10px; bottom: 12px; }
   .playback button { padding: 4px 9px; font-size: 12px; }
 }
+
+/* 채팅에 태그된 부품 위에 뜨는 이름표(3D 부품을 따라 매 프레임 옮긴다). */
+.tag-badge { position: absolute; left: 0; top: 0; z-index: 1; pointer-events: none; visibility: hidden;
+  padding: 2px 8px; border-radius: 999px; background: #2563eb; color: #fff; font-size: 12px; font-weight: 600; line-height: 1.5;
+  white-space: nowrap; box-shadow: 0 2px 6px rgba(20,30,80,.3); }
+/* 부품 모션의 주인공 이름표: 조금 크게, 숨 쉬듯 깜빡여서 어느 부품인지 바로 보이게 한다. */
+.tag-badge.motion { z-index: 2; font-size: 13px; padding: 3px 10px; animation: tag-pulse 1s ease-in-out infinite; }
+@keyframes tag-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,.55), 0 2px 6px rgba(20,30,80,.3); }
+  50% { box-shadow: 0 0 0 8px rgba(37,99,235,0), 0 2px 6px rgba(20,30,80,.3); }
+}
+
+/* 분해도: 펼치는 동안 설명 카드들은 물러나고, 판 옆에 지시선과 이름표가 뜬다. 위치·등장은 Explode.tsx가 매 프레임 정한다. */
+.viewer.explode-on .overlay.card { opacity: .28; transition: opacity .5s ease; }
+.explode-layer { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.explode-leaders { position: absolute; inset: 0; width: 100%; height: 100%; }
+.explode-leaders line { stroke: #2a2420; stroke-width: 1.25; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: .75; }
+.explode-leaders circle { fill: #ff7a1a; stroke: #fff; stroke-width: 1.5; opacity: 0; }
+.explode-label { position: absolute; left: 0; top: 0; will-change: transform; }
+.explode-chip { display: flex; align-items: center; gap: 6px; padding: 3px 10px 3px 3px; border-radius: 999px;
+  background: rgba(255,255,255,.94); box-shadow: 0 4px 14px rgba(40,30,20,.18), 0 0 0 1px rgba(40,30,20,.08);
+  backdrop-filter: blur(6px); white-space: nowrap; font-size: 12px; line-height: 1.4; opacity: 0; transform-origin: center; }
+.explode-num { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%;
+  background: #ff7a1a; color: #fff; font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.explode-name { font-weight: 650; color: #1f1b17; }
+.explode-dims { color: #8a7f75; font-size: 11px; font-variant-numeric: tabular-nums; }
+.explode-title { position: absolute; bottom: 136px; left: 0; right: 0; margin: 0 auto; width: fit-content; opacity: 0;
+  display: flex; align-items: baseline; gap: 8px; padding: 5px 14px; border-radius: 999px;
+  background: rgba(31,27,23,.82); color: #fff; font-size: 13px; letter-spacing: .02em; }
+.explode-title span { color: rgba(255,255,255,.7); font-size: 12px; }
+
+/* 수정안 비교: 바뀐 판·철물 옆의 말풍선(치수 숫자가 굴러 바뀌고, 옮긴 거리·빠짐·추가를 알린다). 위치·등장은 ChangeScene.tsx가 매 프레임 정한다. */
+.chg-layer { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.chg-callout { position: absolute; left: 0; top: 0; visibility: hidden; opacity: 0; will-change: transform, opacity;
+  display: flex; align-items: baseline; gap: 5px; padding: 4px 11px; border-radius: 999px; white-space: nowrap;
+  background: rgba(255,255,255,.95); color: #1f1b17; font-size: 13px; line-height: 1.35; font-weight: 600;
+  box-shadow: 0 4px 14px rgba(40,30,20,.18), 0 0 0 1.5px var(--chg, #ff7a1a); font-variant-numeric: tabular-nums;
+  transform-origin: 50% 100%; }
+.chg-callout::after { content: ""; position: absolute; left: 50%; bottom: -6px; width: 10px; height: 10px; margin-left: -5px;
+  background: inherit; transform: rotate(45deg); box-shadow: 1.5px 1.5px 0 0 var(--chg, #ff7a1a); }
+.chg-dim, .chg-move { --chg: #ff7a1a; }
+.chg-add { --chg: #1fa463; }
+.chg-remove { --chg: #e5484d; }
+.chg-swap { --chg: #7c5cff; }
+.chg-key { color: #8a7f75; font-size: 12px; font-weight: 600; }
+.chg-was { color: #9a8f86; text-decoration: line-through; text-decoration-color: #e5484d; font-weight: 500; }
+.chg-to { color: #b8aea5; font-weight: 500; }
+.chg-num { color: #c2410c; font-size: 15px; font-weight: 750; min-width: 2.2ch; text-align: right; }
+.chg-unit { color: #8a7f75; font-size: 11px; font-weight: 500; }
+.chg-arrow { display: inline-block; color: #c2410c; font-size: 13px; transform-origin: 50% 55%; }
+.chg-sign { display: grid; place-items: center; align-self: center; width: 17px; height: 17px; border-radius: 50%;
+  background: var(--chg); color: #fff; font-size: 13px; font-weight: 800; line-height: 1; }
+.chg-add .chg-name { color: #15803d; }
+.chg-remove .chg-name { color: #b42318; text-decoration: line-through; text-decoration-color: rgba(229,72,77,.6); }
+/* Before 모습에서는 치수 말풍선이 지금 값만 보여 준다. */
+.chg-before .chg-was, .chg-before .chg-to { display: none; }
+.chg-before .chg-remove .chg-name { text-decoration: none; }

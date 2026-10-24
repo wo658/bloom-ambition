@@ -1,0 +1,5 @@
+# 샘플 원본 (저작권) — data/samples/download.sh 로 받기
+data/**/*.pdf
+data/**/*.png
+data/**/*.jpg
+.DS_Store

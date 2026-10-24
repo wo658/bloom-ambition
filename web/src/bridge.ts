@@ -53,3 +53,11 @@ export function goToStep(stepNumber: number) {
 export function canGoToStep() {
   return goToHandlers.size > 0;
 }
+
+// 데모 투어(DemoTour)가 채팅을 조종하는 통로. ChatPanel이 듣고, 지금 바쁜지(chatState.busy)를 알려 준다.
+export type ChatCommand = { type: "open" | "close" | "reset" | "undo" } | { type: "voice"; text: string };
+export const chatBus = new EventTarget();
+export const chatState = { busy: false };
+export function chatCommand(cmd: ChatCommand) {
+  chatBus.dispatchEvent(new CustomEvent("cmd", { detail: cmd }));
+}

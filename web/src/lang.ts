@@ -108,6 +108,12 @@ export function useLang(dir: string, scene?: unknown) {
   return { lang, voiceOn, translating: pending > 0 };
 }
 
+// 지금 언어의 음성 코드(음성 인식·합성에 쓴다).
+export const voiceCode = () => LANGS.find((l) => l.id === lang)?.voice ?? "ko-KR";
+
+export const isVoiceOn = () => voiceOn;
+export const getLang = () => lang;
+
 // 언어가 바뀌면 다시 그려야 하는 곳(뷰어 밖의 위젯 등)에서 쓴다.
 export function useT() {
   useSyncExternalStore(subscribe, () => version);

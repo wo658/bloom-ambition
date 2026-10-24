@@ -14,6 +14,7 @@ import { onGoToStep, setCurrentStep } from "./bridge";
 import DemoSwitcher from "./DemoSwitcher";
 import ChatPanel from "./ChatPanel";
 import LangBar from "./LangBar";
+import DemoTour from "./DemoTour";
 import { afterSpeech, t, useLang, useSpeak } from "./lang";
 import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
 
@@ -139,6 +140,7 @@ export default function App() {
   const [hoverPart, setHoverPart] = useState<string | null>(null);
   const labelEls = useRef(new Map<string, HTMLElement>());
   const appRef = useRef<HTMLDivElement>(null);
+  const orbitRef = useRef<OrbitControlsImpl>(null);
   const { lang, voiceOn, translating } = useLang(DEMO, scene);
   const now = scene?.steps[Math.min(stepIndex, scene.steps.length - 1)];
   const spoken = stepIndex === PREP ? [PREP_CAPTION] : now ? [now.caption_ko, now.warning_ko] : [];
@@ -249,7 +251,7 @@ export default function App() {
             </>
           : <Assembly scene={scene} stepIndex={stepIndex} playKey={playKey} renderStyle={renderStyle} xray={xray} />}
         <ContactShadows position={[0, 0.1, 0]} scale={220} blur={2.4} opacity={0.3} />
-        <OrbitControls target={HOME_TARGET} makeDefault
+        <OrbitControls ref={orbitRef} target={HOME_TARGET} makeDefault
           onStart={() => setDragging(true)} onEnd={() => setDragging(false)} />
         <CameraRig resetKey={resetKey} scene={scene} stepIndex={stepIndex} prep={layout} playKey={playKey} />
       </Canvas>
@@ -263,6 +265,16 @@ export default function App() {
           <span className="progress-text">{prep ? t("부품 확인") : t("{n} / {total} 단계", { n: step.number, total })}</span>
         </div>
         <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />
+        <DemoTour api={{
+          orbit: () => orbitRef.current,
+          goStep: setStepIndex,
+          setXray,
+          setStyle: setRenderStyle,
+          setInventory: setShowInventory,
+          xrayStep: Math.min(5, total - 1),
+          prepStep: PREP,
+          lastStep: total - 1,
+        }} />
       </header>
 
       {/* 왼쪽 위: 현재 단계 설명 카드 */}

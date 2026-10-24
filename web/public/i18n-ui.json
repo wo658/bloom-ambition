@@ -241,12 +241,10 @@
   "@이름 ": "@Name ",
   "[proposal] scene이 바뀌어 적용하지 않음": "[proposal] Not applied because the scene changed",
   "⚡ 이름": "⚡ Name",
-  "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요": "Edits start as proposals: compare before and after, then apply or undo",
   "길이": "Length",
   "끝난 모습": "Finished look",
   "나 사용자가 직접 쓴 ": "written by the user ",
   "두께": "Thickness",
-  "말로 물어보면 AI가 수정안을 만들어 줘요 (음성 입력 재현)": "Ask out loud and AI drafts an edit (voice input demo)",
   "모션 재생 실패: 그 부품이 들어가는 단계를 찾지 못함": "Motion playback failed: couldn't find the step that uses this part",
   "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요": "Pick a part and replay how it goes in, slowly",
   "부품 확인부터 완성까지 기능을 차례로 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "See each feature in order, from parts check to finish (← → to navigate, Esc to stop)",
@@ -259,9 +257,10 @@
   "손으로 돌려 보고, 확대해서 자세히 봐요": "Rotate it by hand and zoom in for detail",
   "수정안을 화면에 띄움(사용자가 적용/취소를 고른다). 함께 보내는 scene은 아직 그대로다. 적용됐다고 단정하지 말고, 무엇이 어떻게 바뀌는지 한두 줄로 알려라.": "An edit proposal is shown on screen (the user chooses apply or cancel). The scene sent along is still unchanged. Don't assume it was applied; explain in one or two lines what will change and how.",
   "위에 있음": "On top",
-  "지금 단계 설명을 더 쉽게 바꿔 줘": "Make this step's instructions easier",
   "판 {p}장 · 철물 {h}개": "{p} panels · {h} hardware pieces",
-  "폭": "Width"
+  "폭": "Width",
+  "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Tag a part with @ and ask: AI drafts the edit",
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Even edits that ripple to joined parts, like panel thickness: compare before and after, then apply or undo"
  },
  "ja": {
   "N단계": "Nステップ",
@@ -505,12 +504,10 @@
   "@이름 ": "@名前 ",
   "[proposal] scene이 바뀌어 적용하지 않음": "[proposal] sceneが変わったため適用しません",
   "⚡ 이름": "⚡ 名前",
-  "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요": "修正はまず修正案から:前後を比べて確認し、適用したり元に戻したりできます",
   "길이": "長さ",
   "끝난 모습": "完成した姿",
   "나 사용자가 직접 쓴 ": "またはユーザーが直接書いた ",
   "두께": "厚さ",
-  "말로 물어보면 AI가 수정안을 만들어 줘요 (음성 입력 재현)": "話しかけるとAIが修正案を作ります(音声入力の再現)",
   "모션 재생 실패: 그 부품이 들어가는 단계를 찾지 못함": "モーション再生失敗:その部品を使うステップが見つかりません",
   "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요": "部品を一つ選んで、取り付ける様子をゆっくり見直しましょう",
   "부품 확인부터 완성까지 기능을 차례로 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "部品の確認から完成まで、機能を順番に紹介します(← → で切り替え、Escで停止)",
@@ -523,9 +520,10 @@
   "손으로 돌려 보고, 확대해서 자세히 봐요": "手で回して、拡大して詳しく見てみましょう",
   "수정안을 화면에 띄움(사용자가 적용/취소를 고른다). 함께 보내는 scene은 아직 그대로다. 적용됐다고 단정하지 말고, 무엇이 어떻게 바뀌는지 한두 줄로 알려라.": "修正案を画面に表示しました(ユーザーが適用かキャンセルを選びます)。一緒に送るsceneはまだ変わっていません。適用済みと断定せず、何がどう変わるかを1〜2行で伝えてください。",
   "위에 있음": "上にあります",
-  "지금 단계 설명을 더 쉽게 바꿔 줘": "今のステップの説明をもっとわかりやすくして",
   "판 {p}장 · 철물 {h}개": "板{p}枚 · 金具{h}個",
-  "폭": "幅"
+  "폭": "幅",
+  "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "部品を@タグで指して話すと、AIが修正案を作ります",
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "板の厚さのように接する部分まで変わる修正もAIが:前後を比べて確認し、適用したり元に戻したりできます"
  },
  "zh-CN": {
   "N단계": "第N步",
@@ -769,12 +767,10 @@
   "@이름 ": "@名称 ",
   "[proposal] scene이 바뀌어 적용하지 않음": "[proposal] scene已变更，未应用",
   "⚡ 이름": "⚡ 名称",
-  "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요": "修改时先看修改方案：对比前后进行检查，可以应用，也可以撤销",
   "길이": "长度",
   "끝난 모습": "完成效果",
   "나 사용자가 직접 쓴 ": "或用户自己写的 ",
   "두께": "厚度",
-  "말로 물어보면 AI가 수정안을 만들어 줘요 (음성 입력 재현)": "直接说出问题，AI会为你生成修改方案（模拟语音输入）",
   "모션 재생 실패: 그 부품이 들어가는 단계를 찾지 못함": "动画播放失败：找不到该零件所在的步骤",
   "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요": "选择一个零件，慢速回看它的安装过程",
   "부품 확인부터 완성까지 기능을 차례로 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "从零件确认到完成，依次展示各项功能（按 ← → 翻页，按 Esc 停止）",
@@ -787,9 +783,10 @@
   "손으로 돌려 보고, 확대해서 자세히 봐요": "用手旋转查看，放大看清细节",
   "수정안을 화면에 띄움(사용자가 적용/취소를 고른다). 함께 보내는 scene은 아직 그대로다. 적용됐다고 단정하지 말고, 무엇이 어떻게 바뀌는지 한두 줄로 알려라.": "已在屏幕上显示修改方案（由用户选择应用或取消）。随附的scene尚未改变。不要断定已经应用，用一两句话说明哪些内容会如何变化。",
   "위에 있음": "在上方",
-  "지금 단계 설명을 더 쉽게 바꿔 줘": "把当前步骤的说明改得更简单些",
   "판 {p}장 · 철물 {h}개": "板件{p}块 · 五金件{h}个",
-  "폭": "宽度"
+  "폭": "宽度",
+  "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "用 @ 标记零件并提问，AI 会生成修改方案",
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "像板材厚度这样连带相接部位的修改也交给 AI：对比前后进行检查，可以应用，也可以撤销"
  },
  "zh-TW": {
   "N단계": "第N步",
@@ -1033,12 +1030,10 @@
   "@이름 ": "@名稱 ",
   "[proposal] scene이 바뀌어 적용하지 않음": "[proposal] scene已變更，未套用",
   "⚡ 이름": "⚡ 名稱",
-  "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요": "修改時先看修改方案：比較前後差異再檢查、套用，也能復原",
   "길이": "長度",
   "끝난 모습": "完成的樣子",
   "나 사용자가 직접 쓴 ": "或使用者自行撰寫的 ",
   "두께": "厚度",
-  "말로 물어보면 AI가 수정안을 만들어 줘요 (음성 입력 재현)": "用說的提問，AI就會幫你做出修改方案（重現語音輸入）",
   "모션 재생 실패: 그 부품이 들어가는 단계를 찾지 못함": "動作播放失敗：找不到放入該零件的步驟",
   "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요": "選一個零件，慢慢重看它裝進去的過程",
   "부품 확인부터 완성까지 기능을 차례로 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "從確認零件到完成，依序展示各項功能（用← →切換，按Esc停止）",
@@ -1051,9 +1046,10 @@
   "손으로 돌려 보고, 확대해서 자세히 봐요": "用手轉動看看，放大仔細看",
   "수정안을 화면에 띄움(사용자가 적용/취소를 고른다). 함께 보내는 scene은 아직 그대로다. 적용됐다고 단정하지 말고, 무엇이 어떻게 바뀌는지 한두 줄로 알려라.": "已在畫面上顯示修改方案（由使用者選擇套用或取消）。一併傳送的scene仍維持原狀。不要斷定已套用，請用一兩句話說明哪裡會如何改變。",
   "위에 있음": "在上方",
-  "지금 단계 설명을 더 쉽게 바꿔 줘": "把目前步驟的說明改得更簡單",
   "판 {p}장 · 철물 {h}개": "板材{p}片 · 五金{h}個",
-  "폭": "寬度"
+  "폭": "寬度",
+  "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "用 @ 標記零件再提問，AI 就會做出修改方案",
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "像板材厚度這種連相接處都要跟著改的修改也交給 AI：比對前後檢查，可以套用，也可以復原"
  },
  "es": {
   "N단계": "Paso N",
@@ -1297,12 +1293,10 @@
   "@이름 ": "@nombre ",
   "[proposal] scene이 바뀌어 적용하지 않음": "[proposal] La scene cambió; no se aplicó",
   "⚡ 이름": "⚡ Nombre",
-  "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요": "Para corregir, empieza con una propuesta: compara el antes y el después, aplícala y deshazla si quieres",
   "길이": "Largo",
   "끝난 모습": "Resultado final",
   "나 사용자가 직접 쓴 ": "o escrito por el usuario ",
   "두께": "Grosor",
-  "말로 물어보면 AI가 수정안을 만들어 줘요 (음성 입력 재현)": "Pregunta en voz alta y la IA creará una propuesta (simulación de entrada de voz)",
   "모션 재생 실패: 그 부품이 들어가는 단계를 찾지 못함": "Error al reproducir la animación: no se encontró el paso donde va esa pieza",
   "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요": "Elige una pieza y mira despacio cómo se coloca",
   "부품 확인부터 완성까지 기능을 차례로 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Muestra las funciones en orden, desde revisar las piezas hasta terminar (← → para avanzar, Esc para detener)",
@@ -1315,9 +1309,10 @@
   "손으로 돌려 보고, 확대해서 자세히 봐요": "Gíralo con la mano y amplíalo para ver los detalles",
   "수정안을 화면에 띄움(사용자가 적용/취소를 고른다). 함께 보내는 scene은 아직 그대로다. 적용됐다고 단정하지 말고, 무엇이 어떻게 바뀌는지 한두 줄로 알려라.": "Se muestra la propuesta en pantalla (el usuario elige aplicar o cancelar). La scene enviada aún no ha cambiado. No afirmes que ya se aplicó; explica en una o dos líneas qué cambia y cómo.",
   "위에 있음": "Está arriba",
-  "지금 단계 설명을 더 쉽게 바꿔 줘": "Explica este paso de forma más sencilla",
   "판 {p}장 · 철물 {h}개": "{p} paneles · {h} herrajes",
-  "폭": "Ancho"
+  "폭": "Ancho",
+  "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Etiqueta una pieza con @ y pide: la IA crea la propuesta",
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Incluso cambios que afectan a las piezas unidas, como el grosor de un panel: compara antes y después, aplica o deshaz"
  },
  "fr": {
   "N단계": "Étape N",
@@ -1561,12 +1556,10 @@
   "@이름 ": "@Nom ",
   "[proposal] scene이 바뀌어 적용하지 않음": "[proposal] Scène modifiée, proposition non appliquée",
   "⚡ 이름": "⚡ Nom",
-  "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요": "Pour corriger, commencez par une proposition : comparez avant/après, appliquez, puis annulez si besoin",
   "길이": "Longueur",
   "끝난 모습": "Résultat final",
   "나 사용자가 직접 쓴 ": "ou écrit par l'utilisateur ",
   "두께": "Épaisseur",
-  "말로 물어보면 AI가 수정안을 만들어 줘요 (음성 입력 재현)": "Posez votre question à voix haute, l'IA propose une modification (simulation de saisie vocale)",
   "모션 재생 실패: 그 부품이 들어가는 단계를 찾지 못함": "Échec de l'animation : étape de cette pièce introuvable",
   "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요": "Choisissez une pièce et revoyez lentement son montage",
   "부품 확인부터 완성까지 기능을 차례로 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Découvrez les fonctions, de la vérification des pièces à la fin du montage (← → pour naviguer, Échap pour arrêter)",
@@ -1579,9 +1572,10 @@
   "손으로 돌려 보고, 확대해서 자세히 봐요": "Faites pivoter et zoomez pour voir les détails",
   "수정안을 화면에 띄움(사용자가 적용/취소를 고른다). 함께 보내는 scene은 아직 그대로다. 적용됐다고 단정하지 말고, 무엇이 어떻게 바뀌는지 한두 줄로 알려라.": "Proposition affichée à l'écran (l'utilisateur choisit d'appliquer ou d'annuler). La scène envoyée n'est pas encore modifiée. N'affirme pas que c'est appliqué ; explique en une ou deux lignes ce qui change et comment.",
   "위에 있음": "Au-dessus",
-  "지금 단계 설명을 더 쉽게 바꿔 줘": "Simplifie l'explication de cette étape",
   "판 {p}장 · 철물 {h}개": "{p} panneaux · {h} pièces de quincaillerie",
-  "폭": "Largeur"
+  "폭": "Largeur",
+  "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Marquez une pièce avec @ et demandez : l'IA propose la modification",
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Même les modifications qui touchent les pièces jointes, comme l'épaisseur d'un panneau : comparez avant/après, appliquez ou annulez"
  },
  "de": {
   "N단계": "Schritt N",
@@ -1825,12 +1819,10 @@
   "@이름 ": "@Name ",
   "[proposal] scene이 바뀌어 적용하지 않음": "[proposal] Szene hat sich geändert, nicht angewendet",
   "⚡ 이름": "⚡ Name",
-  "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요": "Änderungen beginnen mit einem Vorschlag: Vorher und Nachher vergleichen, prüfen, anwenden und rückgängig machen",
   "길이": "Länge",
   "끝난 모습": "Fertiges Ergebnis",
   "나 사용자가 직접 쓴 ": "vom Nutzer selbst geschrieben ",
   "두께": "Stärke",
-  "말로 물어보면 AI가 수정안을 만들어 줘요 (음성 입력 재현)": "Frag per Sprache, und die KI erstellt einen Änderungsvorschlag (Spracheingabe-Simulation)",
   "모션 재생 실패: 그 부품이 들어가는 단계를 찾지 못함": "Animation fehlgeschlagen: Kein Schritt mit diesem Teil gefunden",
   "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요": "Wähle ein Teil und sieh dir langsam an, wie es eingesetzt wird",
   "부품 확인부터 완성까지 기능을 차례로 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Zeigt die Funktionen der Reihe nach, von der Teileprüfung bis zum fertigen Möbel (mit ← → blättern, mit Esc stoppen)",
@@ -1843,9 +1835,10 @@
   "손으로 돌려 보고, 확대해서 자세히 봐요": "Dreh das Modell mit der Hand und zoome hinein, um Details zu sehen",
   "수정안을 화면에 띄움(사용자가 적용/취소를 고른다). 함께 보내는 scene은 아직 그대로다. 적용됐다고 단정하지 말고, 무엇이 어떻게 바뀌는지 한두 줄로 알려라.": "Der Änderungsvorschlag wird angezeigt (der Nutzer wählt Anwenden oder Abbrechen). Die mitgesendete Szene ist noch unverändert. Behaupte nicht, dass er angewendet wurde, sondern erkläre in ein bis zwei Sätzen, was sich wie ändert.",
   "위에 있음": "Liegt oben",
-  "지금 단계 설명을 더 쉽게 바꿔 줘": "Erklär den aktuellen Schritt einfacher",
   "판 {p}장 · 철물 {h}개": "{p} Platten · {h} Beschläge",
-  "폭": "Breite"
+  "폭": "Breite",
+  "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Teil mit @ markieren und fragen: Die KI erstellt den Änderungsvorschlag",
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Auch Änderungen, die angrenzende Teile betreffen, wie die Plattenstärke: vorher/nachher vergleichen, übernehmen oder rückgängig machen"
  },
  "vi": {
   "N단계": "Bước N",
@@ -2089,12 +2082,10 @@
   "@이름 ": "@tên ",
   "[proposal] scene이 바뀌어 적용하지 않음": "[proposal] Scene đã thay đổi nên không áp dụng",
   "⚡ 이름": "⚡ Tên",
-  "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요": "Khi sửa, hãy bắt đầu từ đề xuất: so sánh trước/sau để kiểm tra, áp dụng và hoàn tác được",
   "길이": "Chiều dài",
   "끝난 모습": "Hình hoàn thiện",
   "나 사용자가 직접 쓴 ": "hoặc do người dùng tự viết ",
   "두께": "Độ dày",
-  "말로 물어보면 AI가 수정안을 만들어 줘요 (음성 입력 재현)": "Hỏi bằng lời, AI sẽ tạo đề xuất sửa (mô phỏng nhập giọng nói)",
   "모션 재생 실패: 그 부품이 들어가는 단계를 찾지 못함": "Phát chuyển động thất bại: không tìm thấy bước lắp chi tiết đó",
   "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요": "Chọn một chi tiết và xem lại chậm cách nó được lắp vào",
   "부품 확인부터 완성까지 기능을 차례로 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Lần lượt giới thiệu các tính năng, từ kiểm tra chi tiết đến hoàn thiện (← → để chuyển, Esc để dừng)",
@@ -2107,9 +2098,10 @@
   "손으로 돌려 보고, 확대해서 자세히 봐요": "Xoay bằng tay và phóng to để xem kỹ",
   "수정안을 화면에 띄움(사용자가 적용/취소를 고른다). 함께 보내는 scene은 아직 그대로다. 적용됐다고 단정하지 말고, 무엇이 어떻게 바뀌는지 한두 줄로 알려라.": "Đã hiển thị đề xuất sửa trên màn hình (người dùng chọn áp dụng/hủy). Scene gửi kèm vẫn chưa thay đổi. Đừng khẳng định là đã áp dụng, hãy cho biết cái gì thay đổi và thay đổi thế nào trong một hai dòng.",
   "위에 있음": "Ở phía trên",
-  "지금 단계 설명을 더 쉽게 바꿔 줘": "Hãy viết lại hướng dẫn bước này cho dễ hiểu hơn",
   "판 {p}장 · 철물 {h}개": "{p} tấm · {h} phụ kiện kim loại",
-  "폭": "Chiều rộng"
+  "폭": "Chiều rộng",
+  "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Gắn thẻ @ cho chi tiết rồi hỏi: AI sẽ tạo đề xuất sửa",
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Cả những thay đổi kéo theo các chỗ ghép như độ dày tấm ván: so sánh trước/sau, áp dụng hoặc hoàn tác"
  },
  "id": {
   "N단계": "Langkah N",
@@ -2353,12 +2345,10 @@
   "@이름 ": "@Nama ",
   "[proposal] scene이 바뀌어 적용하지 않음": "[proposal] Tidak diterapkan karena scene berubah",
   "⚡ 이름": "⚡ Nama",
-  "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요": "Untuk memperbaiki, mulai dari usulan: bandingkan sebelum/sesudah, terapkan, dan batalkan bila perlu",
   "길이": "Panjang",
   "끝난 모습": "Hasil akhir",
   "나 사용자가 직접 쓴 ": "atau yang ditulis sendiri oleh pengguna ",
   "두께": "Tebal",
-  "말로 물어보면 AI가 수정안을 만들어 줘요 (음성 입력 재현)": "Tanyakan dengan suara, AI akan membuat usulan perbaikan (simulasi input suara)",
   "모션 재생 실패: 그 부품이 들어가는 단계를 찾지 못함": "Gagal memutar animasi: langkah pemasangan komponen itu tidak ditemukan",
   "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요": "Pilih satu komponen, lalu lihat lagi cara pemasangannya secara perlahan",
   "부품 확인부터 완성까지 기능을 차례로 보여 줘요 (← → 로 넘기기, Esc로 멈춤)": "Menampilkan fitur secara berurutan, dari cek komponen hingga selesai (← → untuk berpindah, Esc untuk berhenti)",
@@ -2371,8 +2361,9 @@
   "손으로 돌려 보고, 확대해서 자세히 봐요": "Putar dengan tangan, dan perbesar untuk melihat detailnya",
   "수정안을 화면에 띄움(사용자가 적용/취소를 고른다). 함께 보내는 scene은 아직 그대로다. 적용됐다고 단정하지 말고, 무엇이 어떻게 바뀌는지 한두 줄로 알려라.": "Usulan perbaikan ditampilkan di layar (pengguna memilih terapkan/batal). Scene yang dikirim bersama masih belum berubah. Jangan anggap sudah diterapkan; jelaskan dalam satu atau dua baris apa yang berubah dan bagaimana.",
   "위에 있음": "Ada di atas",
-  "지금 단계 설명을 더 쉽게 바꿔 줘": "Buat penjelasan langkah ini lebih mudah",
   "판 {p}장 · 철물 {h}개": "Panel {p} lembar · Perangkat keras {h} buah",
-  "폭": "Lebar"
+  "폭": "Lebar",
+  "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요": "Tandai bagian dengan @ lalu minta: AI membuat usulan perbaikan",
+  "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요": "Bahkan perubahan yang ikut memengaruhi bagian yang tersambung, seperti tebal panel: bandingkan sebelum/sesudah, terapkan atau batalkan"
  }
 }

@@ -2,7 +2,7 @@ import { useEffect, useSyncExternalStore } from "react";
 import gsap from "gsap";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import type { RenderStyle } from "./Assembly";
-import { chatCommand, playExplode, playPartMotion } from "./bridge";
+import { chatCommand, chatState, playExplode, playPartMotion } from "./bridge";
 import { decideProposal, getCompare } from "./compare";
 import { getLang, isVoiceOn, setLang, t, toggleVoice } from "./lang";
 
@@ -32,6 +32,17 @@ type Ctx = {
   zoom: (factor: number, seconds: number) => Promise<void>;
   setVoice: (on: boolean) => void;
 };
+
+// 어시스턴트 답이 끝날 때까지: 바빠졌다가, 도구 호출 사이 잠깐 쉬는 것까지 넘겨 1.5초 조용하면 끝으로 본다.
+async function chatDone(c: Ctx) {
+  await c.until(() => chatState.busy, 10000);
+  let quiet = 0;
+  await c.until(() => {
+    if (chatState.busy) { quiet = 0; return false; }
+    quiet ||= performance.now();
+    return performance.now() - quiet > 1500;
+  }, 45000);
+}
 
 // 데모가 띄운·적용한 수정안과 데모가 연 채팅. 정리할 때는 이것만 되돌린다(사용자가 만든 수정안·연 채팅은 건드리지 않는다).
 let ownId: string | null = null;
@@ -78,10 +89,18 @@ const SCENES: { text: string; chat?: boolean; run: (c: Ctx) => Promise<void> }[]
       setLang("en"); c.setVoice(true); await c.wait(900); await c.until(() => !speechSynthesis.speaking, 9000);
       setLang("ja"); await c.wait(900); await c.until(() => !speechSynthesis.speaking, 9000);
     } },
-  { text: "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요", chat: true,
+  { text: "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요", chat: true,
     run: async (c) => {
       chatCommand({ type: "reset" }); chatOpened = true; await c.wait(400, 1);
-      chatCommand({ type: "preset", id: "merge_steps" });
+      chatCommand({ type: "preset", id: "hardware_qty" });
+      await chatDone(c);
+      await reviewProposal(c, 3200);
+    } },
+  { text: "판 두께처럼 맞물린 곳까지 바뀌는 수정도 AI가: 전/후를 비교해 검수하고, 적용하고, 되돌려요", chat: true,
+    run: async (c) => {
+      chatCommand({ type: "reset" }); chatOpened = true; await c.wait(400, 1);
+      chatCommand({ type: "preset", id: "panel_thickness" });
+      await chatDone(c);
       await reviewProposal(c, 3800);
     } },
   { text: "분해도: 판을 펼쳤다가 다시 맞물려요",

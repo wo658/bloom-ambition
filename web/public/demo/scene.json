@@ -378,6 +378,7 @@
       "reseat": [],
       "pose": "lying",
       "wall": false,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -454,6 +455,7 @@
       "reseat": [],
       "pose": "lying",
       "wall": false,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -574,6 +576,7 @@
       "reseat": [],
       "pose": "lying",
       "wall": false,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -648,6 +651,7 @@
       "reseat": [],
       "pose": "lying",
       "wall": false,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -668,6 +672,7 @@
       "reseat": [],
       "pose": "lying",
       "wall": false,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -830,6 +835,7 @@
       "reseat": [],
       "pose": "lying",
       "wall": false,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -850,6 +856,7 @@
       ],
       "pose": "lying",
       "wall": false,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -870,6 +877,7 @@
       "reseat": [],
       "pose": "lying",
       "wall": false,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -1064,6 +1072,7 @@
       "reseat": [],
       "pose": "lying",
       "wall": false,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -1169,6 +1178,7 @@
       "reseat": [],
       "pose": "lying",
       "wall": false,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -1178,7 +1188,7 @@
     {
       "number": 11,
       "page": 18,
-      "caption_ko": "왼쪽 옆판 안쪽 면과 가운데 칸막이 오른쪽 면의 윗판 바로 아래 뒤쪽 모서리에 벽 고정 브래킷을 하나씩 대세요.\n짧은 나사를 2개씩, 모두 4개를 십자 드라이버로 조이세요.",
+      "caption_ko": "왼쪽·오른쪽 옆판 안쪽 면의 윗판 바로 아래 뒤쪽 모서리에 벽 고정 브래킷을 하나씩 대세요.\n짧은 나사를 2개씩, 모두 4개를 십자 드라이버로 조이세요.",
       "adds": [],
       "warning_ko": "가구가 넘어지면 크게 다칠 수 있어요.\n반드시 벽에 고정하고, 아이가 올라타거나 매달리지 않게 하세요.",
       "confidence": 0.8,
@@ -1363,7 +1373,8 @@
       ],
       "reseat": [],
       "pose": "upright",
-      "wall": false,
+      "wall": true,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -1463,6 +1474,7 @@
       "reseat": [],
       "pose": "upright",
       "wall": true,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -1585,6 +1597,7 @@
       "reseat": [],
       "pose": "upright",
       "wall": true,
+      "room": false,
       "unit_offset": [
         95,
         0,
@@ -1802,6 +1815,7 @@
       "reseat": [],
       "pose": "upright",
       "wall": true,
+      "room": false,
       "unit_offset": [
         0,
         0,
@@ -1820,6 +1834,7 @@
       "reseat": [],
       "pose": "upright",
       "wall": true,
+      "room": true,
       "unit_offset": [
         0,
         0,

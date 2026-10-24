@@ -5,10 +5,11 @@ import gsap from "gsap";
 import * as THREE from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import Assembly, { stepDuration, stepFocus, type RenderStyle } from "./Assembly";
+import Assembly, { stepDuration, stepFocus, wallShots, type RenderStyle } from "./Assembly";
 import { HardwareThumb, PanelThumb } from "./PartThumb";
 import PartsInventory from "./PartsInventory";
 import type { Scene } from "./types";
+import { ROOM_VIEW } from "./Room";
 import { onGoToStep, setCurrentStep } from "./bridge";
 import DemoSwitcher from "./DemoSwitcher";
 import ChatPanel from "./ChatPanel";
@@ -33,9 +34,12 @@ const HOME_DISTANCE = HOME_DIRECTION.length();
 // 세운 뒤에는 칸 안쪽(브래킷)과 벽이 보이도록 앞에서 윗판보다 낮게 들여다본다.
 const FRONT_DIRECTION = new THREE.Vector3(0.4, -0.06, 1).normalize();
 const FOCUS_MIN = 70; // 작은 부품에 다가갈 때 가장 가까운 거리
+const WALL_SHOT = 48; // 벽에 구멍을 뚫고 나사를 박는 자리를 따라갈 때의 거리
+// 벽 작업은 옆에서 비스듬히 봐야 드릴·나사가 벽 속으로 들어가는 깊이가 보이고, 드릴이 화면을 가리지 않는다.
+const WALL_SHOT_DIRECTION = new THREE.Vector3(1, 0.3, 0.75).normalize();
 
 // 단계가 바뀌면 그 단계에서 움직이는 부품 쪽으로 다가가고, 시점 초기화 버튼을 누르면 기본 위치로 돌아간다.
-function CameraRig({ resetKey, scene, stepIndex }: { resetKey: number; scene: Scene; stepIndex: number }) {
+function CameraRig({ resetKey, scene, stepIndex, playKey }: { resetKey: number; scene: Scene; stepIndex: number; playKey: number }) {
   const { camera, controls } = useThree();
   const fly = (position: THREE.Vector3, target: THREE.Vector3) => {
     const orbit = controls as unknown as OrbitControlsImpl | null;
@@ -50,14 +54,40 @@ function CameraRig({ resetKey, scene, stepIndex }: { resetKey: number; scene: Sc
     return home();
   }, [resetKey]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
+    if (scene.steps[stepIndex].room) {
+      // 완성: 방 안에 걸린 모습을 한 화면에 담는다.
+      const target = new THREE.Vector3(...ROOM_VIEW.target);
+      const direction = new THREE.Vector3(...ROOM_VIEW.direction).normalize();
+      return fly(target.clone().addScaledVector(direction, ROOM_VIEW.distance), target);
+    }
     const focus = stepFocus(scene, stepIndex);
     if (!focus) return home();
+    const shots = wallShots(scene, stepIndex);
+    if (shots) {
+      // 단계 애니메이션과 같은 시계로: 부품마다 그 동작이 시작하기 조금 전에 그 자리로 옮겨 가고, 끝나면 전체를 본다.
+      const orbit = controls as unknown as OrbitControlsImpl | null;
+      const tl = gsap.timeline({ onUpdate: () => orbit?.update() });
+      const move = (target: THREE.Vector3, distance: number, direction: THREE.Vector3, at: number) => {
+        const position = target.clone().addScaledVector(direction, distance);
+        tl.to(camera.position, { x: position.x, y: position.y, z: position.z, duration: 0.8, ease: "power2.inOut" }, at);
+        if (orbit) tl.to(orbit.target, { x: target.x, y: target.y, z: target.z, duration: 0.8, ease: "power2.inOut" }, at);
+      };
+      let last = "";
+      shots.forEach(({ at, start }) => {
+        if (at.join() === last) return;
+        last = at.join();
+        move(new THREE.Vector3(...at), WALL_SHOT, WALL_SHOT_DIRECTION, Math.max(0, start - 0.8));
+      });
+      const end = stepDuration(scene.steps[stepIndex]);
+      move(new THREE.Vector3(...focus.center), Math.max(FOCUS_MIN, focus.radius * 3), FRONT_DIRECTION, end + 0.2);
+      return () => { tl.kill(); };
+    }
     const target = new THREE.Vector3(...focus.center);
     const distance = Math.min(HOME_DISTANCE, Math.max(FOCUS_MIN, focus.radius * 4.5));
     const direction = scene.steps[stepIndex].pose === "upright" ? FRONT_DIRECTION : HOME_DIRECTION.clone().normalize();
     return fly(target.clone().addScaledVector(direction, distance), target);
     // 첫 렌더에는 OrbitControls가 아직 없어서, ?step=으로 바로 열면 controls가 생긴 뒤에 다시 겨눈다.
-  }, [scene, stepIndex, controls]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [scene, stepIndex, controls, playKey]); // eslint-disable-line react-hooks/exhaustive-deps
   return null;
 }
 
@@ -178,7 +208,7 @@ export default function App() {
         <ContactShadows position={[0, 0.1, 0]} scale={220} blur={2.4} opacity={0.3} />
         <OrbitControls target={HOME_TARGET} makeDefault
           onStart={() => setDragging(true)} onEnd={() => setDragging(false)} />
-        <CameraRig resetKey={resetKey} scene={scene} stepIndex={stepIndex} />
+        <CameraRig resetKey={resetKey} scene={scene} stepIndex={stepIndex} playKey={playKey} />
       </Canvas>
 
       {/* 상단: 제품명과 진행 상황 */}

@@ -7,6 +7,7 @@ import { StraightArrow, TurnArrow } from "./Arrows";
 import { HardwareMesh, METAL, SPINS, TOOLS, orientation } from "./Hardware";
 import type { HardwareSpec, Scene, SmallPart, Step, Vec3 } from "./types";
 import { oakMaps, woodBox } from "./wood";
+import { RoomDecor, RoomShell, ShelfDecor, WallShade } from "./Room";
 
 const HIGHLIGHT = "#ff7a1a";
 
@@ -55,9 +56,11 @@ export function schedule(step: Step): Schedule {
   let end = cursor;
   const parts = step.small.map((s) => {
     // 걸고 내리는 부품은 두 동작이라 공구 쓰는 부품만큼 시간을 준다.
-    const dur = s.model === "wall_hole" ? DRILL_TIME : s.tool || s.drop ? TOOL_TIME : PLAIN_TIME;
+    // 벽 나사는 손으로 돌려 박아도 하나씩 차례로 박는다(카메라가 자리마다 따라간다).
+    const oneByOne = !!s.tool || s.model === "wall_screw";
+    const dur = s.model === "wall_hole" ? DRILL_TIME : oneByOne || s.drop ? TOOL_TIME : PLAIN_TIME;
     const slot = { start: cursor, dur };
-    cursor += s.tool ? dur : PLAIN_STAGGER;
+    cursor += oneByOne ? dur : PLAIN_STAGGER;
     end = Math.max(end, slot.start + dur);
     return slot;
   });
@@ -117,9 +120,10 @@ function Board({ id, size, pos, from, mode, slot, clock, reseatRatio, style }: {
   );
 }
 
-function hardwareMaterial(style: RenderStyle, color: string, metal: boolean, active: boolean) {
+function hardwareMaterial(style: RenderStyle, color: string, metal: boolean, active: boolean, embed = false) {
   // 현재 단계 부품은 판에 가려져도 보이도록 깊이 테스트를 끄고 맨 위에 그린다.
-  const common = { color, depthTest: !active, transparent: active, side: THREE.DoubleSide };
+  // 벽에 박히는 것(벽 나사, 드릴 날)은 깊이 테스트를 켜 두어 벽 속으로 들어간 만큼 가려지게 한다.
+  const common = { color, depthTest: !active || embed, transparent: active, side: THREE.DoubleSide };
   if (style === "technical") return new THREE.MeshBasicMaterial(common);
   if (style === "toon") return new THREE.MeshToonMaterial(common);
   return new THREE.MeshStandardMaterial({ ...common, metalness: metal ? 0.7 : 0, roughness: metal ? 0.35 : 0.8 });
@@ -172,11 +176,14 @@ function Small({ part, slot, active, clock, style, tool }: {
   const metal = METAL.includes(part.model);
   const spins = SPINS.includes(part.model);
   const color = active ? HIGHLIGHT : style === "technical" ? (metal ? "#b5b5b5" : "#e2e2e2") : part.color;
-  const material = useMemo(() => hardwareMaterial(style, color, metal, active), [style, color, metal, active]);
-  const accent = useMemo(() => hardwareMaterial(style, "#2b2b2b", false, active), [style, active]);
+  // 벽 나사는 벽 속으로, 드릴 날은 뚫는 구멍 속으로 들어가며 가려진다.
+  const embed = part.model === "wall_screw";
+  const drilling = part.model === "wall_hole";
+  const material = useMemo(() => hardwareMaterial(style, color, metal, active, embed), [style, color, metal, active, embed]);
+  const accent = useMemo(() => hardwareMaterial(style, "#2b2b2b", false, active, embed), [style, active, embed]);
   // 공구는 금속 반사 없이 제 색으로 칠해 화살표·판과 구분되게 한다.
-  const toolMaterial = useMemo(() => hardwareMaterial(style, tool?.color ?? "#666", false, true), [style, tool]);
-  const toolAccent = useMemo(() => hardwareMaterial(style, "#3a3a3a", false, true), [style]);
+  const toolMaterial = useMemo(() => hardwareMaterial(style, tool?.color ?? "#666", false, true, drilling), [style, tool, drilling]);
+  const toolAccent = useMemo(() => hardwareMaterial(style, "#3a3a3a", false, true, drilling), [style, drilling]);
   useEffect(() => () => { material.dispose(); accent.dispose(); toolMaterial.dispose(); toolAccent.dispose(); },
     [material, accent, toolMaterial, toolAccent]);
 
@@ -231,6 +238,8 @@ function Small({ part, slot, active, clock, style, tool }: {
       ? (u < DROP_AT ? lerp(start, hang, ease(u / DROP_AT)) : lerp(hang, part.at, ease((u - DROP_AT) / (1 - DROP_AT))))
       : u < handEnd ? lerp(start, pre, ease(u / handEnd)) : lerp(pre, part.at, depth);
     ref.current.position.set(...pos);
+    // 벽 나사는 차례가 오기 전에는 숨긴다(앞 구멍을 뚫는 드릴과 같은 자리에 떠 있지 않게).
+    if (embed) ref.current.visible = !active || u > 0;
     const scale = !active || !magnify ? 1 : u < 0.85 ? MAGNIFY : MAGNIFY + (1 - MAGNIFY) * ease((u - 0.85) / 0.15);
     scaler.current?.scale.setScalar(scale);
     if (mark) scaler.current?.scale.setScalar(active ? (a > 0.5 ? scale : 0.0001) : 1);
@@ -310,113 +319,6 @@ function Small({ part, slot, active, clock, style, tool }: {
   );
 }
 
-// 벽: 바닥(y=0)에서 올라가는 불투명한 회반죽 벽. 바닥과 만나는 곳은 살짝 어둡고, 양 끝은 배경으로 흐려진다.
-const WALL_W = 500;
-const WALL_H = 260;
-type WallMaps = { map: THREE.CanvasTexture; bumpMap: THREE.CanvasTexture; alphaMap: THREE.CanvasTexture };
-let wallMaps: WallMaps | null = null;
-function plasterMaps(): WallMaps {
-  if (wallMaps) return wallMaps;
-  const canvas = (w: number, h: number, draw: (g: CanvasRenderingContext2D) => void) => {
-    const c = document.createElement("canvas");
-    c.width = w;
-    c.height = h;
-    draw(c.getContext("2d")!);
-    return new THREE.CanvasTexture(c);
-  };
-  // 회반죽 요철: 잔 알갱이 위에 큰 얼룩을 몇 겹 얹는다(1px ≈ 0.5cm).
-  const bump = canvas(1024, 512, (g) => {
-    const img = g.createImageData(1024, 512);
-    for (let i = 0; i < img.data.length; i += 4) {
-      const v = 200 + Math.random() * 40;
-      img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
-      img.data[i + 3] = 255;
-    }
-    g.putImageData(img, 0, 0);
-    for (let i = 0; i < 900; i++) {
-      g.fillStyle = `rgba(${Math.random() < 0.5 ? "0,0,0" : "255,255,255"},0.05)`;
-      g.beginPath();
-      g.ellipse(Math.random() * 1024, Math.random() * 512, 4 + Math.random() * 14, 3 + Math.random() * 8, Math.random() * Math.PI, 0, Math.PI * 2);
-      g.fill();
-    }
-  });
-  // 색: 요철을 아주 옅게 비치게 하고, 바닥 쪽 20cm 정도에 모서리 그늘을 넣는다.
-  const map = canvas(1024, 512, (g) => {
-    g.fillStyle = "#ffffff";
-    g.fillRect(0, 0, 1024, 512);
-    g.globalAlpha = 0.18;
-    g.drawImage(bump.image as HTMLCanvasElement, 0, 0);
-    g.globalAlpha = 1;
-    const shade = g.createLinearGradient(0, 512, 0, 512 - 40);
-    shade.addColorStop(0, "rgba(60,50,40,0.22)");
-    shade.addColorStop(1, "rgba(60,50,40,0)");
-    g.fillStyle = shade;
-    g.fillRect(0, 0, 1024, 512);
-  });
-  map.colorSpace = THREE.SRGBColorSpace;
-  const alphaMap = canvas(256, 1, (g) => {
-    const fade = g.createLinearGradient(0, 0, 256, 0);
-    fade.addColorStop(0, "#000");
-    fade.addColorStop(0.15, "#fff");
-    fade.addColorStop(0.85, "#fff");
-    fade.addColorStop(1, "#000");
-    g.fillStyle = fade;
-    g.fillRect(0, 0, 256, 1);
-  });
-  wallMaps = { map, bumpMap: bump, alphaMap };
-  return wallMaps;
-}
-
-function Wall({ z, style }: { z: number; style: RenderStyle }) {
-  const { map, bumpMap, alphaMap } = plasterMaps();
-  // 원목 보기는 환경광이 강해서 바탕색을 더 어둡게 둬야 흰 배경과 구분된다.
-  const color = style === "technical" ? "#ebe9e4" : style === "toon" ? "#e3dccf" : "#c9bfae";
-  const common = { map, alphaMap, transparent: true, color };
-  return (
-    // 앞면만 그려서 뒤로 돌아가 보면 벽이 가구를 가리지 않는다.
-    <mesh position={[0, WALL_H / 2, z]} receiveShadow renderOrder={-2}>
-      <planeGeometry args={[WALL_W, WALL_H]} />
-      {style === "technical" ? <meshBasicMaterial key="t" {...common} />
-        : style === "toon" ? <meshToonMaterial key="o" {...common} />
-        : <meshStandardMaterial key="c" {...common} bumpMap={bumpMap} bumpScale={0.4} roughness={0.95} metalness={0} />}
-    </mesh>
-  );
-}
-
-// 벽에 붙은 가구 뒤의 그늘: 가구 외곽보다 조금 큰 둥근 사각형을 흐리게 그린 텍스처.
-const WALL_SHADE_PAD = 10;
-let wallShade: THREE.CanvasTexture | null = null;
-function wallShadeMap() {
-  if (wallShade) return wallShade;
-  const c = document.createElement("canvas");
-  c.width = c.height = 256;
-  const g = c.getContext("2d")!;
-  const pad = 256 * 0.12;
-  // alphaMap은 밝기(G 채널)를 불투명도로 쓴다: 검은 바탕에 흰 사각형.
-  g.fillStyle = "#000";
-  g.fillRect(0, 0, 256, 256);
-  g.filter = "blur(14px)";
-  g.fillStyle = "#fff";
-  g.beginPath();
-  g.roundRect(pad, pad, 256 - pad * 2, 256 - pad * 2, 10);
-  g.fill();
-  wallShade = new THREE.CanvasTexture(c);
-  return wallShade;
-}
-
-// 가구 묶음 안에 넣어서, 가구를 옆으로 비키면 그늘도 같이 움직인다.
-function WallShade({ size, z }: { size: Vec3; z: number }) {
-  const [w, h] = size;
-  // 텍스처 가장자리 여백(12%)이 흐려지는 자리라, 그만큼 크게 펴서 그늘 테두리가 가구 바깥으로 나오게 한다.
-  const scale = 1 / 0.76;
-  return (
-    <mesh position={[0, h / 2, z + 0.05]} renderOrder={-1}>
-      <planeGeometry args={[(w + WALL_SHADE_PAD) * scale, (h + WALL_SHADE_PAD) * scale]} />
-      <meshBasicMaterial alphaMap={wallShadeMap()} color="#2b2118" transparent opacity={0.45} depthWrite={false} />
-    </mesh>
-  );
-}
-
 // 벽에 붙는 것(연필 표시, 구멍, 벽 나사)은 가구를 옮겨도 제자리에 남는다.
 const ON_WALL: SmallPart["model"][] = ["wall_mark", "wall_hole", "wall_screw"];
 
@@ -451,6 +353,16 @@ export function stepFocus(scene: Scene, index: number): { center: Vec3; radius: 
   return { center: sphere.center.toArray() as Vec3, radius: Math.max(sphere.radius, panelRadius) };
 }
 
+// 벽에만 손대는 단계(구멍 뚫기·벽 나사)는 부품이 작고 서로 멀어서, 카메라가 지금 작업하는 자리를 차례로 따라간다.
+// 자리(벽 좌표 → 월드)와 그 부품 동작이 시작하는 시각(초)을 돌려준다.
+export function wallShots(scene: Scene, index: number): { at: Vec3; start: number }[] | null {
+  const step = scene.steps[index];
+  if (!step.small.length || !step.small.every((s) => ON_WALL.includes(s.model))) return null;
+  const base = poses(scene).upright.pos;
+  const plan = schedule(step);
+  return step.small.map((s, i) => ({ at: add(s.at, base), start: plan.parts[i].start }));
+}
+
 export default function Assembly({ scene, stepIndex, playKey, renderStyle }: {
   scene: Scene; stepIndex: number; playKey: number; renderStyle: RenderStyle;
 }) {
@@ -467,7 +379,9 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle }: {
   // 이번 단계에서 다시 조이는 부품은 이전 단계 목록에서 빼고 지금 단계 쪽에서 그린다.
   const smallBefore = useMemo(() => {
     const again = new Set(step.small.map((s) => s.id));
-    return scene.steps.slice(0, stepIndex).flatMap((s) => s.small).filter((s) => !again.has(s.id) && !s.transient);
+    // 나중 단계에서 다시 조인 부품은 같은 id로 또 나오므로 마지막 것만 남긴다.
+    const before = new Map(scene.steps.slice(0, stepIndex).flatMap((s) => s.small).map((s) => [s.id, s]));
+    return [...before.values()].filter((s) => !again.has(s.id) && !s.transient);
   }, [scene, stepIndex, step]);
   const toolOf = (s: SmallPart) => (s.tool ? scene.hardware?.[s.tool] : undefined);
   const pose = poses(scene);
@@ -506,6 +420,7 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle }: {
         {smallBefore.filter((s) => !ON_WALL.includes(s.model)).map((s) => render(s, null))}
         {current.filter(({ s }) => !ON_WALL.includes(s.model)).map(({ s, i }) => render(s, i))}
         {step.wall && <WallShade size={scene.size} z={wallZ} />}
+        {step.room && <ShelfDecor scene={scene} style={renderStyle} />}
       </group>
       {step.wall && (
         <>
@@ -514,7 +429,8 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle }: {
             {smallBefore.filter((s) => ON_WALL.includes(s.model)).map((s) => render(s, null))}
             {current.filter(({ s }) => ON_WALL.includes(s.model)).map(({ s, i }) => render(s, i))}
           </group>
-          <Wall z={wallZ} style={renderStyle} />
+          <RoomShell wallZ={wallZ} style={renderStyle} />
+          {step.room && <RoomDecor scene={scene} wallZ={wallZ} style={renderStyle} />}
         </>
       )}
     </>

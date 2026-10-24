@@ -238,6 +238,8 @@ def build_scene(manual: Manual) -> dict:
     steps = []
     placed: dict[str, list[dict]] = {}  # 모델별로 이미 놓인 철물(나중에 다시 조일 때)
     last_added: list[str] = []
+    wall_from = min((s.number for s in manual.steps
+                     if any(kinds[u.part_id].kind == "bracket" for u in s.uses)), default=None)
     for i, step in enumerate(manual.steps):
         tools = {u.part_id for u in step.uses if kinds[u.part_id].kind == "tool"}
         models = []
@@ -271,7 +273,8 @@ def build_scene(manual: Manual) -> dict:
                 small += [{**s, "tool": "screwdriver", "travel": 0.3} for s in placed.get("wall_screw", [])]
         # 이미 붙은 판을 다시 끝까지 밀어 넣는 단계(15쪽 7단계는 5단계 그림 반복).
         # 벽에 건 뒤 아무것도 쓰지 않는 마지막 단계는 걸린 완성 모습만 보여 준다.
-        wall = step.number >= 12
+        # 벽은 벽 고정 브래킷을 다는 단계부터 보인다(그때부터 선반이 벽 앞에 선다).
+        wall = wall_from is not None and step.number >= wall_from
         reseat = last_added[-1:] if not step.adds and not small and not wall else []
         last_added += step.adds
         pulls_wall_screws = any(s["model"] == "wall_screw" and "travel" not in s for s in small)
@@ -282,6 +285,8 @@ def build_scene(manual: Manual) -> dict:
             "reseat": reseat,
             "pose": "lying" if step.number <= lying_until else "upright",
             "wall": wall,
+            # 벽에 건 뒤 아무것도 하지 않는 마지막 단계는 물건을 채운 방 안 모습으로 보여 준다.
+            "room": wall and i == len(manual.steps) - 1 and not step.uses and not step.adds,
             # 벽 나사를 박을 때는 선반을 옆으로 비켜 둔다(19쪽 13단계 그림에 가구가 없다).
             "unit_offset": [UNIT_PULL, 0, 0] if pulls_wall_screws else [0, 0, 0],
         })

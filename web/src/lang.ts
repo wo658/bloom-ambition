@@ -3,7 +3,7 @@
 // 음성은 브라우저 내장 Web Speech API로 읽는다.
 import { useEffect, useSyncExternalStore } from "react";
 
-// voice는 Web Speech API 언어 코드. 맥 기본 음성이 있는 언어 + 음성 없는 주요 언어 몇 개.
+// voice는 Web Speech API 언어 코드. 주요 언어 10개(모두 맥 기본 음성이 있다).
 export const LANGS = [
   { id: "ko", label: "한국어", voice: "ko-KR" },
   { id: "en", label: "English", voice: "en-US" },
@@ -13,44 +13,8 @@ export const LANGS = [
   { id: "es", label: "Español", voice: "es-ES" },
   { id: "fr", label: "Français", voice: "fr-FR" },
   { id: "de", label: "Deutsch", voice: "de-DE" },
-  { id: "it", label: "Italiano", voice: "it-IT" },
-  { id: "pt-BR", label: "Português (Brasil)", voice: "pt-BR" },
-  { id: "pt-PT", label: "Português (Portugal)", voice: "pt-PT" },
-  { id: "ru", label: "Русский", voice: "ru-RU" },
-  { id: "ar", label: "العربية", voice: "ar" },
-  { id: "hi", label: "हिन्दी", voice: "hi-IN" },
-  { id: "bn", label: "বাংলা", voice: "bn-IN" },
-  { id: "ta", label: "தமிழ்", voice: "ta-IN" },
-  { id: "te", label: "తెలుగు", voice: "te-IN" },
-  { id: "kn", label: "ಕನ್ನಡ", voice: "kn-IN" },
-  { id: "th", label: "ไทย", voice: "th-TH" },
   { id: "vi", label: "Tiếng Việt", voice: "vi-VN" },
   { id: "id", label: "Bahasa Indonesia", voice: "id-ID" },
-  { id: "ms", label: "Bahasa Melayu", voice: "ms-MY" },
-  { id: "tr", label: "Türkçe", voice: "tr-TR" },
-  { id: "pl", label: "Polski", voice: "pl-PL" },
-  { id: "nl", label: "Nederlands", voice: "nl-NL" },
-  { id: "sv", label: "Svenska", voice: "sv-SE" },
-  { id: "da", label: "Dansk", voice: "da-DK" },
-  { id: "nb", label: "Norsk bokmål", voice: "nb-NO" },
-  { id: "fi", label: "Suomi", voice: "fi-FI" },
-  { id: "el", label: "Ελληνικά", voice: "el-GR" },
-  { id: "he", label: "עברית", voice: "he-IL" },
-  { id: "hu", label: "Magyar", voice: "hu-HU" },
-  { id: "cs", label: "Čeština", voice: "cs-CZ" },
-  { id: "sk", label: "Slovenčina", voice: "sk-SK" },
-  { id: "ro", label: "Română", voice: "ro-RO" },
-  { id: "uk", label: "Українська", voice: "uk-UA" },
-  { id: "hr", label: "Hrvatski", voice: "hr-HR" },
-  { id: "bg", label: "Български", voice: "bg-BG" },
-  { id: "ca", label: "Català", voice: "ca-ES" },
-  { id: "sl", label: "Slovenščina", voice: "sl-SI" },
-  { id: "lt", label: "Lietuvių", voice: "lt-LT" },
-  { id: "kk", label: "Қазақ тілі", voice: "kk-KZ" },
-  { id: "fil", label: "Filipino", voice: "fil-PH" },
-  { id: "fa", label: "فارسی", voice: "fa-IR" },
-  { id: "ur", label: "اردو", voice: "ur-PK" },
-  { id: "sw", label: "Kiswahili", voice: "sw-KE" },
 ];
 
 // 기본은 한국어. ?lang=en처럼 링크로만 바꿔 열 수 있고, 고른 언어는 새로 고치면 한국어로 돌아간다.

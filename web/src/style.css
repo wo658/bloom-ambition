@@ -13,7 +13,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .loading { padding: 40px; }
 
 /* 3D 뷰포트가 화면 전체를 차지하고, UI는 그 위에 떠 있는 카드로 올린다. */
-.viewer { position: relative; width: 100vw; height: 100vh; overflow: hidden;
+.viewer { position: relative; width: 100vw; height: 100vh; overflow: hidden; container: viewer / inline-size;
   background: radial-gradient(ellipse at 50% 40%, #ffffff 0%, #f1f4f8 55%, #dfe4eb 100%); }
 .viewer canvas { position: absolute; inset: 0; }
 .overlay { position: absolute; z-index: 2; transition: opacity .25s; }
@@ -72,7 +72,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .lightbox img { max-height: 92vh; max-width: 92vw; border-radius: 8px; background: #fff; }
 
 /* 아래 타임라인 */
-.dock { left: 50%; bottom: 20px; transform: translateX(-50%); width: min(980px, calc(100vw - 32px)); display: flex; align-items: center; gap: 14px;
+.dock { left: 50%; bottom: 20px; transform: translateX(-50%); width: min(980px, calc(100% - 32px)); display: flex; align-items: center; gap: 14px;
   padding: 12px 14px; background: var(--card); backdrop-filter: blur(8px); border-radius: 18px; box-shadow: var(--shadow); }
 .nav { flex: none; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line); background: #fff; font-size: 30px; line-height: 1; padding-bottom: 4px; }
 .nav.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
@@ -150,3 +150,36 @@ button { font: inherit; color: inherit; cursor: pointer; }
   color: #c2410c; font-size: 12px; font-weight: 600; }
 .pcard-next:hover { background: #fff7ed; }
 @media (max-width: 720px) { .inv-cols { grid-template-columns: 1fr; } .inv-col.used { border-right: 0; border-bottom: 1px solid var(--line); } }
+
+/* 뷰어 폭에 따라 카드가 접힌다(도면 어시스턴트를 열거나 창이 좁을 때). 화면 폭이 아니라 뷰어 폭 기준이다. */
+.instruction, .parts, .source, .thumb, .step-badge, .nav { transition: width .25s, height .25s, padding .25s, font-size .25s, opacity .2s; }
+@container viewer (max-width: 1280px) {
+  .instruction { width: min(360px, 42cqw); gap: 12px; padding: 13px 15px; }
+  .instruction .text { font-size: 15.5px; line-height: 1.55; }
+  .step-badge { width: 42px; height: 42px; font-size: 21px; border-radius: 10px; }
+  .parts { width: 236px; padding: 12px 14px; }
+  .parts .thumb { width: 48px; height: 48px; }
+  .source { width: 150px; bottom: 124px; }
+  .hint { display: none; }
+}
+@container viewer (max-width: 1100px) {
+  /* 원본 쪽 미리보기는 숨기고, 부품 카드는 제목만 남겼다가 마우스를 올리면 펼친다. */
+  .source { display: none; }
+  .parts { width: auto; }
+  .parts ul, .parts > .muted { display: none; }
+  .parts:hover, .parts:focus-within { min-width: 260px; }
+  .parts:hover ul, .parts:focus-within ul { display: block; }
+  .parts-head { margin-bottom: 0; }
+  .parts-head h2, .parts .mini { white-space: nowrap; }
+  /* 채팅이 닫혀 있으면 오른쪽 아래 떠 있는 버튼(AI·PDF)을 피해 타임라인을 왼쪽으로 붙인다. */
+  body:not(.chat-open) .dock { left: 16px; transform: none; width: calc(100% - 214px); }
+  .lang-bar select { max-width: 104px; }
+  .product { font-size: 15px; }
+  .marking-pill em { display: none; }
+}
+@container viewer (max-width: 760px) {
+  .instruction { top: 64px; width: calc(100% - 84px); }
+  .nav { width: 42px; height: 42px; font-size: 24px; }
+  .dock { gap: 10px; padding: 10px; bottom: 12px; }
+  .playback button { padding: 4px 9px; font-size: 12px; }
+}

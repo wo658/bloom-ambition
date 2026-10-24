@@ -111,6 +111,21 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
     setScene(prev);
   };
 
+  // 왼쪽 가장자리를 끌어 채팅 폭(--chat-w)을 바꾼다. 320~720px.
+  const startResize = (e: React.PointerEvent) => {
+    e.preventDefault();
+    const move = (ev: PointerEvent) =>
+      document.documentElement.style.setProperty("--chat-w", `${Math.min(720, Math.max(320, window.innerWidth - ev.clientX))}px`);
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      document.body.classList.remove("chat-resizing");
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    document.body.classList.add("chat-resizing");
+  };
+
   if (!open) {
     return (
       <button className="chat-launcher" onClick={() => setOpen(true)}>
@@ -124,6 +139,7 @@ export default function ChatPanel({ scene, setScene }: { scene: Scene; setScene:
     <aside className="chat-sidebar" aria-label={t("도면 AI 채팅")}
       // 입력 중 ←→·Space가 뷰어 단축키로 새지 않게 막는다.
       onKeyDown={(e) => e.stopPropagation()}>
+      <div className="chat-resize" onPointerDown={startResize} title={t("끌어서 폭 바꾸기")} />
       <header className="chat-head">
         <span className="chat-orb" />
         <div className="chat-title">

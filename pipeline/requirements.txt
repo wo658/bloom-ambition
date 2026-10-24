@@ -1,0 +1,4 @@
+pymupdf
+anthropic
+pydantic
+ocrmac  # macOS 전용, kit 모드

@@ -1,0 +1,2116 @@
+{
+  "kind": "kit",
+  "product": "Eduard 82212 A6M2 제로센 21형 (1/48)",
+  "markings": [
+    {
+      "id": "A",
+      "title_ko": "토요시마 하지메, 항모 히류, 1941년 12월 (BII-124)",
+      "page": 15
+    },
+    {
+      "id": "B",
+      "title_ko": "사카이 사부로, 타이난 항공대, 라바울, 1942년 8월 (V-128)",
+      "page": 16
+    },
+    {
+      "id": "C",
+      "title_ko": "코야에 코타로, 항모 즈이호, 라바울, 1943년 4월 (AI-3-123)",
+      "page": 17
+    },
+    {
+      "id": "D",
+      "title_ko": "칸자키 쿠니오, 381 항공대, 켄다리, 1944년 5월 (81-181)",
+      "page": 18
+    },
+    {
+      "id": "E",
+      "title_ko": "미야타케 노부오, 카미카제 특공대, 카노야, 1945년 4월 (ケ-113)",
+      "page": 19
+    }
+  ],
+  "steps": [
+    {
+      "id": "p3-left",
+      "label": null,
+      "page": 3,
+      "region": [
+        0.05,
+        0.03,
+        0.95,
+        0.46
+      ],
+      "title_ko": "동체 왼쪽 내벽",
+      "caption_ko": "왼쪽 동체 B12 안쪽에 D25와 PE45를 붙이세요.\nD24에 PE24·PE31을 올린 뒤, D24와 D9를 차례로 붙이세요.\n에칭은 마킹 A·B면 PE43, C·D·E면 PE63을 써요.\nPE17은 보통 생략해요.",
+      "parts": [
+        {
+          "id": "B12",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D25",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE45",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE24",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE31",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D24",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D9",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D27",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE43",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE63",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE17",
+          "markings": null,
+          "optional": true
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [
+        "내부색: 마킹 A·B 인테리어 그린(H58/C351), C·D·E 필드 그린(H340/C340)"
+      ],
+      "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+      "confidence": 0.6
+    },
+    {
+      "id": "p3-right",
+      "label": null,
+      "page": 3,
+      "region": [
+        0.05,
+        0.44,
+        0.95,
+        0.97
+      ],
+      "title_ko": "동체 오른쪽 내벽",
+      "caption_ko": "오른쪽 동체 B11 안쪽에 D51과 PE38을 붙이세요.\n이어서 계기 상자 D4, D10과 PE21, D2·PE28·PE32·D49를 붙이세요.\nD4는 에칭(PE19·PE20 또는 PE58·PE59) 대신 데칼 K6·K9로 꾸며도 돼요.",
+      "parts": [
+        {
+          "id": "B11",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D51",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE38",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D4",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D10",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE21",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D2",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE28",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE32",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D49",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE16",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE19",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE20",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE69",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE59",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE58",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [
+        "내부색: 마킹 A·B 인테리어 그린(H58/C351), C·D·E 필드 그린(H340/C340)"
+      ],
+      "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+      "confidence": 0.6
+    },
+    {
+      "id": "A",
+      "label": "A",
+      "page": 4,
+      "region": [
+        0.05,
+        0.04,
+        0.33,
+        0.26
+      ],
+      "title_ko": "러더 페달",
+      "caption_ko": "D30에서 빨간 부분을 잘라내세요.\n그 자리에 에칭 페달 PE30·PE29를 붙이세요.",
+      "parts": [
+        {
+          "id": "D30",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE30",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE29",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+      "confidence": 0.5
+    },
+    {
+      "id": "B",
+      "label": "B",
+      "page": 4,
+      "region": [
+        0.33,
+        0.04,
+        0.95,
+        0.26
+      ],
+      "title_ko": "조종석 좌석",
+      "caption_ko": "좌석 D40에 에칭 안전벨트 PE5·PE6·PE7·PE8을 구부려 붙이세요.",
+      "parts": [
+        {
+          "id": "D40",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE5",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE6",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE7",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE8",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [
+        "좌석: 마킹 A·B 인테리어 그린(H58/C351), C·D·E 플랫 블랙(H12/C33)"
+      ],
+      "warning_ko": null,
+      "confidence": 0.8
+    },
+    {
+      "id": "p4-bulkhead",
+      "label": null,
+      "page": 4,
+      "region": [
+        0.05,
+        0.26,
+        0.95,
+        0.47
+      ],
+      "title_ko": "좌석과 뒤 격벽",
+      "caption_ko": "격벽 D35에 D12와 D1을 붙이세요.\n좌석(B)을 붙인 뒤 PE10과 D61을 다세요.",
+      "parts": [
+        {
+          "id": "D35",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D12",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D1",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE10",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D61",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [
+        "B"
+      ],
+      "markings": null,
+      "paints_ko": [
+        "격벽 뒷면: 블루 그린(H63/C57)"
+      ],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "C",
+      "label": "C",
+      "page": 4,
+      "region": [
+        0.1,
+        0.47,
+        0.29,
+        0.61
+      ],
+      "title_ko": "바닥 부품",
+      "caption_ko": "작은 상자 부품에 에칭 PE49·PE50을 붙이세요.",
+      "parts": [
+        {
+          "id": "PE49",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE50",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [
+        "플랫 블랙(H12/C33)"
+      ],
+      "warning_ko": null,
+      "confidence": 0.4
+    },
+    {
+      "id": "p4-floor",
+      "label": null,
+      "page": 4,
+      "region": [
+        0.05,
+        0.47,
+        0.62,
+        0.95
+      ],
+      "title_ko": "조종석 바닥",
+      "caption_ko": "바닥판 D33에 A17을 붙이세요.\n조종간 D8은 그림의 1, 2 순서대로 붙이세요.\nD55·D26과 러더 페달(A), 바닥 부품(C)을 다세요.",
+      "parts": [
+        {
+          "id": "D33",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "A17",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D8",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D55",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D26",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [
+        "A",
+        "C"
+      ],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "D",
+      "label": "D",
+      "page": 4,
+      "region": [
+        0.4,
+        0.68,
+        0.95,
+        0.95
+      ],
+      "title_ko": "계기판",
+      "caption_ko": "계기판 D36에서 빨간 부분을 잘라내고 에칭 계기판을 겹쳐 붙이세요.\n마킹 A·B는 PE14·PE15·PE25·PE40·PE41을 써요.\n마킹 C·D·E는 PE51·PE54·PE55·PE62·PE64를 써요.\n에칭 대신 데칼 K8을 붙여도 돼요.",
+      "parts": [
+        {
+          "id": "D36",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE14",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE15",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE25",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE40",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE41",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE51",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE54",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE55",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE62",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE64",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+      "confidence": 0.6
+    },
+    {
+      "id": "p5-cockpit",
+      "label": null,
+      "page": 5,
+      "region": [
+        0.05,
+        0.04,
+        0.62,
+        0.29
+      ],
+      "title_ko": "조종석 결합",
+      "caption_ko": "바닥판에 격벽·좌석 조립품을 세우세요.\n계기판(D)과 양옆 프레임을 붙여 조종석을 완성하세요.",
+      "parts": [],
+      "uses_steps": [
+        "p4-bulkhead",
+        "p4-floor",
+        "D"
+      ],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.5
+    },
+    {
+      "id": "p5-console",
+      "label": null,
+      "page": 5,
+      "region": [
+        0.62,
+        0.04,
+        0.95,
+        0.44
+      ],
+      "title_ko": "측면 콘솔",
+      "caption_ko": "프레임 D34에 D59를 붙이세요.\n에칭으로 꾸미려면 D59의 빨간 부분을 깎고 PE44·PE46·PE2를 붙이세요.\n마킹 A·B는 PE1·PE18, C·D·E는 PE56·PE60을 더 붙여요.\n데칼 K10·K7로 대신해도 돼요.",
+      "parts": [
+        {
+          "id": "D34",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D59",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE44",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE46",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE2",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE1",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE18",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE56",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE60",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+      "confidence": 0.6
+    },
+    {
+      "id": "E",
+      "label": "E",
+      "page": 5,
+      "region": [
+        0.05,
+        0.3,
+        0.49,
+        0.68
+      ],
+      "title_ko": "무전기",
+      "caption_ko": "무전기 D44·D19·D18에 에칭 패널을 붙이세요.\n마킹 A·B는 PE3·PE22·PE23·PE26·PE27을 써요.\n마킹 C·D·E는 PE53·PE65·PE66·PE67·PE68을 써요.\n데칼 K1~K5로 대신해도 돼요.",
+      "parts": [
+        {
+          "id": "D44",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D19",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D18",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE12",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE13",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE9",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE4",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE3",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE22",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE23",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE26",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE27",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE53",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE65",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE66",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE67",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "PE68",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+      "confidence": 0.6
+    },
+    {
+      "id": "p5-install-E",
+      "label": null,
+      "page": 5,
+      "region": [
+        0.49,
+        0.44,
+        0.95,
+        0.68
+      ],
+      "title_ko": "무전기·콘솔 장착",
+      "caption_ko": "조종석 뒤에 무전기(E)를, 옆에 측면 콘솔을 붙이세요.",
+      "parts": [],
+      "uses_steps": [
+        "E",
+        "p5-console",
+        "p5-cockpit"
+      ],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.5
+    },
+    {
+      "id": "p5-guns",
+      "label": null,
+      "page": 5,
+      "region": [
+        0.05,
+        0.68,
+        0.95,
+        0.97
+      ],
+      "title_ko": "기관총과 탱크",
+      "caption_ko": "7.7mm 기관총 D17·D14를 받침 D29에 붙이세요.\n탱크 D42·D58과 함께 조종석 앞에 다세요.",
+      "parts": [
+        {
+          "id": "D17",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D14",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D29",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D42",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D58",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [
+        "총: 번트 아이언(H76/C61)",
+        "탱크: 블루 그린(H63/C57)"
+      ],
+      "warning_ko": null,
+      "confidence": 0.5
+    },
+    {
+      "id": "F",
+      "label": "F",
+      "page": 6,
+      "region": [
+        0.25,
+        0.06,
+        0.4,
+        0.18
+      ],
+      "title_ko": "꼬리 내부 받침",
+      "caption_ko": "D22와 D5를 맞붙이세요.",
+      "parts": [
+        {
+          "id": "D22",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D5",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.4
+    },
+    {
+      "id": "p6-fuselage",
+      "label": null,
+      "page": 6,
+      "region": [
+        0.05,
+        0.04,
+        0.95,
+        0.62
+      ],
+      "title_ko": "동체 결합",
+      "caption_ko": "조종석 조립품을 넣고 동체 B12·B11을 맞붙이세요.\n윗면 패널 B1, 꼬리 B21, 꼬리 내부 받침(F)을 붙이세요.",
+      "parts": [
+        {
+          "id": "B1",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B12",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B11",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B21",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [
+        "F",
+        "p3-left",
+        "p3-right",
+        "p5-install-E",
+        "p5-guns"
+      ],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "p6-lowerwing",
+      "label": null,
+      "page": 6,
+      "region": [
+        0.05,
+        0.62,
+        0.95,
+        0.97
+      ],
+      "title_ko": "아래 날개 안쪽",
+      "caption_ko": "아래 날개 C4 안쪽에 D32, C13, C12를 붙이세요.",
+      "parts": [
+        {
+          "id": "C4",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D32",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "C13",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "C12",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": "마킹 D만: 표시된 두 곳에 지름 0.6mm 구멍을 뚫으세요.",
+      "confidence": 0.6
+    },
+    {
+      "id": "p7-wheelwell",
+      "label": null,
+      "page": 7,
+      "region": [
+        0.25,
+        0.05,
+        0.95,
+        0.32
+      ],
+      "title_ko": "주바퀴 격납고",
+      "caption_ko": "아래 날개 C4에 격납고 벽 D11·D20·D21·D16을 붙이세요.",
+      "parts": [
+        {
+          "id": "C4",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D11",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D20",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D21",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D16",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "p7-upperwing",
+      "label": null,
+      "page": 7,
+      "region": [
+        0.05,
+        0.2,
+        0.75,
+        0.62
+      ],
+      "title_ko": "날개 윗면 결합",
+      "caption_ko": "윗날개 C6·C5 안쪽에 D38·D39를 붙이세요.\n그다음 아래 날개와 맞붙이세요.",
+      "parts": [
+        {
+          "id": "C6",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "C5",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D38",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D39",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [
+        "p6-lowerwing",
+        "p7-wheelwell"
+      ],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "p7-wingdetail",
+      "label": null,
+      "page": 7,
+      "region": [
+        0.05,
+        0.48,
+        0.95,
+        0.97
+      ],
+      "title_ko": "날개 마무리",
+      "caption_ko": "날개 끝에 항법등 A15(투명 파랑)와 A16(투명 빨강)을 붙이세요.\n보조익은 마킹 B~E면 C1·C2, 마킹 A면 C11·C10을 쓰세요.\nD57·D60·D3도 붙이세요.",
+      "parts": [
+        {
+          "id": "A15",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "A16",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D57",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D60",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D3",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "C1",
+          "markings": [
+            "B",
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "C2",
+          "markings": [
+            "B",
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "C11",
+          "markings": [
+            "A"
+          ],
+          "optional": false
+        },
+        {
+          "id": "C10",
+          "markings": [
+            "A"
+          ],
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "G",
+      "label": "G",
+      "page": 8,
+      "region": [
+        0.05,
+        0.04,
+        0.5,
+        0.42
+      ],
+      "title_ko": "왼쪽 수평 꼬리날개",
+      "caption_ko": "B17과 B3을 맞붙이고 승강타 C7을 다세요.",
+      "parts": [
+        {
+          "id": "B17",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B3",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "C7",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "H",
+      "label": "H",
+      "page": 8,
+      "region": [
+        0.5,
+        0.04,
+        0.95,
+        0.42
+      ],
+      "title_ko": "오른쪽 수평 꼬리날개",
+      "caption_ko": "B16과 B2를 맞붙이고 승강타 C3을 다세요.",
+      "parts": [
+        {
+          "id": "B16",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B2",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "C3",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "p8-join",
+      "label": null,
+      "page": 8,
+      "region": [
+        0.05,
+        0.42,
+        0.95,
+        0.97
+      ],
+      "title_ko": "날개·꼬리날개 결합",
+      "caption_ko": "동체에 날개를 붙이고, 꼬리에 수평 꼬리날개 G·H를 끼우세요.\nD48, 발판 D23, PE33을 붙이세요.",
+      "parts": [
+        {
+          "id": "D23",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D48",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE33",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [
+        "G",
+        "H",
+        "p6-fuselage",
+        "p7-upperwing",
+        "p7-wingdetail"
+      ],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "I",
+      "label": "I",
+      "page": 9,
+      "region": [
+        0.05,
+        0.04,
+        0.95,
+        0.33
+      ],
+      "title_ko": "엔진(사카에 12형)",
+      "caption_ko": "실린더 D28·D31, 푸시로드 D37 두 장, 기어 케이스 D41·D43을 겹쳐 엔진을 만드세요.\n데칼 S21을 붙이세요.",
+      "parts": [
+        {
+          "id": "D41",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D43",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D37",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D28",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D31",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [
+        "실린더: 블랙(H2/C2)",
+        "기어 케이스: 라이트 블루(H417/C117)"
+      ],
+      "warning_ko": null,
+      "confidence": 0.7
+    },
+    {
+      "id": "p9-engine",
+      "label": null,
+      "page": 9,
+      "region": [
+        0.05,
+        0.33,
+        0.95,
+        0.72
+      ],
+      "title_ko": "엔진 장착",
+      "caption_ko": "방화벽에 D45를 붙이고 엔진(I)을 다세요.",
+      "parts": [
+        {
+          "id": "D45",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [
+        "I",
+        "p8-join"
+      ],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.7
+    },
+    {
+      "id": "J",
+      "label": "J",
+      "page": 9,
+      "region": [
+        0.05,
+        0.72,
+        0.68,
+        0.97
+      ],
+      "title_ko": "폭탄 (마킹 E)",
+      "caption_ko": "폭탄 E23·E24(또는 E2·E5)를 맞붙이세요.\n꼬리날개와 거치대 E25·E26·E10, PE57을 붙이세요.",
+      "parts": [
+        {
+          "id": "E24",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E23",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE57",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E2",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E5",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E26",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E25",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E10",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": [
+        "E"
+      ],
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.5
+    },
+    {
+      "id": "K",
+      "label": "K",
+      "page": 9,
+      "region": [
+        0.68,
+        0.72,
+        0.95,
+        0.97
+      ],
+      "title_ko": "소형 폭탄 (마킹 D)",
+      "caption_ko": "E27에 꼬리 E1과 PE57을 붙이세요.",
+      "parts": [
+        {
+          "id": "E1",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E27",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE57",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": [
+        "D"
+      ],
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.4
+    },
+    {
+      "id": "L",
+      "label": "L",
+      "page": 10,
+      "region": [
+        0.05,
+        0.04,
+        0.95,
+        0.55
+      ],
+      "title_ko": "엔진 카울링",
+      "caption_ko": "지그 B9에 B10을 끼우세요.\n카울링 판 B4·B15·B13·B14를 둘러 붙이세요.\n마지막으로 배기구 B19·B6, B20·B5를 다세요.",
+      "parts": [
+        {
+          "id": "B9",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B10",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B4",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B15",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B13",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B14",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B19",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B6",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B20",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "B5",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": "파란색 B9는 모양을 잡는 지그예요.\n접착하지 말고 다 마르면 빼내세요.",
+      "confidence": 0.7
+    },
+    {
+      "id": "p10-cowl",
+      "label": null,
+      "page": 10,
+      "region": [
+        0.05,
+        0.55,
+        0.95,
+        0.97
+      ],
+      "title_ko": "카울링 장착",
+      "caption_ko": "완성한 카울링(L)을 엔진 위에 씌우세요.",
+      "parts": [],
+      "uses_steps": [
+        "L",
+        "p9-engine"
+      ],
+      "markings": null,
+      "paints_ko": [
+        "카울링: 카울링 컬러(C125)"
+      ],
+      "warning_ko": null,
+      "confidence": 0.8
+    },
+    {
+      "id": "p11-wheels",
+      "label": null,
+      "page": 11,
+      "region": [
+        0.05,
+        0.04,
+        0.95,
+        0.16
+      ],
+      "title_ko": "주바퀴",
+      "caption_ko": "휠과 타이어를 조립하세요.\n휠은 두 가지 모양 중 하나를 고르세요.",
+      "parts": [
+        {
+          "id": "E13",
+          "markings": null,
+          "optional": true
+        },
+        {
+          "id": "E29",
+          "markings": null,
+          "optional": true
+        },
+        {
+          "id": "E6",
+          "markings": null,
+          "optional": true
+        },
+        {
+          "id": "E31",
+          "markings": null,
+          "optional": true
+        },
+        {
+          "id": "E28",
+          "markings": null,
+          "optional": true
+        },
+        {
+          "id": "E11B",
+          "markings": null,
+          "optional": true
+        },
+        {
+          "id": "E8",
+          "markings": null,
+          "optional": true
+        },
+        {
+          "id": "E11A",
+          "markings": null,
+          "optional": true
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [
+        "휠: 알루미늄(SM212)",
+        "타이어: 타이어 블랙(H77/C137)"
+      ],
+      "warning_ko": null,
+      "confidence": 0.5
+    },
+    {
+      "id": "M",
+      "label": "M",
+      "page": 11,
+      "region": [
+        0.05,
+        0.16,
+        0.5,
+        0.34
+      ],
+      "title_ko": "왼쪽 주다리",
+      "caption_ko": "다리 E33에 바퀴와 덮개 E20, 에칭 PE35·PE48·PE51을 붙이세요.",
+      "parts": [
+        {
+          "id": "E20",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E33",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE35",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE48",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE51",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "N",
+      "label": "N",
+      "page": 11,
+      "region": [
+        0.5,
+        0.16,
+        0.95,
+        0.34
+      ],
+      "title_ko": "오른쪽 주다리",
+      "caption_ko": "다리 E30에 바퀴와 덮개 E18, 에칭 PE36·PE48·PE51을 붙이세요.",
+      "parts": [
+        {
+          "id": "E30",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E18",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE36",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE51",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE48",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "O",
+      "label": "O",
+      "page": 11,
+      "region": [
+        0.46,
+        0.34,
+        0.71,
+        0.45
+      ],
+      "title_ko": "꼬리바퀴",
+      "caption_ko": "D46에 바퀴 D50과 D47을 붙이세요.",
+      "parts": [
+        {
+          "id": "D46",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D50",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D47",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "p11-gear",
+      "label": null,
+      "page": 11,
+      "region": [
+        0.05,
+        0.34,
+        0.95,
+        0.97
+      ],
+      "title_ko": "랜딩기어 장착",
+      "caption_ko": "주다리 M·N과 꼬리바퀴 O를 끼우세요.\nE14·E16, D6·D7을 붙이고 데칼 S25를 붙이세요.",
+      "parts": [
+        {
+          "id": "E14",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E16",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D6",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D7",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [
+        "M",
+        "N",
+        "O",
+        "p11-wheels",
+        "p10-cowl"
+      ],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "p12-doors",
+      "label": null,
+      "page": 12,
+      "region": [
+        0.05,
+        0.04,
+        0.95,
+        0.29
+      ],
+      "title_ko": "주바퀴 안쪽 덮개",
+      "caption_ko": "오른쪽에 E4, 왼쪽에 E3을 붙이세요.",
+      "parts": [
+        {
+          "id": "E4",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E3",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "P",
+      "label": "P",
+      "page": 12,
+      "region": [
+        0.65,
+        0.23,
+        0.95,
+        0.42
+      ],
+      "title_ko": "보조연료탱크 (마킹 A·B·C)",
+      "caption_ko": "E21·E22를 맞붙이고 E12를 다세요.",
+      "parts": [
+        {
+          "id": "E22",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E12",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E21",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": [
+        "A",
+        "B",
+        "C"
+      ],
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "p12-stores",
+      "label": null,
+      "page": 12,
+      "region": [
+        0.05,
+        0.29,
+        0.95,
+        0.74
+      ],
+      "title_ko": "외부 장착물",
+      "caption_ko": "마킹에 맞는 장착물을 다세요.\n· 마킹 A·B·C: 보조연료탱크(P)\n· 마킹 D: 소형 폭탄(K)\n· 마킹 E: 폭탄(J)\n안테나 PE34와 PE11을 붙이세요.\nE32는 마킹 D, D56은 마킹 A에서만 써요.",
+      "parts": [
+        {
+          "id": "PE34",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE11",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E32",
+          "markings": [
+            "D"
+          ],
+          "optional": false
+        },
+        {
+          "id": "D56",
+          "markings": [
+            "A"
+          ],
+          "optional": false
+        }
+      ],
+      "uses_steps": [
+        "J",
+        "K",
+        "P",
+        "p11-gear",
+        "p12-doors"
+      ],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.5
+    },
+    {
+      "id": "R",
+      "label": "R",
+      "page": 12,
+      "region": [
+        0.05,
+        0.74,
+        0.65,
+        0.96
+      ],
+      "title_ko": "프로펠러",
+      "caption_ko": "프로펠러 E19에 허브와 스피너를 붙이세요.\n마킹 A·B는 E7·E17, C·D·E는 E9·E15를 써요.",
+      "parts": [
+        {
+          "id": "E19",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "E7",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "E17",
+          "markings": [
+            "A",
+            "B"
+          ],
+          "optional": false
+        },
+        {
+          "id": "E9",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        },
+        {
+          "id": "E15",
+          "markings": [
+            "C",
+            "D",
+            "E"
+          ],
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [
+        "프로펠러: 레드 브라운(C131), 앞면 실버(SM201)"
+      ],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "p13-gunsight",
+      "label": null,
+      "page": 13,
+      "region": [
+        0.05,
+        0.04,
+        0.95,
+        0.3
+      ],
+      "title_ko": "조준기",
+      "caption_ko": "조종석 앞에 조준기 A5와 PE52를 다세요.",
+      "parts": [
+        {
+          "id": "A5",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE52",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.6
+    },
+    {
+      "id": "S",
+      "label": "S",
+      "page": 13,
+      "region": [
+        0.05,
+        0.33,
+        0.37,
+        0.5
+      ],
+      "title_ko": "열린 캐노피",
+      "caption_ko": "캐노피를 열어 두려면 A12에 PE47·PE39를 붙이세요.",
+      "parts": [
+        {
+          "id": "A12",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE47",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE39",
+          "markings": null,
+          "optional": false
+        }
+      ],
+      "uses_steps": [],
+      "markings": null,
+      "paints_ko": [],
+      "warning_ko": null,
+      "confidence": 0.5
+    },
+    {
+      "id": "p13-final",
+      "label": null,
+      "page": 13,
+      "region": [
+        0.05,
+        0.38,
+        0.95,
+        0.97
+      ],
+      "title_ko": "캐노피와 마무리",
+      "caption_ko": "앞유리 A4와 뒤 캐노피 A10을 붙이세요.\n가운데에는 닫힌 캐노피 A14나 열린 캐노피(S)를 붙이세요.\n항법등 A1·A19와 D62·PE37을 다세요.\n안테나 기둥 D53/D54, 피토관 D52, 배기관 D15, PE42를 붙이세요.\n마지막으로 프로펠러(R)를 다세요.",
+      "parts": [
+        {
+          "id": "A14",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "A4",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "A10",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "A1",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "A19",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D62",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE37",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "PE42",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D15",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D52",
+          "markings": null,
+          "optional": false
+        },
+        {
+          "id": "D53",
+          "markings": [
+            "A",
+            "C"
+          ],
+          "optional": false
+        },
+        {
+          "id": "D54",
+          "markings": [
+            "D",
+            "E"
+          ],
+          "optional": false
+        }
+      ],
+      "uses_steps": [
+        "S",
+        "R",
+        "p12-stores",
+        "p13-gunsight"
+      ],
+      "markings": null,
+      "paints_ko": [
+        "캐노피 틀: 카울링 컬러(C125)"
+      ],
+      "warning_ko": null,
+      "confidence": 0.6
+    }
+  ],
+  "notes_ko": [
+    "작은 부품과 에칭(PE) 부품을 삼키지 않도록 어린이 손에 닿지 않게 하세요.",
+    "접착제와 도료는 환기가 잘 되는 곳에서 쓰고 불꽃 가까이 두지 마세요.",
+    "빨간 표시는 잘라낼 부분, 파란 표시는 접착하지 않는 부분이에요.",
+    "?가 붙은 번호는 둘 중 하나를 고르는 선택 부품이에요."
+  ],
+  "extracted_by": "Claude Code 세션에서 Claude Opus 5.5가 페이지 이미지를 직접 읽음 (API 키 없음, 수동 실행)"
+}

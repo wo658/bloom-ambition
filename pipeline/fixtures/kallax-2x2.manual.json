@@ -1,0 +1,46 @@
+{
+  "product": "IKEA KALLAX 2x2",
+  "grid": [2, 2],
+  "outer_size_cm": [77, 77, 39],
+  "parts": [
+    {"id": "outer_bottom", "kind": "panel", "name_ko": "바닥판", "qty": 1, "role": "outer_bottom", "page": 10},
+    {"id": "outer_left", "kind": "panel", "name_ko": "왼쪽 옆판", "qty": 1, "role": "outer_left", "page": 10},
+    {"id": "outer_right", "kind": "panel", "name_ko": "오른쪽 옆판", "qty": 1, "role": "outer_right", "page": 10},
+    {"id": "outer_top", "kind": "panel", "name_ko": "윗판", "qty": 1, "role": "outer_top", "page": 10},
+    {"id": "divider_vertical", "kind": "panel", "name_ko": "가운데 세로 칸막이", "qty": 1, "role": "divider_vertical", "page": 10},
+    {"id": "shelf_left", "kind": "panel", "name_ko": "왼쪽 짧은 선반", "qty": 1, "role": "shelf_left", "page": 10},
+    {"id": "shelf_right", "kind": "panel", "name_ko": "오른쪽 짧은 선반", "qty": 1, "role": "shelf_right", "page": 10},
+    {"id": "104321", "kind": "cam_screw", "name_ko": "캠 연결 볼트", "qty": 8, "role": null, "page": 9},
+    {"id": "101339", "kind": "dowel", "name_ko": "나무못", "qty": 14, "role": null, "page": 9},
+    {"id": "100372", "kind": "screw", "name_ko": "짧은 나사", "qty": 4, "role": null, "page": 9},
+    {"id": "103693", "kind": "bracket", "name_ko": "벽걸이 고리 브래킷", "qty": 2, "role": null, "page": 9},
+    {"id": "115753", "kind": "bracket", "name_ko": "벽 고정 브래킷", "qty": 2, "role": null, "page": 10},
+    {"id": "115754", "kind": "cover", "name_ko": "브래킷 커버", "qty": 2, "role": null, "page": 10},
+    {"id": "10002300", "kind": "pad", "name_ko": "펠트 패드", "qty": 4, "role": null, "page": 9},
+    {"id": "100001", "kind": "tool", "name_ko": "육각 렌치", "qty": 1, "role": null, "page": 9},
+    {"id": "wall_screw", "kind": "screw", "name_ko": "벽용 나사 (미포함, 벽 재질에 맞게 별도 구매)", "qty": 2, "role": null, "page": 19}
+  ],
+  "steps": [
+    {"number": 1, "page": 11, "caption_ko": "바닥에 담요를 까세요.\n바닥판과 왼쪽 옆판을 ㄱ자로 맞대세요.\n캠 연결 볼트 2개를 육각 렌치로 조이세요.", "adds": ["outer_bottom", "outer_left"], "uses": [{"part_id": "104321", "qty": 2}, {"part_id": "100001", "qty": 1}], "warning_ko": null, "confidence": 0.8},
+    {"number": 2, "page": 12, "caption_ko": "왼쪽 옆판 구멍에 나무못 2개를 망치로 박으세요.\n왼쪽 짧은 선반을 화살표 방향으로 끼우세요.", "adds": ["shelf_left"], "uses": [{"part_id": "101339", "qty": 2}], "warning_ko": "판의 구멍 위치를 확인하세요.\n거꾸로 끼우면 다음 단계가 맞지 않아요.", "confidence": 0.6},
+    {"number": 3, "page": 13, "caption_ko": "가운데 세로 칸막이에 나무못 4개를 박으세요.\n칸막이를 바닥판과 왼쪽 선반 사이에 끼우세요.", "adds": ["divider_vertical"], "uses": [{"part_id": "101339", "qty": 4}], "warning_ko": null, "confidence": 0.6},
+    {"number": 4, "page": 13, "caption_ko": "가운데 칸막이의 반대쪽 면에 나무못 2개를 박으세요.", "adds": [], "uses": [{"part_id": "101339", "qty": 2}], "warning_ko": null, "confidence": 0.7},
+    {"number": 5, "page": 14, "caption_ko": "오른쪽 짧은 선반을 가운데 칸막이의 나무못에 끼워 십자 모양을 만드세요.", "adds": ["shelf_right"], "uses": [], "warning_ko": null, "confidence": 0.7},
+    {"number": 6, "page": 14, "caption_ko": "칸막이와 바닥판 끝의 구멍 6곳에 나무못을 박으세요.\n오른쪽 옆판이 끼워질 자리예요.", "adds": [], "uses": [{"part_id": "101339", "qty": 6}], "warning_ko": null, "confidence": 0.6},
+    {"number": 7, "page": 15, "caption_ko": "오른쪽 선반이 칸막이에 끝까지 들어갔는지 눌러서 확인하세요.", "adds": [], "uses": [], "warning_ko": null, "confidence": 0.3},
+    {"number": 8, "page": 15, "caption_ko": "오른쪽 옆판을 나무못에 맞춰 끼우세요.\n캠 구멍이 바깥쪽을 향해야 해요.", "adds": ["outer_right"], "uses": [], "warning_ko": null, "confidence": 0.7},
+    {"number": 9, "page": 16, "caption_ko": "윗판을 덮고 캠 연결 볼트 6개를 육각 렌치로 조여 틀을 완성하세요.", "adds": ["outer_top"], "uses": [{"part_id": "104321", "qty": 6}, {"part_id": "100001", "qty": 1}], "warning_ko": null, "confidence": 0.6},
+    {"number": 10, "page": 17, "caption_ko": "선반을 세우세요.\n바닥 네 모서리에 펠트 패드를 붙이세요.\n벽에 걸어 쓰려면 21쪽부터 따라 하세요.", "adds": [], "uses": [{"part_id": "10002300", "qty": 4}], "warning_ko": null, "confidence": 0.8},
+    {"number": 11, "page": 18, "caption_ko": "윗판 아랫면 뒤쪽에 벽 고정 브래킷 2개를 짧은 나사 4개로 다세요.", "adds": [], "uses": [{"part_id": "115753", "qty": 2}, {"part_id": "100372", "qty": 4}], "warning_ko": "넘어지면 크게 다칠 수 있어요.\n반드시 벽에 고정하세요.", "confidence": 0.8},
+    {"number": 12, "page": 19, "caption_ko": "선반을 벽에 붙여 세우고, 브래킷 구멍 위치를 벽에 연필로 표시하세요.", "adds": [], "uses": [], "warning_ko": null, "confidence": 0.6},
+    {"number": 13, "page": 19, "caption_ko": "표시한 곳에 머리가 둥근 벽용 나사 2개를 박으세요.", "adds": [], "uses": [{"part_id": "wall_screw", "qty": 2}], "warning_ko": "벽용 나사는 들어 있지 않아요.\n벽 재질에 맞는 나사를 따로 준비하세요.", "confidence": 0.7},
+    {"number": 14, "page": 20, "caption_ko": "벽걸이 고리 브래킷을 벽 나사에 걸고 위치를 맞춰 조이세요.\n그다음 브래킷 커버를 덮으세요.", "adds": [], "uses": [{"part_id": "103693", "qty": 2}, {"part_id": "115754", "qty": 2}], "warning_ko": null, "confidence": 0.7}
+  ],
+  "safety_ko": [
+    "가구가 넘어지면 심각하거나 치명적인 부상을 입을 수 있어요. 반드시 동봉된 벽 고정 장치로 벽에 고정하세요.",
+    "벽용 나사와 앵커는 포함되어 있지 않아요. 벽 재질에 맞는 것을 쓰고, 잘 모르면 전문가에게 문의하세요.",
+    "판이 바닥에 긁히지 않도록 담요나 매트 위에서 조립하세요.",
+    "조립은 두 사람이 함께 하세요."
+  ],
+  "extracted_by": "Claude Code 세션에서 Claude Opus 5.5가 페이지 이미지를 직접 읽음 (API 키 없음, 수동 실행)"
+}

@@ -1,0 +1,70 @@
+/* 키트 2D 가이드 전용. 모든 규칙을 .kit 아래로 한정해 가구 뷰어 스타일과 섞이지 않게 한다. */
+.kit-loading { padding: 40px; font-family: system-ui, sans-serif; }
+.kit { display: grid; grid-template: "head head head" auto "steps main side" 1fr / 260px 1fr 300px; height: 100vh; font-family: "Pretendard", "Apple SD Gothic Neo", system-ui, sans-serif; color: #222; background: #f7f5f0; }
+.kit header { grid-area: head; display: flex; align-items: center; gap: 16px; padding: 10px 20px; background: #1f2937; color: #fff; }
+.kit header h1 { font-size: 17px; margin: 0; }
+.kit .markings { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.kit .markings button { min-width: 32px; padding: 3px 8px; border: 1px solid #fff8; border-radius: 4px; background: transparent; color: #fff; cursor: pointer; font: inherit; }
+.kit .markings button.on { background: #ffdb00; color: #222; border-color: #ffdb00; }
+.kit .markings em { font-style: normal; opacity: .9; }
+
+.kit .steps { grid-area: steps; overflow-y: auto; border-right: 1px solid #ddd; background: #fff; }
+.kit .steps button { display: grid; grid-template-columns: 28px 1fr; gap: 4px 8px; width: 100%; text-align: left; padding: 9px 12px; border: 0; border-bottom: 1px solid #eee; background: none; cursor: pointer; font: inherit; font-size: 13px; color: #222; }
+.kit .steps-head { position: sticky; top: 0; z-index: 1; background: #fff; border-bottom: 1px solid #ddd; }
+.kit .steps-head > b { display: block; padding: 10px 12px; font-size: 14px; }
+.kit .steps-head > b small { margin-left: 4px; font-weight: 600; color: #888; }
+.kit .steps button.on { background: #fff1e6; box-shadow: inset 4px 0 #ff7a1a; }
+.kit .steps .num { font-weight: 700; font-size: 13px; color: #888; }
+.kit .steps .badge { display: inline-grid; place-items: center; width: 18px; height: 18px; margin-right: 6px; border: 2px solid #222; font-style: normal; font-weight: 700; font-size: 11px; font-family: Georgia, serif; vertical-align: 1px; }
+.kit .steps .tags { grid-column: 2; display: flex; gap: 4px; }
+.kit .flag { font-size: 11px; color: #b45309; background: #fef3c7; padding: 1px 6px; border-radius: 3px; }
+.kit .flag.mk, .kit .tag.mk { color: #0369a1; background: #e0f2fe; }
+
+.kit main { grid-area: main; position: relative; min-width: 0; }
+.kit .viewport { position: absolute; inset: 0 0 200px 0; overflow: hidden; background: #e9e6df; }
+.kit .page { position: absolute; transition: all .7s cubic-bezier(.4,0,.2,1); box-shadow: 0 2px 16px rgba(0,0,0,.15); background: #fff; }
+.kit .page img, .kit .page svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.kit .page svg rect.hit { fill: rgba(255,122,26,.18); stroke: #ff7a1a; stroke-width: .0025; opacity: 0; animation: kit-pop .45s ease-out forwards; transform-box: fill-box; transform-origin: center; }
+.kit .page svg rect.hit.hover { fill: rgba(255,122,26,.5); stroke-width: .004; }
+.kit .page svg rect.region { fill: none; stroke: #2563eb; stroke-width: .003; stroke-dasharray: .01 .006; }
+@keyframes kit-pop { from { opacity: 0; transform: scale(1.8); } to { opacity: 1; transform: scale(1); } }
+
+.kit .caption { position: absolute; left: 0; right: 0; bottom: 0; height: 200px; overflow-y: auto; background: #fff; border-top: 1px solid #ddd; padding: 12px 18px; }
+.kit .caption p { margin: 5px 0; font-size: 16px; line-height: 1.6; white-space: pre-line; }
+.kit .caption .warn { font-size: 14px; color: #b91c1c; }
+.kit .caption .paint { font-size: 14px; color: #4b5563; }
+.kit .caption-head { display: flex; justify-content: space-between; align-items: center; }
+.kit .conf { font-size: 12px; color: #6b7280; }
+.kit .conf.low { color: #b45309; }
+.kit .uses-steps { font-size: 14px !important; }
+.kit .uses-steps button { margin: 0 4px 4px 0; padding: 2px 8px; border: 1px solid #2563eb; color: #2563eb; background: #fff; border-radius: 12px; cursor: pointer; font: inherit; font-size: 13px; }
+.kit .controls { display: flex; gap: 8px; margin-top: 6px; }
+.kit .controls button { padding: 6px 12px; border: 1px solid #ccc; border-radius: 6px; background: #fff; cursor: pointer; font: inherit; }
+.kit .controls button:disabled { opacity: .4; }
+
+.kit aside { grid-area: side; overflow-y: auto; padding: 10px 16px; border-left: 1px solid #ddd; background: #fff; }
+.kit aside h2 { font-size: 14px; margin: 12px 0 6px; }
+.kit .sprue h3 { font-size: 12px; color: #666; margin: 10px 0 2px; }
+.kit .uses { list-style: none; padding: 0; margin: 0; font-size: 14px; }
+.kit .uses li { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px dashed #eee; }
+.kit .uses label { display: flex; align-items: center; gap: 6px; }
+.kit .uses code { font-size: 13px; background: #f1f1f1; padding: 1px 5px; border-radius: 3px; }
+.kit .tag { font-size: 11px; padding: 1px 5px; border-radius: 3px; background: #f3f4f6; color: #555; }
+.kit .tag.miss { background: #fee2e2; color: #b91c1c; }
+.kit .notes { padding-left: 18px; font-size: 12px; color: #555; }
+.kit .muted, .kit .meta { color: #888; font-size: 12px; }
+
+.kit .aside-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.kit .mini { padding: 2px 8px; border: 1px solid #ccc; border-radius: 10px; background: #fff; font: inherit; font-size: 12px; cursor: pointer; }
+.kit .mini.on { border-color: #ff7a1a; color: #c2410c; background: #fff7ed; }
+.kit .progress { margin: 4px 0 8px; }
+.kit .progress .bar { height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+.kit .progress .bar span { display: block; height: 100%; background: #ff7a1a; transition: width .4s; }
+.kit .progress small { font-size: 12px; color: #666; }
+.kit .tabs { display: flex; gap: 4px; margin-bottom: 4px; }
+.kit .tabs button { flex: 1; padding: 4px; border: 1px solid #ddd; border-radius: 6px; background: #fafafa; font: inherit; font-size: 13px; cursor: pointer; }
+.kit .tabs button.on { background: #1f2937; color: #fff; border-color: #1f2937; }
+.kit .chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.kit .chip { display: inline-flex; align-items: baseline; gap: 3px; padding: 2px 6px; border: 1px solid #e5e7eb; border-radius: 4px; background: #f9fafb; font: 12px ui-monospace, monospace; cursor: pointer; }
+.kit .chip small { font-size: 10px; color: #999; }
+.kit .chip.now { border-color: #ff7a1a; background: #fff1e6; }

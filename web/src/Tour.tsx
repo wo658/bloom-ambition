@@ -190,7 +190,7 @@ export async function startTour(api: TourApi, from?: number) {
     if (e instanceof KeyboardEvent) {
       // 키는 초점이 재생 버튼에 남아 있어도 조작으로 본다(장면 이동·멈춤 키만 뺀다).
       if (["ArrowLeft", "ArrowRight", "Escape"].includes(e.key)) return;
-    } else if ((e.target as HTMLElement | null)?.closest?.(".tour-caption, .playback")) return;
+    } else if ((e.target as HTMLElement | null)?.closest?.(".tour-caption, .playback, .dock .nav")) return;
     stopTour();
   };
   const INPUTS = ["pointerdown", "wheel", "touchstart", "keydown"] as const;
@@ -217,26 +217,23 @@ export async function startTour(api: TourApi, from?: number) {
   setView(null);
 }
 
+// 장면 넘기기(← → 키와 하단 ‹ › 버튼이 같이 쓴다). 재생 중이면 앞뒤 장면으로 넘기고, 사용자가 조작해 멈춘 데모면
+// 다음(→)·이전(←) 장면부터 다시 튼다. 데모와 상관없는 상태면 false를 돌려줘 원래 동작(단계 이동)을 하게 한다.
+export function tourStep(delta: 1 | -1): boolean {
+  if (control) { control.scene.abort(delta > 0 ? "next" : "prev"); return true; }
+  if (resumeFrom === 0 || !lastApi) return false;
+  startTour(lastApi, Math.min(TOTAL - 1, Math.max(0, resumeFrom + delta)));
+  return true;
+}
+
 // 재생 중 ← → 는 단계 대신 장면을 넘기고 Esc는 멈춘다(캡처 단계에서 가로채 뷰어 단축키로 안 가게 한다).
 export function useTourKeys() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement)?.closest?.("textarea, input, select")) return;
-      // 사용자가 조작해 멈춘 데모는 → 면 다음 장면, ← 면 이전 장면부터 다시 튼다(뷰어 단계 이동 대신).
-      if (!control) {
-        const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-        if (!step || resumeFrom === 0 || !lastApi) return;
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        startTour(lastApi, Math.min(TOTAL - 1, Math.max(0, resumeFrom + step)));
-        return;
-      }
-      const move = e.key === "ArrowRight" ? "next" : e.key === "ArrowLeft" ? "prev" : e.key === "Escape" ? "stop" : null;
-      if (!move) return;
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      if (move === "stop") control.stopped = true;
-      control.scene.abort(move);
+      const step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (step && tourStep(step)) { e.preventDefault(); e.stopImmediatePropagation(); return; }
+      if (e.key === "Escape" && control) { e.preventDefault(); e.stopImmediatePropagation(); stopTour(); }
     };
     window.addEventListener("keydown", onKey, true);
     return () => window.removeEventListener("keydown", onKey, true);

@@ -128,6 +128,7 @@ export default function App() {
   const [playKey, setPlayKey] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
   const [renderStyle, setRenderStyle] = useState<RenderStyle>("color");
+  const [xray, setXray] = useState(() => new URLSearchParams(location.search).has("xray")); // ?xray=1로 투시 켠 채 열기
   const [resetKey, setResetKey] = useState(0);
   const [showList, setShowList] = useState(false);
   const [showPage, setShowPage] = useState(true);
@@ -161,6 +162,7 @@ export default function App() {
       if (e.key === "ArrowLeft") go(-1);
       if (e.key === " ") { e.preventDefault(); setPlayKey((k) => k + 1); }
       if (e.key === "Escape") { setPageZoom(false); setShowList(false); }
+      if (e.key === "x" || e.key === "X") setXray((v) => !v);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -245,7 +247,7 @@ export default function App() {
               <PartsLayout layout={layout} style={renderStyle} hover={hoverPart} playKey={playKey} />
               <LabelTracker layout={layout} els={labelEls} />
             </>
-          : <Assembly scene={scene} stepIndex={stepIndex} playKey={playKey} renderStyle={renderStyle} />}
+          : <Assembly scene={scene} stepIndex={stepIndex} playKey={playKey} renderStyle={renderStyle} xray={xray} />}
         <ContactShadows position={[0, 0.1, 0]} scale={220} blur={2.4} opacity={0.3} />
         <OrbitControls target={HOME_TARGET} makeDefault
           onStart={() => setDragging(true)} onEnd={() => setDragging(false)} />
@@ -315,6 +317,11 @@ export default function App() {
             </button>
           ))}
         </div>
+        <button className={`icon xray ${xray ? "on" : ""}`} title={t("투시 (X)")} aria-pressed={xray} onClick={() => setXray((v) => !v)}>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+            <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z" /><circle cx="12" cy="12" r="3" />
+          </svg>
+        </button>
         <button className={`icon ${showPage ? "on" : ""}`} title={t("원본 페이지")} onClick={() => setShowPage((v) => !v)}>📄</button>
         <button className="icon" title={t("전체 화면")} onClick={toggleFullscreen}>⛶</button>
       </div>

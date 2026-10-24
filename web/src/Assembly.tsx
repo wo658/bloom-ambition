@@ -16,12 +16,15 @@ export type RenderStyle = "technical" | "toon" | "color";
 const BOARD: Record<RenderStyle, string> = { technical: "#ffffff", toon: "#ffffff", color: "#ffffff" };
 export const EDGE: Record<RenderStyle, string> = { technical: "#1f1f1f", toon: "#4b4b4b", color: "#7a5532" };
 
-export function Material({ style, color, wood }: { style: RenderStyle; color: string; wood?: boolean }) {
-  if (style === "technical") return <meshBasicMaterial color={color} />;
-  if (style === "toon") return <meshToonMaterial color={color} />;
-  // 텍스처 유무가 바뀌면 셰이더를 다시 만들어야 해서 key로 재질을 새로 만든다.
-  if (wood) return <meshStandardMaterial key="wood" color={color} {...oakMaps()} normalScale={[0.6, 0.6]} roughness={1} metalness={0} />;
-  return <meshStandardMaterial key="plain" color={color} roughness={0.8} metalness={0} />;
+// 투시(see)면 판을 반투명하게 그리고 깊이를 쓰지 않아, 판 안쪽의 나무못·볼트가 비쳐 보인다.
+export function Material({ style, color, wood, see = 0 }: { style: RenderStyle; color: string; wood?: boolean; see?: number }) {
+  const glass = see ? { transparent: true, opacity: see, depthWrite: false } : {};
+  // 텍스처·투명 여부가 바뀌면 셰이더를 다시 만들어야 해서 key로 재질을 새로 만든다.
+  const key = `${style}-${wood ? "wood" : "plain"}-${see}`;
+  if (style === "technical") return <meshBasicMaterial key={key} color={color} {...glass} />;
+  if (style === "toon") return <meshToonMaterial key={key} color={color} {...glass} />;
+  if (wood) return <meshStandardMaterial key={key} color={color} {...oakMaps()} normalScale={[0.6, 0.6]} roughness={1} metalness={0} {...glass} />;
+  return <meshStandardMaterial key={key} color={color} roughness={0.8} metalness={0} {...glass} />;
 }
 const SMALL_TRAVEL = 8;
 const SCREW_TURNS = 4;
@@ -88,9 +91,9 @@ function lerp(a: Vec3, b: Vec3, t: number): Vec3 {
 const add = (a: Vec3, b: Vec3, k = 1): Vec3 => [a[0] + b[0] * k, a[1] + b[1] * k, a[2] + b[2] * k];
 const norm = (v: Vec3) => Math.hypot(...v);
 
-function Board({ id, size, pos, from, mode, slot, clock, reseatRatio, style }: {
+function Board({ id, size, pos, from, mode, slot, clock, reseatRatio, style, xray }: {
   id: string; size: Vec3; pos: Vec3; from: Vec3; mode: "add" | "reseat" | "placed"; slot: Slot | null;
-  clock: Clock; reseatRatio: number; style: RenderStyle;
+  clock: Clock; reseatRatio: number; style: RenderStyle; xray: boolean;
 }) {
   const ref = useRef<THREE.Mesh>(null);
   const arrow = useRef<THREE.Group>(null);
@@ -110,8 +113,8 @@ function Board({ id, size, pos, from, mode, slot, clock, reseatRatio, style }: {
   });
   return (
     <>
-      <mesh ref={ref} geometry={geometry} position={active ? start : pos} castShadow receiveShadow>
-        <Material style={style} color={active ? HIGHLIGHT : BOARD[style]} wood={!active} />
+      <mesh ref={ref} geometry={geometry} position={active ? start : pos} castShadow={!xray} receiveShadow={!xray}>
+        <Material style={style} color={active ? HIGHLIGHT : BOARD[style]} wood={!active} see={xray ? (active ? 0.45 : 0.2) : 0} />
         <Edges color={active ? "#7a2e00" : EDGE[style]} lineWidth={style === "technical" ? 2 : 1} />
         {active && <Outlines thickness={3} color={HIGHLIGHT} />}
       </mesh>
@@ -363,8 +366,8 @@ export function wallShots(scene: Scene, index: number): { at: Vec3; start: numbe
   return step.small.map((s, i) => ({ at: add(s.at, base), start: plan.parts[i].start }));
 }
 
-export default function Assembly({ scene, stepIndex, playKey, renderStyle }: {
-  scene: Scene; stepIndex: number; playKey: number; renderStyle: RenderStyle;
+export default function Assembly({ scene, stepIndex, playKey, renderStyle, xray = false }: {
+  scene: Scene; stepIndex: number; playKey: number; renderStyle: RenderStyle; xray?: boolean;
 }) {
   const [, , d] = scene.size;
   const step = scene.steps[stepIndex];
@@ -413,7 +416,7 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle }: {
         {scene.panels
           .filter((p) => addedBefore.has(p.id) || step.adds.includes(p.id))
           .map((p) => (
-            <Board key={p.id} {...p} style={renderStyle} clock={clock} slot={plan.panels}
+            <Board key={p.id} {...p} style={renderStyle} xray={xray} clock={clock} slot={plan.panels}
               reseatRatio={scene.reseat_ratio ?? 0.15}
               mode={step.adds.includes(p.id) ? "add" : step.reseat?.includes(p.id) ? "reseat" : "placed"} />
           ))}

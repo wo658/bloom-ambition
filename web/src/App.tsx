@@ -84,7 +84,6 @@ export default function App() {
   const [showList, setShowList] = useState(false);
   const [showPage, setShowPage] = useState(true);
   const [pageZoom, setPageZoom] = useState(false);
-  const [showSafety, setShowSafety] = useState(true);
   const [dragging, setDragging] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
   const appRef = useRef<HTMLDivElement>(null);
@@ -189,13 +188,6 @@ export default function App() {
         </div>
         <LangBar lang={lang} voiceOn={voiceOn} translating={translating} />
       </header>
-
-      {showSafety && (
-        <div className="overlay safety">
-          <span>⚠ {t(scene.safety_ko[0])}</span>
-          <button onClick={() => setShowSafety(false)} aria-label="닫기">✕</button>
-        </div>
-      )}
 
       {/* 왼쪽 위: 현재 단계 설명 카드 */}
       <section className="overlay card instruction" key={stepIndex}>

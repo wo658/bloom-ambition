@@ -122,10 +122,12 @@ class Placer:
         self.used: Counter = Counter()
         bracket = HARDWARE["115753"]["dims"]
         self.bracket = bracket
-        # 벽 고정 브래킷: 왼쪽 옆판 안쪽 면과 칸막이 오른쪽 면의 윗판 바로 아래 뒤 모서리(18쪽)
+        # 벽 고정 브래킷: 양쪽 옆판 안쪽 면의 윗판 바로 아래 뒤 모서리(18쪽).
+        # inward는 옆판에서 안쪽으로 향하는 x 방향(왼쪽 +1, 오른쪽 -1). 오른쪽은 왼쪽의 거울 배치다.
         y = self.h - OUTER_T - bracket["height"] / 2
         z = -self.d / 2 + bracket["t"]
-        self.bracket_origins = [[-self.w / 2 + OUTER_T, y, z], [INNER_T / 2, y, z]]
+        self.bracket_origins = [[-self.w / 2 + OUTER_T, y, z], [self.w / 2 - OUTER_T, y, z]]
+        self.bracket_inward = [1, -1]
         self.wall_z = -self.d / 2 - WALL_GAP
 
     def take(self, key: str, pool: list) -> dict:
@@ -149,7 +151,9 @@ class Placer:
 
     def place(self, index: int, model: str, dims: dict, qty: int) -> list[dict]:
         b = self.bracket
-        frame = {"axis": [-1, 0, 0], "up": [0, 0, 1]}  # 브래킷 로컬: +Y 판 쪽, +Z 앞, +X 위
+        # 브래킷 로컬: +Y 판 쪽, +Z 앞. 오른쪽은 +X가 아래가 되지만 브래킷·커버는 위아래 대칭이다.
+        sides = list(zip(self.bracket_origins, self.bracket_inward))
+        frames = [{"at": o, "axis": [-s, 0, 0], "up": [0, 0, 1]} for o, s in sides]
         if model == "dowel":
             return [self.take("dowel", self.dowels) for _ in range(qty)]
         if model == "connector_screw":
@@ -159,30 +163,32 @@ class Placer:
             pads = [{"at": [x, 0, z], "axis": [0, 1, 0]} for x in (-sx, sx) for z in (-sz, sz)]
             return [self.take(model, pads) for _ in range(qty)]
         if model == "corner_bracket" or model == "bracket_cover":
-            return [{"at": o, **frame} for o in (self.take(model, self.bracket_origins) for _ in range(qty))]
+            return [self.take(model, frames) for _ in range(qty)]
         if model == "euro_screw":
-            holes = [{"at": [x + b["t"], y + sx, z + b["screw_z"]], "axis": [-1, 0, 0]}
-                     for x, y, z in self.bracket_origins for sx in (b["screw_x"], -b["screw_x"])]
+            holes = [{"at": [x + s * b["t"], y + sx, z + b["screw_z"]], "axis": [-s, 0, 0]}
+                     for (x, y, z), s in sides for sx in (b["screw_x"], -b["screw_x"])]
             return [self.take(model, holes) for _ in range(qty)]
         hook = HARDWARE["103693"]["dims"]
         if model == "hook_plate":
             # 열쇠 구멍의 둥근 쪽을 벽 나사 머리에 끼우고(앞에서 벽 쪽으로), 내려서 좁은 홈에 건다(20쪽).
             drop = round(wall_screw_dy() - hook["key_y"], 3)
-            plates = [{"at": [x + b["wall"] / 2, y, z], **frame, "approach": [0, 0, -1], "drop": drop}
-                      for x, y, z in self.bracket_origins]
+            # 열쇠 구멍이 위아래로 비대칭이라 고리 판은 양쪽 모두 같은 방향(+X 위)으로 둔다.
+            plates = [{"at": [x + s * b["wall"] / 2, y, z], "axis": [-1, 0, 0], "up": [0, 0, 1],
+                       "approach": [0, 0, -1], "drop": drop}
+                      for (x, y, z), s in sides]
             return [self.take(model, plates) for _ in range(qty)]
         if model == "wall_screw":
             # 고리 판 열쇠 구멍의 좁은 쪽에 걸리도록 벽에서 고리 판 앞면까지 튀어나온다.
             dims["protrude"] = round(-self.d / 2 + b["t"] + hook["t"] - self.wall_z, 3)
-            screws = [{"at": [x + b["wall"] / 2, y + wall_screw_dy(), self.wall_z], "axis": [0, 0, -1]}
-                      for x, y, _ in self.bracket_origins]
+            screws = [{"at": [x + s * b["wall"] / 2, y + wall_screw_dy(), self.wall_z], "axis": [0, 0, -1]}
+                      for (x, y, _), s in sides]
             return [self.take(model, screws) for _ in range(qty)]
         if model == "spirit_level":
             # 왼쪽 옆판 바깥 면에 세로로 대고 수직을 본다(19쪽). 그 단계에서만 보인다.
             return [{"at": [-self.w / 2, self.h / 2, 0], "axis": [1, 0, 0], "up": [0, 1, 0], "transient": True}]
         if model == "wall_mark":
-            return [{"at": [x + b["wall"] / 2, y + wall_screw_dy(), self.wall_z], "axis": [0, 0, -1]}
-                    for x, y, _ in self.bracket_origins][:qty]
+            return [{"at": [x + s * b["wall"] / 2, y + wall_screw_dy(), self.wall_z], "axis": [0, 0, -1]}
+                    for (x, y, _), s in sides][:qty]
         return []
 
 

@@ -263,6 +263,113 @@ function Small({ part, slot, active, clock, style, tool }: {
   );
 }
 
+// 벽: 바닥(y=0)에서 올라가는 불투명한 회반죽 벽. 바닥과 만나는 곳은 살짝 어둡고, 양 끝은 배경으로 흐려진다.
+const WALL_W = 500;
+const WALL_H = 260;
+type WallMaps = { map: THREE.CanvasTexture; bumpMap: THREE.CanvasTexture; alphaMap: THREE.CanvasTexture };
+let wallMaps: WallMaps | null = null;
+function plasterMaps(): WallMaps {
+  if (wallMaps) return wallMaps;
+  const canvas = (w: number, h: number, draw: (g: CanvasRenderingContext2D) => void) => {
+    const c = document.createElement("canvas");
+    c.width = w;
+    c.height = h;
+    draw(c.getContext("2d")!);
+    return new THREE.CanvasTexture(c);
+  };
+  // 회반죽 요철: 잔 알갱이 위에 큰 얼룩을 몇 겹 얹는다(1px ≈ 0.5cm).
+  const bump = canvas(1024, 512, (g) => {
+    const img = g.createImageData(1024, 512);
+    for (let i = 0; i < img.data.length; i += 4) {
+      const v = 200 + Math.random() * 40;
+      img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+      img.data[i + 3] = 255;
+    }
+    g.putImageData(img, 0, 0);
+    for (let i = 0; i < 900; i++) {
+      g.fillStyle = `rgba(${Math.random() < 0.5 ? "0,0,0" : "255,255,255"},0.05)`;
+      g.beginPath();
+      g.ellipse(Math.random() * 1024, Math.random() * 512, 4 + Math.random() * 14, 3 + Math.random() * 8, Math.random() * Math.PI, 0, Math.PI * 2);
+      g.fill();
+    }
+  });
+  // 색: 요철을 아주 옅게 비치게 하고, 바닥 쪽 20cm 정도에 모서리 그늘을 넣는다.
+  const map = canvas(1024, 512, (g) => {
+    g.fillStyle = "#ffffff";
+    g.fillRect(0, 0, 1024, 512);
+    g.globalAlpha = 0.18;
+    g.drawImage(bump.image as HTMLCanvasElement, 0, 0);
+    g.globalAlpha = 1;
+    const shade = g.createLinearGradient(0, 512, 0, 512 - 40);
+    shade.addColorStop(0, "rgba(60,50,40,0.22)");
+    shade.addColorStop(1, "rgba(60,50,40,0)");
+    g.fillStyle = shade;
+    g.fillRect(0, 0, 1024, 512);
+  });
+  map.colorSpace = THREE.SRGBColorSpace;
+  const alphaMap = canvas(256, 1, (g) => {
+    const fade = g.createLinearGradient(0, 0, 256, 0);
+    fade.addColorStop(0, "#000");
+    fade.addColorStop(0.15, "#fff");
+    fade.addColorStop(0.85, "#fff");
+    fade.addColorStop(1, "#000");
+    g.fillStyle = fade;
+    g.fillRect(0, 0, 256, 1);
+  });
+  wallMaps = { map, bumpMap: bump, alphaMap };
+  return wallMaps;
+}
+
+function Wall({ z, style }: { z: number; style: RenderStyle }) {
+  const { map, bumpMap, alphaMap } = plasterMaps();
+  // 원목 보기는 환경광이 강해서 바탕색을 더 어둡게 둬야 흰 배경과 구분된다.
+  const color = style === "technical" ? "#ebe9e4" : style === "toon" ? "#e3dccf" : "#c9bfae";
+  const common = { map, alphaMap, transparent: true, color };
+  return (
+    // 앞면만 그려서 뒤로 돌아가 보면 벽이 가구를 가리지 않는다.
+    <mesh position={[0, WALL_H / 2, z]} receiveShadow renderOrder={-2}>
+      <planeGeometry args={[WALL_W, WALL_H]} />
+      {style === "technical" ? <meshBasicMaterial key="t" {...common} />
+        : style === "toon" ? <meshToonMaterial key="o" {...common} />
+        : <meshStandardMaterial key="c" {...common} bumpMap={bumpMap} bumpScale={0.4} roughness={0.95} metalness={0} />}
+    </mesh>
+  );
+}
+
+// 벽에 붙은 가구 뒤의 그늘: 가구 외곽보다 조금 큰 둥근 사각형을 흐리게 그린 텍스처.
+const WALL_SHADE_PAD = 10;
+let wallShade: THREE.CanvasTexture | null = null;
+function wallShadeMap() {
+  if (wallShade) return wallShade;
+  const c = document.createElement("canvas");
+  c.width = c.height = 256;
+  const g = c.getContext("2d")!;
+  const pad = 256 * 0.12;
+  // alphaMap은 밝기(G 채널)를 불투명도로 쓴다: 검은 바탕에 흰 사각형.
+  g.fillStyle = "#000";
+  g.fillRect(0, 0, 256, 256);
+  g.filter = "blur(14px)";
+  g.fillStyle = "#fff";
+  g.beginPath();
+  g.roundRect(pad, pad, 256 - pad * 2, 256 - pad * 2, 10);
+  g.fill();
+  wallShade = new THREE.CanvasTexture(c);
+  return wallShade;
+}
+
+// 가구 묶음 안에 넣어서, 가구를 옆으로 비키면 그늘도 같이 움직인다.
+function WallShade({ size, z }: { size: Vec3; z: number }) {
+  const [w, h] = size;
+  // 텍스처 가장자리 여백(12%)이 흐려지는 자리라, 그만큼 크게 펴서 그늘 테두리가 가구 바깥으로 나오게 한다.
+  const scale = 1 / 0.76;
+  return (
+    <mesh position={[0, h / 2, z + 0.05]} renderOrder={-1}>
+      <planeGeometry args={[(w + WALL_SHADE_PAD) * scale, (h + WALL_SHADE_PAD) * scale]} />
+      <meshBasicMaterial alphaMap={wallShadeMap()} color="#2b2118" transparent opacity={0.45} depthWrite={false} />
+    </mesh>
+  );
+}
+
 // 벽에 붙는 것(연필 표시, 벽 나사)은 가구를 옮겨도 제자리에 남는다.
 const ON_WALL: SmallPart["model"][] = ["wall_mark", "wall_screw"];
 
@@ -337,6 +444,7 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle }: {
       style={renderStyle} tool={i === null ? undefined : toolOf(s)} />
   );
   const current = step.small.map((s, i) => ({ s, i }));
+  const wallZ = scene.wall_z ?? -d / 2 - 1.5;
   const initial = pose[scene.steps[0].pose];
   return (
     <>
@@ -350,6 +458,7 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle }: {
           ))}
         {smallBefore.filter((s) => !ON_WALL.includes(s.model)).map((s) => render(s, null))}
         {current.filter(({ s }) => !ON_WALL.includes(s.model)).map(({ s, i }) => render(s, i))}
+        {step.wall && <WallShade size={scene.size} z={wallZ} />}
       </group>
       {step.wall && (
         <>
@@ -358,10 +467,7 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle }: {
             {smallBefore.filter((s) => ON_WALL.includes(s.model)).map((s) => render(s, null))}
             {current.filter(({ s }) => ON_WALL.includes(s.model)).map(({ s, i }) => render(s, i))}
           </group>
-          <mesh position={[0, 100, scene.wall_z ?? -d / 2 - 1.5]} receiveShadow>
-            <planeGeometry args={[400, 200]} />
-            <meshBasicMaterial color="#e9edf2" transparent opacity={0.7} />
-          </mesh>
+          <Wall z={wallZ} style={renderStyle} />
         </>
       )}
     </>

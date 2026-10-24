@@ -75,7 +75,7 @@ const SCENES: { text: string; chat?: boolean; run: (c: Ctx) => Promise<void> }[]
       await c.zoom(0.55, 1.1); await c.wait(900); await c.zoom(1 / 0.55, 1);
     } },
   { text: "단계를 넘기면 부품이 순서대로 제자리에 들어가요",
-    run: async (c) => { for (const i of [1, 2]) { c.api.goStep(i); await c.wait(c.api.stepMs(i) + 700, 1); } } },
+    run: async (c) => { c.api.goStep(1); await c.wait(c.api.stepMs(1) + 700, 1); } }, // 다음 장면(부품 모션)이 같은 2단계라 여기서 멈춘다
   { text: "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요",
     run: async (c) => { playPartMotion({ kind: "hardware", id: "101339" }); await c.wait(6500, 1); } },
   { text: "투시 모드: 판 속 나무못과 볼트까지 들여다봐요",

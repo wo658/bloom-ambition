@@ -33,14 +33,17 @@ type Ctx = {
   setVoice: (on: boolean) => void;
 };
 
-// 데모가 적용한 수정안. 장면을 건너뛰어도 되돌릴 수 있게 기억한다.
+// 데모가 띄운·적용한 수정안과 데모가 연 채팅. 정리할 때는 이것만 되돌린다(사용자가 만든 수정안·연 채팅은 건드리지 않는다).
+let ownId: string | null = null;
 let appliedId: string | null = null;
+let chatOpened = false;
 
 // 띄워 둔 수정안을 검수 화면에서 보여 준 뒤 적용하고, 잠시 보여 준 다음 되돌린다(데모가 도면을 바꿔 놓지 않게).
 async function reviewProposal(c: Ctx, look: number) {
   await c.until(() => getCompare()?.proposal.status === "pending", 6000);
   const id = getCompare()?.proposal.id;
   if (!id) return;
+  ownId = id;
   await c.wait(look);
   decideProposal(id, "apply");
   appliedId = id;
@@ -77,7 +80,7 @@ const SCENES: { text: string; chat?: boolean; run: (c: Ctx) => Promise<void> }[]
     } },
   { text: "고칠 때는 수정안부터: 전/후를 비교해 검수하고, 적용하고, 되돌릴 수 있어요", chat: true,
     run: async (c) => {
-      chatCommand({ type: "reset" }); await c.wait(400, 1);
+      chatCommand({ type: "reset" }); chatOpened = true; await c.wait(400, 1);
       chatCommand({ type: "preset", id: "merge_steps" });
       await reviewProposal(c, 3800);
     } },
@@ -146,9 +149,10 @@ export async function startTour(api: TourApi) {
     spin(false); api.setXray(false); api.setStyle("color"); api.setInventory(false);
     speechSynthesis.cancel(); setVoice(voiceWas); setLang(startLang);
     const open = getCompare()?.proposal;
-    if (open?.status === "pending") decideProposal(open.id, "reject");
+    if (open?.status === "pending" && open.id === ownId) decideProposal(open.id, "reject");
     if (appliedId) { decideProposal(appliedId, "undo"); appliedId = null; }
-    if (!keepChat) chatCommand({ type: "close" });
+    ownId = null;
+    if (!keepChat && chatOpened) { chatCommand({ type: "close" }); chatOpened = false; }
   };
 
   // 사용자가 화면을 만지면(클릭·드래그·휠·키) 데모는 바로 멈추고 손을 뗀다. 자막과 재생 버튼은 예외다.

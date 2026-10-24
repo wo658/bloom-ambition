@@ -128,7 +128,7 @@ export default function App() {
     return n >= 1 ? n - 1 : PREP;
   });
   const [playKey, setPlayKey] = useState(0);
-  const [autoplay, setAutoplay] = useState(false);
+  const [autoplay, setAutoplay] = useState(() => new URLSearchParams(location.search).has("tour")); // ?tour=1이면 열자마자 기능 소개와 함께 재생
   const [renderStyle, setRenderStyle] = useState<RenderStyle>("color");
   const [xray, setXray] = useState(() => new URLSearchParams(location.search).has("xray")); // ?xray=1로 투시 켠 채 열기
   const [resetKey, setResetKey] = useState(0);

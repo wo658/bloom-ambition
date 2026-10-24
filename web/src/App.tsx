@@ -18,7 +18,7 @@ import ChangeScene, { useCompareView } from "./ChangeScene";
 import ChangeHud, { CompareBadge, CompareCard, CompareTimeline } from "./ChangeHud";
 import LangBar from "./LangBar";
 import { LogoMark } from "./Logo";
-import { TourCaption, startTour, stopTour, useTourKeys, useTourResume, useTourView, type TourApi } from "./Tour";
+import { TourCaption, startTour, stopTour, tourStep, useTourKeys, useTourResume, useTourView, type TourApi } from "./Tour";
 import { afterSpeech, t, useLang, useSpeak } from "./lang";
 import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
 
@@ -523,7 +523,7 @@ export default function App() {
 
       {/* 아래: 단계 타임라인과 재생 컨트롤 */}
       <footer className="overlay dock">
-        <button className="nav" onClick={() => go(-1)} disabled={prep} aria-label={t("이전 단계")}>‹</button>
+        <button className="nav" onClick={() => tourStep(-1) || go(-1)} disabled={prep && !tourView} aria-label={t("이전 단계")}>‹</button>
         <div className="middle">
           {/* 수정안을 보는 동안에는 수정안의 단계 칸(합쳐지는 칸이 모이는 모습) */}
           <CompareTimeline>
@@ -549,7 +549,7 @@ export default function App() {
             <span className="hint">{t("← → 단계 이동 · Space 다시 보기")}</span>
           </div>
         </div>
-        <button className="nav primary" onClick={() => go(1)} disabled={stepIndex === total - 1} aria-label={t("다음 단계")}>›</button>
+        <button className="nav primary" onClick={() => tourStep(1) || go(1)} disabled={stepIndex === total - 1 && !tourView && !resumeAt} aria-label={t("다음 단계")}>›</button>
       </footer>
 
       {showInventory && (

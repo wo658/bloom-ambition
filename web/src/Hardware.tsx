@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, type DependencyList } from "react";
 import * as THREE from "three";
 import type { HardwareModel, SmallPart } from "./types";
 
@@ -24,6 +24,14 @@ function thread(from: number, to: number, core: number, outer: number, pitch: nu
   return pts;
 }
 
+// R3F는 prop으로 넘긴 형상을 언마운트 때 치우지 않는다. 단계를 넘길 때마다 철물이 새로 마운트되므로
+// 직접 만든 형상은 여기서 GPU 버퍼까지 내려야 쌓이지 않는다.
+function useGeometry<T extends THREE.BufferGeometry | THREE.BufferGeometry[]>(make: () => T, deps: DependencyList): T {
+  const geometry = useMemo(make, deps); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => { for (const g of ([] as THREE.BufferGeometry[]).concat(geometry)) g.dispose(); }, [geometry]);
+  return geometry;
+}
+
 function lathe(pts: THREE.Vector2[]) {
   return new THREE.LatheGeometry(pts, 24);
 }
@@ -43,7 +51,7 @@ function Cross({ size, y, accent, renderOrder }: { size: number; y: number; acce
 
 // 104321 연결 볼트: 접시머리 + 육각 홈, 민무늬 목, 굵은 나사산, 뭉툭한 끝.
 function ConnectorScrew({ dims: d, material, accent, renderOrder }: Props) {
-  const geometry = useMemo(() => {
+  const geometry = useGeometry(() => {
     const r = d.head_d / 2, s = d.shank_d / 2, top = d.head_h + d.smooth;
     return lathe([
       v2(0, 0), v2(r, 0), v2(r, 0.06), v2(s, d.head_h), v2(s, top),
@@ -63,7 +71,7 @@ function ConnectorScrew({ dims: d, material, accent, renderOrder }: Props) {
 
 // 100372 짧은 나사: 납작 접시머리 + 십자 홈.
 function EuroScrew({ dims: d, material, accent, renderOrder }: Props) {
-  const geometry = useMemo(() => {
+  const geometry = useGeometry(() => {
     const r = d.head_d / 2, s = d.shank_d / 2;
     return lathe([
       v2(0, 0), v2(r, 0), v2(r, 0.04), v2(s, d.head_h), v2(s, d.head_h + 0.1),
@@ -82,7 +90,7 @@ function EuroScrew({ dims: d, material, accent, renderOrder }: Props) {
 // 벽용 나사: 원점이 벽 면. 둥근 머리가 벽에서 protrude만큼 나와 고리 판에 걸린다.
 function WallScrew({ dims: d, material, accent, renderOrder }: Props) {
   const p = d.protrude ?? 0.8;
-  const geometry = useMemo(() => {
+  const geometry = useGeometry(() => {
     const r = d.head_d / 2, s = d.shank_d / 2;
     const dome = Array.from({ length: 7 }, (_, i) => {
       const a = (i / 6) * (Math.PI / 2);
@@ -104,7 +112,7 @@ function WallScrew({ dims: d, material, accent, renderOrder }: Props) {
 
 // 101339 나무못: 세로 홈이 파인 원기둥, 양 끝 모따기.
 function Dowel({ dims: d, material, renderOrder }: Props) {
-  const geometry = useMemo(() => {
+  const geometry = useGeometry(() => {
     const bevel = 0.08, r = d.d / 2 - bevel, n = 192;
     const shape = new THREE.Shape();
     for (let i = 0; i <= n; i++) {
@@ -143,7 +151,7 @@ function plate(w: number, h: number, t: number, holes: THREE.Path[], m: THREE.Ma
 // 115753 벽 고정 브래킷: ㄱ자. 옆 날개는 판 면에(나사 구멍 4개), 벽 날개는 뒤쪽(큰 구멍 + 보강 리브).
 // 로컬 +X 위, +Y 판 쪽, +Z 앞.
 function CornerBracket({ dims: d, material, renderOrder }: Props) {
-  const geometries = useMemo(() => {
+  const [side, wall] = useGeometry(() => {
     const { t, height: H } = d;
     const holes = [d.screw_z, d.side - d.screw_z].flatMap((u) => [circle(u, d.screw_x, 0.22), circle(u, -d.screw_x, 0.22)]);
     // (x, y, z) → (X=y, Y=z−t, Z=x): 판 면에 붙은 날개
@@ -151,13 +159,13 @@ function CornerBracket({ dims: d, material, renderOrder }: Props) {
     // (x, y, z) → (X=y, Y=−x, Z=z−t): 벽을 보는 날개
     const wall = plate(d.wall, H, t, [circle(d.wall / 2, 0, d.hole_d / 2)],
       new THREE.Matrix4().set(0, 1, 0, 0, -1, 0, 0, 0, 0, 0, 1, -t, 0, 0, 0, 1));
-    return { side, wall };
+    return [side, wall];
   }, [d]);
   const ribs = [-1, 1].flatMap((s) => [0, 1, 2].map((k) => s * (d.hole_d / 2 + 0.35 + k * 0.4)));
   return (
     <>
-      <mesh geometry={geometries.side} material={material} renderOrder={renderOrder} castShadow />
-      <mesh geometry={geometries.wall} material={material} renderOrder={renderOrder} castShadow />
+      <mesh geometry={side} material={material} renderOrder={renderOrder} castShadow />
+      <mesh geometry={wall} material={material} renderOrder={renderOrder} castShadow />
       {ribs.map((x) => (
         <mesh key={x} position={[x, -d.wall / 2, 0.04]} material={material} renderOrder={renderOrder}>
           <boxGeometry args={[0.1, d.wall * 0.75, 0.08]} />
@@ -169,7 +177,7 @@ function CornerBracket({ dims: d, material, renderOrder }: Props) {
 
 // 103693 벽걸이 고리 판: 열쇠 구멍(나사 머리가 들어가는 원 + 위로 좁은 홈)과 양옆 조절 홈.
 function HookPlate({ dims: d, material, renderOrder }: Props) {
-  const geometry = useMemo(() => {
+  const geometry = useGeometry(() => {
     const r = d.key_d / 2, s = d.slot_w / 2, a = Math.acos(s / r);
     const key = new THREE.Path();
     key.moveTo(-s, d.slot_top);

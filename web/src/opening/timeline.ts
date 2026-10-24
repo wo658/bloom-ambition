@@ -110,6 +110,7 @@ export const RIGHT_PAGE = 10;
 export type Find = {
   page: 9 | 10; box: [number, number, number, number]; label: string;
   name: string; code?: string; qty: string; partId?: string;
+  kinds?: number; // 부품 확인 화면에서 몇 종으로 세는지(판재는 한 줄이지만 7종)
 };
 export const FINDS: Find[] = [
   { page: 9, box: [70, 88, 168, 432], label: "104321 · 8x", name: "긴 연결 볼트", code: "104321", qty: "8x", partId: "104321" },
@@ -120,8 +121,11 @@ export const FINDS: Find[] = [
   { page: 9, box: [198, 568, 612, 772], label: "10002300 · 4x (1장)", name: "펠트 패드", code: "10002300", qty: "4x", partId: "10002300" },
   { page: 10, box: [36, 36, 296, 292], label: "115753 · 2x", name: "벽 고정 브래킷", code: "115753", qty: "2x", partId: "115753" },
   { page: 10, box: [300, 250, 578, 566], label: "115754 · 2x", name: "브래킷 커버", code: "115754", qty: "2x", partId: "115754" },
-  { page: 10, box: [42, 588, 604, 834], label: "판재 · 7장", name: "판재", code: "바닥·윗·옆판·칸막이·선반", qty: "7장" },
+  { page: 10, box: [42, 588, 604, 834], label: "판재 · 7장", name: "판재", code: "바닥·윗·옆판·칸막이·선반", qty: "7장", kinds: 7 },
 ];
+// App 부품 확인의 'N종'과 같은 셈(철물 8 + 판재 7 = 15).
+export const kindsOf = (f: Find) => f.kinds ?? 1;
+export const KINDS = FINDS.reduce((n, f) => n + kindsOf(f), 0);
 export const cardStart = (i: number) => T.cards + i * T.cardStagger;
 export const cardLand = (i: number) => cardStart(i) + T.cardDur;
 

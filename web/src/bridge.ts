@@ -100,8 +100,9 @@ export function playExplode(): boolean {
   return ok;
 }
 
-// 데모 투어(DemoTour)가 채팅을 조종하는 통로. ChatPanel이 듣고, 지금 바쁜지(chatState.busy)를 알려 준다.
-export type ChatCommand = { type: "open" | "close" | "reset" | "undo" } | { type: "voice"; text: string };
+// 데모 재생(Tour)이 채팅을 조종하는 통로. ChatPanel이 듣고, 지금 바쁜지(chatState.busy)를 알려 준다.
+// preset은 채팅의 대표 예시(actions.ts PRESETS) 하나를 id로 골라 누른 것처럼 실행한다(수정안이 뜬다).
+export type ChatCommand = { type: "open" | "close" | "reset" | "undo" } | { type: "voice"; text: string } | { type: "preset"; id: string };
 export const chatBus = new EventTarget();
 export const chatState = { busy: false };
 export function chatCommand(cmd: ChatCommand) {

@@ -78,18 +78,18 @@ const SCENES: { text: string; chat?: boolean; run: (c: Ctx) => Promise<void> }[]
     run: async (c) => { c.api.goStep(1); await c.wait(c.api.stepMs(1) + 700, 1); } }, // 다음 장면(부품 모션)이 같은 2단계라 여기서 멈춘다
   { text: "부품 하나를 골라, 들어가는 모습을 천천히 다시 봐요",
     run: async (c) => { playPartMotion({ kind: "hardware", id: "101339" }); await c.wait(6500, 1); } },
+  { text: "10개 언어로 바꾸고, 음성으로 읽어 줘요",
+    run: async (c) => {
+      c.api.goStep(2); // 부품 모션(2단계) 다음 3단계에서 읽어 준다
+      setLang("en"); c.setVoice(true); await c.wait(900); await c.until(() => !speechSynthesis.speaking, 9000);
+      setLang("ja"); await c.wait(900); await c.until(() => !speechSynthesis.speaking, 9000);
+    } },
   { text: "투시 모드: 판 속 나무못과 볼트까지 들여다봐요",
     run: async (c) => { c.api.goStep(c.api.xrayStep); await c.wait(1800); c.api.setXray(true); c.spin(true, 6); await c.wait(5200); } },
   { text: "도면 · 툰 · 원목, 보는 방식도 바로 바꿔요",
     run: async (c) => { c.api.goStep(c.api.xrayStep); c.api.setStyle("technical"); await c.wait(1800); c.api.setStyle("toon"); await c.wait(1800); c.api.setStyle("color"); await c.wait(800); } },
   { text: "지금까지 쓴 부품과 남은 부품을 한눈에",
     run: async (c) => { c.api.goStep(c.api.xrayStep); c.api.setInventory(true); await c.wait(3800); } },
-  { text: "10개 언어로 바꾸고, 음성으로 읽어 줘요",
-    run: async (c) => {
-      c.api.goStep(1);
-      setLang("en"); c.setVoice(true); await c.wait(900); await c.until(() => !speechSynthesis.speaking, 9000);
-      setLang("ja"); await c.wait(900); await c.until(() => !speechSynthesis.speaking, 9000);
-    } },
   { text: "부품을 @태그로 짚어 말하면 AI가 수정안을 만들어 줘요", chat: true,
     run: async (c) => {
       chatCommand({ type: "reset" }); chatOpened = true; await c.wait(400, 1);

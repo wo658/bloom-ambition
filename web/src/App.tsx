@@ -15,7 +15,7 @@ import DemoSwitcher from "./DemoSwitcher";
 import ChatPanel from "./ChatPanel";
 import LangBar from "./LangBar";
 import DemoTour from "./DemoTour";
-import { beatAt, playStep, type GuideApi } from "./Guide";
+import { GuideCaption, beatAt, playStep, type GuideApi } from "./Guide";
 import { LogoMark } from "./Logo";
 import { t, useLang, useSpeak } from "./lang";
 import { LabelTracker, PartsChecklist, PartsLabels, PartsLayout, checkItems, layoutParts, partsPage, type Layout } from "./PartsCheck";
@@ -351,6 +351,8 @@ export default function App() {
           <img src={pageUrl(page)} alt={t("설명서 {n}쪽", { n: page })} />
         </button>
       )}
+
+      <GuideCaption onStop={() => setAutoplay(false)} />
 
       {/* 아래: 단계 타임라인과 재생 컨트롤 */}
       <footer className="overlay dock">

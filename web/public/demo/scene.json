@@ -83,7 +83,7 @@
       "model": "felt_pad",
       "color": "#9a8a73",
       "dims": {
-        "r": 1.2,
+        "r": 1.6,
         "t": 0.4
       }
     },
@@ -134,6 +134,15 @@
       "dims": {
         "length": 16,
         "d": 0.8
+      }
+    },
+    "level": {
+      "model": "spirit_level",
+      "color": "#e8b923",
+      "dims": {
+        "long": 40,
+        "width": 3.0,
+        "t": 2.0
       }
     }
   },
@@ -278,7 +287,7 @@
     {
       "number": 1,
       "page": 11,
-      "caption_ko": "바닥에 담요를 까세요.\n바닥판과 왼쪽 옆판을 ㄱ자로 맞대세요.\n바닥판 바깥 구멍으로 긴 연결 볼트 2개를 넣고 육각 렌치로 시계 방향으로 조이세요.",
+      "caption_ko": "바닥에 담요를 까세요.\n바닥판과 왼쪽 옆판을 ㄱ자로 맞대세요.\n작은 구멍이 있는 모서리가 담요 쪽으로 가게 놓으세요.\n바닥판 바깥 구멍으로 긴 연결 볼트 2개를 넣고 육각 렌치로 시계 방향으로 조이세요.",
       "adds": [
         "outer_bottom",
         "outer_left"
@@ -1069,7 +1078,7 @@
           "model": "felt_pad",
           "color": "#9a8a73",
           "dims": {
-            "r": 1.2,
+            "r": 1.6,
             "t": 0.4
           },
           "at": [
@@ -1089,7 +1098,7 @@
           "model": "felt_pad",
           "color": "#9a8a73",
           "dims": {
-            "r": 1.2,
+            "r": 1.6,
             "t": 0.4
           },
           "at": [
@@ -1109,7 +1118,7 @@
           "model": "felt_pad",
           "color": "#9a8a73",
           "dims": {
-            "r": 1.2,
+            "r": 1.6,
             "t": 0.4
           },
           "at": [
@@ -1129,7 +1138,7 @@
           "model": "felt_pad",
           "color": "#9a8a73",
           "dims": {
-            "r": 1.2,
+            "r": 1.6,
             "t": 0.4
           },
           "at": [
@@ -1357,12 +1366,44 @@
       "confidence": 0.6,
       "uses": [
         {
+          "part_id": "level",
+          "qty": 1,
+          "name_ko": "수평계 (미포함)"
+        },
+        {
           "part_id": "pencil",
           "qty": 1,
           "name_ko": "연필 (미포함)"
         }
       ],
       "small": [
+        {
+          "id": "s12-level-0",
+          "part_id": "level",
+          "model": "spirit_level",
+          "color": "#e8b923",
+          "dims": {
+            "long": 40,
+            "width": 3.0,
+            "t": 2.0
+          },
+          "at": [
+            -38.5,
+            38.5,
+            0
+          ],
+          "axis": [
+            1,
+            0,
+            0
+          ],
+          "up": [
+            0,
+            1,
+            0
+          ],
+          "transient": true
+        },
         {
           "id": "s12-wall_mark-0",
           "part_id": "wall_mark",
@@ -1548,7 +1589,8 @@
             0,
             0,
             -1
-          ]
+          ],
+          "drop": 0.825
         },
         {
           "id": "s14-103693-1",
@@ -1583,7 +1625,8 @@
             0,
             0,
             -1
-          ]
+          ],
+          "drop": 0.825
         },
         {
           "id": "s13-wall_screw-0",
@@ -1696,6 +1739,24 @@
           ]
         }
       ],
+      "reseat": [],
+      "pose": "upright",
+      "wall": true,
+      "unit_offset": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "number": 15,
+      "page": 20,
+      "caption_ko": "완성이에요.\n선반이 벽에 걸린 모습을 확인하고, 앞으로 살짝 당겨 단단히 고정됐는지 살펴보세요.",
+      "adds": [],
+      "warning_ko": null,
+      "confidence": 1.0,
+      "uses": [],
+      "small": [],
       "reseat": [],
       "pose": "upright",
       "wall": true,

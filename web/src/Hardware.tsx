@@ -11,7 +11,7 @@ type Props = { dims: Dims; material: THREE.Material; accent: THREE.Material; ren
 export const METAL: HardwareModel[] = ["connector_screw", "euro_screw", "wall_screw", "hook_plate", "hex_key"];
 export const SPINS: HardwareModel[] = ["connector_screw", "euro_screw", "wall_screw"];
 // 부품에 들어 있지 않거나 소모되지 않는 공구. 단계 동작을 보여 줄 때만 잠깐 그린다.
-export const TOOLS: HardwareModel[] = ["hex_key", "hammer", "screwdriver", "pencil"];
+export const TOOLS: HardwareModel[] = ["hex_key", "hammer", "screwdriver", "pencil", "spirit_level"];
 
 const v2 = (x: number, y: number) => new THREE.Vector2(x, y);
 
@@ -292,6 +292,24 @@ function Pencil({ dims: d, material, accent, renderOrder }: Props) {
   );
 }
 
+// 수평계: 원점이 판에 대는 면 가운데, 몸통은 -Y로, 길이는 +Z(세로)로 뻗는다. 가운데 창에 기포가 있다.
+function SpiritLevel({ dims: d, material, accent, renderOrder }: Props) {
+  return (
+    <>
+      <mesh position={[0, -d.t / 2, 0]} material={material} renderOrder={renderOrder} castShadow>
+        <boxGeometry args={[d.width, d.t, d.long]} />
+      </mesh>
+      <mesh position={[0, -d.t - 0.02, 0]} material={accent} renderOrder={renderOrder}>
+        <boxGeometry args={[d.width * 0.5, 0.04, d.long * 0.12]} />
+      </mesh>
+      <mesh position={[0, -d.t - 0.1, 0]} renderOrder={renderOrder + 1}>
+        <sphereGeometry args={[d.width * 0.18, 12, 8]} />
+        <meshBasicMaterial color="#c7f9cc" depthTest={false} transparent />
+      </mesh>
+    </>
+  );
+}
+
 // 연필 표시(+): 벽 면(원점)에 그린 십자.
 function WallMark({ dims: d, material, renderOrder }: Props) {
   return (
@@ -319,6 +337,7 @@ const MODELS: Record<HardwareModel, (p: Props) => React.JSX.Element> = {
   screwdriver: Screwdriver,
   pencil: Pencil,
   wall_mark: WallMark,
+  spirit_level: SpiritLevel,
 };
 
 export function HardwareMesh({ part, ...props }: Omit<Props, "dims"> & { part: Pick<SmallPart, "model" | "dims"> }) {

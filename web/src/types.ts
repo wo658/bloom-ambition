@@ -11,7 +11,7 @@ export interface Panel {
 export type HardwareModel =
   | "connector_screw" | "dowel" | "euro_screw" | "wall_screw"
   | "corner_bracket" | "hook_plate" | "bracket_cover" | "felt_pad" | "hex_key"
-  | "hammer" | "screwdriver" | "pencil" | "wall_mark";
+  | "hammer" | "screwdriver" | "pencil" | "wall_mark" | "spirit_level";
 
 export interface HardwareSpec {
   model: HardwareModel;
@@ -21,6 +21,7 @@ export interface HardwareSpec {
 
 // at·axis·up은 가구 좌표(cm). 부품 로컬 +Y가 axis(박히는 방향), +Z가 up.
 // approach는 다가오는 방향(없으면 axis), travel은 움직이는 거리, tool은 함께 그릴 공구의 부품 번호.
+// drop은 그만큼 위에서 들어온 뒤 내려앉는 거리(열쇠 구멍에 거는 고리 판), transient는 그 단계에서만 보이는 것.
 export interface SmallPart {
   id: string;
   part_id: string;
@@ -33,6 +34,8 @@ export interface SmallPart {
   approach?: Vec3;
   travel?: number;
   tool?: string;
+  drop?: number;
+  transient?: boolean;
 }
 
 export interface Step {

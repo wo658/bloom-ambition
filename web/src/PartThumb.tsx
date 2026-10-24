@@ -21,7 +21,8 @@ const POSE: Record<HardwareSpec["model"], THREE.Quaternion> = {
   corner_bracket: MOUNTED, hook_plate: MOUNTED, bracket_cover: OPEN_SIDE,
   felt_pad: new THREE.Quaternion(), hex_key: new THREE.Quaternion(),
   hammer: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, Math.PI / 2)),
-  screwdriver: LONG, pencil: LONG, wall_mark: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0)),
+  screwdriver: LONG, pencil: LONG, spirit_level: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0)),
+  wall_mark: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0)),
 };
 
 // 내용물을 원점에 모으고, 화면에 투영된 크기에 맞춰 직교 카메라 배율을 정한다.

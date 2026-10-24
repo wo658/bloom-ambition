@@ -29,7 +29,6 @@ uv venv .venv --python 3.12 && uv pip install --python .venv/bin/python -r pipel
 ANTHROPIC_API_KEY=... pipeline/run.sh data/samples/ikea-kallax-2x2-assembly.pdf kallax furniture
 # API 키 없이 저장된 추출 결과로
 pipeline/run.sh data/samples/ikea-kallax-2x2-assembly.pdf kallax furniture pipeline/fixtures/kallax-2x2.manual.json
-pipeline/run.sh data/samples/eduard-82212/82212.pdf eduard-82212 kit pipeline/fixtures/eduard-82212.manual.json
 
 cd web && npm run dev   # ←/→ 단계 이동, 스페이스 다시 보기
 ```

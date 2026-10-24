@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { HardwareThumb, PanelThumb } from "./PartThumb";
+import { TOOLS } from "./Hardware";
 import type { HardwareSpec, Panel, Scene } from "./types";
 
 // 부품 현황 팝업: 지금 단계까지 쓴 부품과 아직 남은 부품을 좌우로 나눠, IKEA 설명서 부품 페이지처럼
@@ -39,7 +40,7 @@ function inventory(scene: Scene, stepIndex: number): Item[] {
     });
     step.uses.forEach((u) => {
       const spec = scene.hardware?.[u.part_id];
-      add(u.part_id, { name: u.name_ko, code: u.part_id, spec }, u.qty, i, spec?.model === "hex_key");
+      add(u.part_id, { name: u.name_ko, code: u.part_id, spec }, u.qty, i, !!spec && TOOLS.includes(spec.model));
     });
   });
   return [...items.values()];

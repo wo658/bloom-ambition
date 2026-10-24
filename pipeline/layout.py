@@ -56,12 +56,13 @@ HARDWARE = {
         "width": 2.6, "height": 4.0, "t": 0.12, "key_d": 1.1, "key_y": -0.35, "slot_w": 0.45, "slot_top": 0.9}},
     "115754": {"model": "bracket_cover", "color": "#f5f5f2", "dims": {
         "height": 5.9, "side": 3.6, "wall": 4.8, "t": 0.2, "back": 0.25}},
-    "10002300": {"model": "felt_pad", "color": "#9a8a73", "dims": {"r": 1.2, "t": 0.4}},
+    "10002300": {"model": "felt_pad", "color": "#9a8a73", "dims": {"r": 1.6, "t": 0.4}},
     "100001": {"model": "hex_key", "color": "#8b95a5", "dims": {"long": 7.5, "short": 2.5, "across": 0.4}},
     # 부품에 들어 있지 않은 공구와 연필 표시. 그림에 나오는 동작을 보여 주는 데만 쓴다.
     "hammer": {"model": "hammer", "color": "#6b7280", "dims": {"head": 10, "head_d": 2.6, "handle": 28, "handle_d": 1.8}},
     "screwdriver": {"model": "screwdriver", "color": "#d9480f", "dims": {"shaft": 10, "shaft_d": 0.5, "grip": 10, "grip_d": 3}},
     "pencil": {"model": "pencil", "color": "#f2b705", "dims": {"length": 16, "d": 0.8}},
+    "level": {"model": "spirit_level", "color": "#e8b923", "dims": {"long": 40, "width": 3.0, "t": 2.0}},
     "wall_mark": {"model": "wall_mark", "color": "#374151", "dims": {"size": 2.0, "line": 0.18}},
 }
 # 철물 종류별로 그림에 나오는 공구. 단계의 uses에 그 공구가 있을 때만 붙인다.
@@ -165,8 +166,10 @@ class Placer:
             return [self.take(model, holes) for _ in range(qty)]
         hook = HARDWARE["103693"]["dims"]
         if model == "hook_plate":
-            # 열쇠 구멍을 벽 나사 머리에 끼우므로 앞에서 벽 쪽으로 다가온다.
-            plates = [{"at": [x + b["wall"] / 2, y, z], **frame, "approach": [0, 0, -1]} for x, y, z in self.bracket_origins]
+            # 열쇠 구멍의 둥근 쪽을 벽 나사 머리에 끼우고(앞에서 벽 쪽으로), 내려서 좁은 홈에 건다(20쪽).
+            drop = round(wall_screw_dy() - hook["key_y"], 3)
+            plates = [{"at": [x + b["wall"] / 2, y, z], **frame, "approach": [0, 0, -1], "drop": drop}
+                      for x, y, z in self.bracket_origins]
             return [self.take(model, plates) for _ in range(qty)]
         if model == "wall_screw":
             # 고리 판 열쇠 구멍의 좁은 쪽에 걸리도록 벽에서 고리 판 앞면까지 튀어나온다.
@@ -174,6 +177,9 @@ class Placer:
             screws = [{"at": [x + b["wall"] / 2, y + wall_screw_dy(), self.wall_z], "axis": [0, 0, -1]}
                       for x, y, _ in self.bracket_origins]
             return [self.take(model, screws) for _ in range(qty)]
+        if model == "spirit_level":
+            # 왼쪽 옆판 바깥 면에 세로로 대고 수직을 본다(19쪽). 그 단계에서만 보인다.
+            return [{"at": [-self.w / 2, self.h / 2, 0], "axis": [1, 0, 0], "up": [0, 1, 0], "transient": True}]
         if model == "wall_mark":
             return [{"at": [x + b["wall"] / 2, y + wall_screw_dy(), self.wall_z], "axis": [0, 0, -1]}
                     for x, y, _ in self.bracket_origins][:qty]
@@ -228,8 +234,10 @@ def build_scene(manual: Manual) -> dict:
             part = kinds[use.part_id]
             if part.kind not in ("panel", "tool"):
                 models.append((part.id, part.kind, use.qty))
-        # 연필만 쓰는 단계: 다음에 박을 벽 나사 자리를 벽에 표시한다(19쪽).
-        if "pencil" in tools and not models:
+        # 연필만 쓰는 단계: 수평계로 수직을 본 뒤 다음에 박을 벽 나사 자리를 벽에 표시한다(19쪽).
+        if "level" in tools and not models:
+            models.append(("level", "tool", 1))
+        if "pencil" in tools and all(pid == "level" for pid, _, _ in models):
             models.append(("wall_mark", "tool", len(placer.bracket_origins)))
         small = []
         for part_id, kind, qty in models:
@@ -247,7 +255,9 @@ def build_scene(manual: Manual) -> dict:
             if spec["model"] == "hook_plate" and "screwdriver" in tools:
                 small += [{**s, "tool": "screwdriver", "travel": 0.3} for s in placed.get("wall_screw", [])]
         # 이미 붙은 판을 다시 끝까지 밀어 넣는 단계(15쪽 7단계는 5단계 그림 반복).
-        reseat = last_added[-1:] if not step.adds and not small else []
+        # 벽에 건 뒤 아무것도 쓰지 않는 마지막 단계는 걸린 완성 모습만 보여 준다.
+        wall = step.number >= 12
+        reseat = last_added[-1:] if not step.adds and not small and not wall else []
         last_added += step.adds
         pulls_wall_screws = any(s["model"] == "wall_screw" and "travel" not in s for s in small)
         steps.append({
@@ -256,7 +266,7 @@ def build_scene(manual: Manual) -> dict:
             "small": small,
             "reseat": reseat,
             "pose": "lying" if step.number <= lying_until else "upright",
-            "wall": step.number >= 12,
+            "wall": wall,
             # 벽 나사를 박을 때는 선반을 옆으로 비켜 둔다(19쪽 13단계 그림에 가구가 없다).
             "unit_offset": [UNIT_PULL, 0, 0] if pulls_wall_screws else [0, 0, 0],
         })

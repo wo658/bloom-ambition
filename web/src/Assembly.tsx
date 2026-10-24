@@ -4,7 +4,7 @@ import { Edges, Outlines } from "@react-three/drei";
 import gsap from "gsap";
 import * as THREE from "three";
 import { StraightArrow, TurnArrow } from "./Arrows";
-import { HardwareMesh, METAL, SPINS, orientation } from "./Hardware";
+import { HardwareMesh, METAL, SPINS, TOOLS, orientation } from "./Hardware";
 import type { HardwareSpec, Scene, SmallPart, Step, Vec3 } from "./types";
 import { oakMaps, woodBox } from "./wood";
 
@@ -26,6 +26,7 @@ const SMALL_TRAVEL = 8;
 const SCREW_TURNS = 4;
 const MAGNIFY = 1.8; // 지금 단계의 작은 부품은 이만큼 크게 그렸다가 자리에 들어가면 원래 크기로 돌아온다
 const HAMMER_TAPS = 3;
+const DROP_AT = 0.7; // 걸고 내리는 부품이 내려앉기 시작하는 진행률
 const ARROW_GAP = 1.5;
 
 // 단계 시간표(초). 판이 먼저 들어오고 철물이 하나씩 이어진다.
@@ -52,7 +53,8 @@ export function schedule(step: Step): Schedule {
   if (!dowelsFirst) placePanels();
   let end = cursor;
   const parts = step.small.map((s) => {
-    const dur = s.tool ? TOOL_TIME : PLAIN_TIME;
+    // 걸고 내리는 부품은 두 동작이라 공구 쓰는 부품만큼 시간을 준다.
+    const dur = s.tool || s.drop ? TOOL_TIME : PLAIN_TIME;
     const slot = { start: cursor, dur };
     cursor += s.tool ? dur : PLAIN_STAGGER;
     end = Math.max(end, slot.start + dur);
@@ -162,10 +164,14 @@ function Small({ part, slot, active, clock, style, tool }: {
     [material, accent, toolMaterial, toolAccent]);
 
   const mark = part.model === "wall_mark";
+  // 공구(수평계)는 원래 커서 키우지 않는다.
+  const magnify = !TOOLS.includes(part.model);
   const length = part.dims.length ?? 2;
   const travel = mark ? 0 : part.travel ?? Math.max(SMALL_TRAVEL, length + 2);
   const dir = part.approach ?? part.axis;
-  const start = add(part.at, dir, -travel);
+  // drop이 있으면 그만큼 위(hang)로 들어온 뒤 제자리로 내려앉는다.
+  const hang = add(part.at, [0, part.drop ?? 0, 0]);
+  const start = add(hang, dir, -travel);
   // 공구를 쓰면 손으로 반쯤 넣은 다음(pre) 공구로 끝까지 넣는다.
   const pre = tool ? add(part.at, dir, -Math.min(travel, length * 0.5)) : part.at;
   const handEnd = tool ? (travel > 1 ? 0.35 : 0.1) : 1;
@@ -203,9 +209,11 @@ function Small({ part, slot, active, clock, style, tool }: {
     } else {
       depth = a;
     }
-    const pos = u < handEnd ? lerp(start, pre, ease(u / handEnd)) : lerp(pre, part.at, depth);
+    const pos = part.drop
+      ? (u < DROP_AT ? lerp(start, hang, ease(u / DROP_AT)) : lerp(hang, part.at, ease((u - DROP_AT) / (1 - DROP_AT))))
+      : u < handEnd ? lerp(start, pre, ease(u / handEnd)) : lerp(pre, part.at, depth);
     ref.current.position.set(...pos);
-    const scale = !active ? 1 : u < 0.85 ? MAGNIFY : MAGNIFY + (1 - MAGNIFY) * ease((u - 0.85) / 0.15);
+    const scale = !active || !magnify ? 1 : u < 0.85 ? MAGNIFY : MAGNIFY + (1 - MAGNIFY) * ease((u - 0.85) / 0.15);
     scaler.current?.scale.setScalar(scale);
     if (mark) scaler.current?.scale.setScalar(active ? (a > 0.5 ? scale : 0.0001) : 1);
     // 나사류는 머리 쪽에서 볼 때 시계 방향(조이는 방향)으로 돈다.
@@ -305,7 +313,7 @@ export default function Assembly({ scene, stepIndex, playKey, renderStyle }: {
   // 이번 단계에서 다시 조이는 부품은 이전 단계 목록에서 빼고 지금 단계 쪽에서 그린다.
   const smallBefore = useMemo(() => {
     const again = new Set(step.small.map((s) => s.id));
-    return scene.steps.slice(0, stepIndex).flatMap((s) => s.small).filter((s) => !again.has(s.id));
+    return scene.steps.slice(0, stepIndex).flatMap((s) => s.small).filter((s) => !again.has(s.id) && !s.transient);
   }, [scene, stepIndex, step]);
   const toolOf = (s: SmallPart) => (s.tool ? scene.hardware?.[s.tool] : undefined);
   const pose = poses(scene);

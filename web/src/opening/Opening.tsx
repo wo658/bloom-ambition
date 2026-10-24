@@ -155,6 +155,7 @@ function Hero({ onDropped, leaving }: { onDropped: () => void; leaving: boolean 
         {Array.from({ length: 24 }, (_, i) => <img key={i} src={pageUrl(i + 1)} alt="" />)}
       </div>
       <div className="op-hero-body">
+        <p className="op-brand">Stepcast</p>
         <h1>브랜드의 PDF 설명서를,<br />고객이 따라 하는 3D 안내로.</h1>
         <div className="op-stage-row">
           <div ref={zone} className={`op-drop ${over ? "over" : ""} ${taken ? "taken" : ""}`} onClick={accept}

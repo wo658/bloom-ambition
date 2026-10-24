@@ -22,7 +22,7 @@
 /* 아랍어·히브리어처럼 오른쪽에서 쓰는 글도 문단마다 방향을 알아서 잡는다. */
 .instruction p, .parts .name, .drawer .cap, .safety span { unicode-bidi: plaintext; }
 
-/* 자동 재생 기능 소개 자막(Guide) */
+/* 데모 재생 자막(Tour): 진행 막대 위에 늘 따라가는 설명 */
 .tour-caption { position: fixed; z-index: 45; left: 50%; bottom: 128px; transform: translateX(-50%); display: flex; align-items: center; gap: 14px;
   max-width: min(760px, calc(100vw - 48px)); padding: 14px 16px 16px 18px; overflow: hidden; border-radius: 16px;
   background: rgba(18, 22, 32, .86); backdrop-filter: blur(10px); color: #fff; box-shadow: 0 18px 50px rgba(10, 15, 25, .35);
@@ -31,4 +31,6 @@ body.chat-open .tour-caption { left: calc((100vw - var(--chat-w)) / 2); max-widt
 .tour-caption p { flex: 1; margin: 0; font-size: 19px; font-weight: 700; line-height: 1.4; letter-spacing: -.01em; word-break: keep-all; }
 .tour-caption > button:last-of-type { flex: none; margin-left: auto; width: 28px; height: 28px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .12); color: #fff; cursor: pointer; }
 @keyframes tour-in { from { opacity: 0; transform: translate(-50%, 12px); } }
+.tour-count { flex: none; font-size: 12px; font-weight: 700; color: #ffb37a; font-variant-numeric: tabular-nums; }
+.tour-bar { position: absolute; left: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, #ff7a1a, #ffc46b); transition: width .6s ease; }
 .tour-keys { flex: none; padding: 3px 8px; border-radius: 6px; background: rgba(255, 255, 255, .1); font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, .6); }

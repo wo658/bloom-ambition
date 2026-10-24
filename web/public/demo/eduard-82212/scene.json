@@ -1,0 +1,10260 @@
+{
+ "kind": "kit3d",
+ "product": "Eduard 82212 A6M2 제로센 21형 (1/48)",
+ "scale": 48,
+ "markings": [
+  {
+   "id": "A",
+   "title_ko": "토요시마 하지메, 항모 히류, 1941년 12월 (BII-124)",
+   "page": 15
+  },
+  {
+   "id": "B",
+   "title_ko": "사카이 사부로, 타이난 항공대, 라바울, 1942년 8월 (V-128)",
+   "page": 16
+  },
+  {
+   "id": "C",
+   "title_ko": "코야에 코타로, 항모 즈이호, 라바울, 1943년 4월 (AI-3-123)",
+   "page": 17
+  },
+  {
+   "id": "D",
+   "title_ko": "칸자키 쿠니오, 381 항공대, 켄다리, 1944년 5월 (81-181)",
+   "page": 18
+  },
+  {
+   "id": "E",
+   "title_ko": "미야타케 노부오, 카미카제 특공대, 카노야, 1945년 4월 (ケ-113)",
+   "page": 19
+  }
+ ],
+ "modules": {
+  "fuse_left": {
+   "offset": [
+    4.5,
+    0,
+    0
+   ],
+   "join": 14
+  },
+  "fuse_right": {
+   "offset": [
+    -4.5,
+    0,
+    0
+   ],
+   "join": 14
+  },
+  "tail_left": {
+   "offset": [
+    4,
+    0,
+    -3
+   ],
+   "join": 21
+  },
+  "tail_right": {
+   "offset": [
+    -4,
+    0,
+    -3
+   ],
+   "join": 21
+  },
+  "wing": {
+   "offset": [
+    0,
+    -5,
+    0
+   ],
+   "join": 21
+  },
+  "engine": {
+   "offset": [
+    0,
+    0,
+    6
+   ],
+   "join": 23
+  },
+  "cowling": {
+   "offset": [
+    0,
+    0,
+    11
+   ],
+   "join": 27
+  },
+  "gear_left": {
+   "offset": [
+    4,
+    -1.5,
+    0
+   ],
+   "join": 32
+  },
+  "gear_right": {
+   "offset": [
+    -4,
+    -1.5,
+    0
+   ],
+   "join": 32
+  },
+  "tailwheel": {
+   "offset": [
+    0,
+    -1.5,
+    -3
+   ],
+   "join": 32
+  },
+  "stores": {
+   "offset": [
+    0,
+    -3,
+    0
+   ],
+   "join": 35
+  },
+  "canopy": {
+   "offset": [
+    0,
+    3.5,
+    0
+   ],
+   "join": 39
+  },
+  "prop": {
+   "offset": [
+    0,
+    0,
+    9
+   ],
+   "join": 39
+  }
+ },
+ "poses": {
+  "bench": {
+   "pitch": 0,
+   "height": 7.5
+  },
+  "on_gear": {
+   "pitch": 0.2289,
+   "height": 4.476
+  }
+ },
+ "pieces": [
+  {
+   "step": 0,
+   "part_id": "B12",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_left",
+   "temp": false,
+   "model": "fuselage_half",
+   "dims": {
+    "side": 1,
+    "profile": [
+     [
+      6.3,
+      1.22,
+      1.24,
+      0.0
+     ],
+     [
+      5.0,
+      1.25,
+      1.32,
+      0.05
+     ],
+     [
+      3.5,
+      1.25,
+      1.4,
+      0.1
+     ],
+     [
+      1.5,
+      1.18,
+      1.42,
+      0.12
+     ],
+     [
+      -0.5,
+      1.08,
+      1.32,
+      0.15
+     ],
+     [
+      -3.0,
+      0.9,
+      1.1,
+      0.25
+     ],
+     [
+      -5.5,
+      0.64,
+      0.84,
+      0.35
+     ],
+     [
+      -7.5,
+      0.42,
+      0.62,
+      0.45
+     ],
+     [
+      -9.2,
+      0.2,
+      0.4,
+      0.55
+     ],
+     [
+      -9.9,
+      0.05,
+      0.16,
+      0.6
+     ]
+    ],
+    "cuts": [
+     [
+      4.2,
+      6.3,
+      42
+     ],
+     [
+      -0.4,
+      3.6,
+      40
+     ]
+    ],
+    "fin": [
+     [
+      -5.6,
+      0.95
+     ],
+     [
+      -8.3,
+      3.15
+     ],
+     [
+      -8.9,
+      3.45
+     ],
+     [
+      -9.35,
+      3.45
+     ],
+     [
+      -9.35,
+      0.55
+     ]
+    ],
+    "fin_t": 0.12
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    4,
+    0,
+    0
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    0.6,
+    0.6,
+    -1.5,
+    9
+   ],
+   "key": "p3-left/B12/0"
+  },
+  {
+   "step": 0,
+   "part_id": "D25",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.9249999999999999,
+    -0.1,
+    0.15999999999999992
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p3-left/D25/1"
+  },
+  {
+   "step": 0,
+   "part_id": "PE45",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "fuse_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.9559016994374947,
+    0.2437694101250947,
+    0.4800000000000002
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-left/PE45/2"
+  },
+  {
+   "step": 0,
+   "part_id": "PE24",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "fuse_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.9368033988749894,
+    -0.31246117974981064,
+    0.8
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-left/PE24/3"
+  },
+  {
+   "step": 0,
+   "part_id": "PE31",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "fuse_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.9677050983124842,
+    0.03130823037528416,
+    1.12
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-left/PE31/4"
+  },
+  {
+   "step": 0,
+   "part_id": "D24",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.9486067977499789,
+    -0.5249223594996213,
+    1.4400000000000002
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p3-left/D24/5"
+  },
+  {
+   "step": 0,
+   "part_id": "D9",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.9295084971874736,
+    -0.18115294937452625,
+    1.7600000000000002
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p3-left/D9/6"
+  },
+  {
+   "step": 0,
+   "part_id": "D27",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.9604101966249684,
+    0.16261646075056832,
+    2.08
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p3-left/D27/7"
+  },
+  {
+   "step": 0,
+   "part_id": "PE43",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "fuse_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.9413118960624631,
+    -0.39361412912433713,
+    2.4000000000000004
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-left/PE43/8"
+  },
+  {
+   "step": 0,
+   "part_id": "PE63",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "fuse_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.9722135954999579,
+    -0.049844718999242504,
+    2.7199999999999998
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-left/PE63/9"
+  },
+  {
+   "step": 1,
+   "part_id": "B11",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_right",
+   "temp": false,
+   "model": "fuselage_half",
+   "dims": {
+    "side": -1,
+    "profile": [
+     [
+      6.3,
+      1.22,
+      1.24,
+      0.0
+     ],
+     [
+      5.0,
+      1.25,
+      1.32,
+      0.05
+     ],
+     [
+      3.5,
+      1.25,
+      1.4,
+      0.1
+     ],
+     [
+      1.5,
+      1.18,
+      1.42,
+      0.12
+     ],
+     [
+      -0.5,
+      1.08,
+      1.32,
+      0.15
+     ],
+     [
+      -3.0,
+      0.9,
+      1.1,
+      0.25
+     ],
+     [
+      -5.5,
+      0.64,
+      0.84,
+      0.35
+     ],
+     [
+      -7.5,
+      0.42,
+      0.62,
+      0.45
+     ],
+     [
+      -9.2,
+      0.2,
+      0.4,
+      0.55
+     ],
+     [
+      -9.9,
+      0.05,
+      0.16,
+      0.6
+     ]
+    ],
+    "cuts": [
+     [
+      4.2,
+      6.3,
+      42
+     ],
+     [
+      -0.4,
+      3.6,
+      40
+     ]
+    ],
+    "fin": [
+     [
+      -5.6,
+      0.95
+     ],
+     [
+      -8.3,
+      3.15
+     ],
+     [
+      -8.9,
+      3.45
+     ],
+     [
+      -9.35,
+      3.45
+     ],
+     [
+      -9.35,
+      0.55
+     ]
+    ],
+    "fin_t": 0.12
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -4,
+    0,
+    0
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    -0.6,
+    0.6,
+    -1.5,
+    9
+   ],
+   "key": "p3-right/B11/0"
+  },
+  {
+   "step": 1,
+   "part_id": "D51",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.975,
+    -0.1,
+    0.10666666666666669
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p3-right/D51/1"
+  },
+  {
+   "step": 1,
+   "part_id": "PE38",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.9440983005625052,
+    0.2437694101250947,
+    0.31999999999999984
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-right/PE38/2"
+  },
+  {
+   "step": 1,
+   "part_id": "D4",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.9631966011250105,
+    -0.31246117974981064,
+    0.5333333333333332
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p3-right/D4/3"
+  },
+  {
+   "step": 1,
+   "part_id": "D10",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.9322949016875157,
+    0.03130823037528416,
+    0.7466666666666667
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p3-right/D10/4"
+  },
+  {
+   "step": 1,
+   "part_id": "PE21",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.951393202250021,
+    -0.5249223594996213,
+    0.96
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-right/PE21/5"
+  },
+  {
+   "step": 1,
+   "part_id": "D2",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.9704915028125263,
+    -0.18115294937452625,
+    1.1733333333333333
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p3-right/D2/6"
+  },
+  {
+   "step": 1,
+   "part_id": "PE28",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.9395898033750315,
+    0.16261646075056832,
+    1.3866666666666667
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-right/PE28/7"
+  },
+  {
+   "step": 1,
+   "part_id": "PE32",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.9586881039375368,
+    -0.39361412912433713,
+    1.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-right/PE32/8"
+  },
+  {
+   "step": 1,
+   "part_id": "D49",
+   "kind": "plastic",
+   "markings": null,
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.927786404500042,
+    -0.049844718999242504,
+    1.8133333333333335
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p3-right/D49/9"
+  },
+  {
+   "step": 1,
+   "part_id": "PE16",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.9468847050625473,
+    0.29392469112585207,
+    2.026666666666667
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-right/PE16/10"
+  },
+  {
+   "step": 1,
+   "part_id": "PE19",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.9659830056250525,
+    -0.2623058987490525,
+    2.24
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-right/PE19/11"
+  },
+  {
+   "step": 1,
+   "part_id": "PE20",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.9350813061875578,
+    0.08146351137604207,
+    2.4533333333333336
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-right/PE20/12"
+  },
+  {
+   "step": 1,
+   "part_id": "PE69",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.954179606750063,
+    -0.47476707849886335,
+    2.666666666666667
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-right/PE69/13"
+  },
+  {
+   "step": 1,
+   "part_id": "PE59",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.9732779073125682,
+    -0.13099766837376878,
+    2.8800000000000003
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-right/PE59/14"
+  },
+  {
+   "step": 1,
+   "part_id": "PE58",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "fuse_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.9423762078750735,
+    0.21277174175132582,
+    3.0933333333333337
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p3-right/PE58/15"
+  },
+  {
+   "step": 2,
+   "part_id": "D30",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     1.1,
+     0.35,
+     0.25
+    ]
+   },
+   "pos": [
+    0,
+    -0.55,
+    3.1
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2.5
+   ],
+   "color": "#7f9160",
+   "key": "A/D30/0"
+  },
+  {
+   "step": 2,
+   "part_id": "PE30",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.45,
+    -0.45,
+    3.1875
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "A/PE30/1"
+  },
+  {
+   "step": 2,
+   "part_id": "PE29",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.10623058987490541,
+    -0.4118033988749895,
+    3.2125000000000004
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "A/PE29/2"
+  },
+  {
+   "step": 3,
+   "part_id": "D40",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "seat",
+   "dims": {
+    "w": 0.9,
+    "h": 0.9,
+    "d": 0.75
+   },
+   "pos": [
+    0,
+    -0.3,
+    1.0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    3,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "B/D40/0"
+  },
+  {
+   "step": 3,
+   "part_id": "PE5",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.3,
+    0.05,
+    1.1624999999999999
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#b8b39e",
+   "key": "B/PE5/1"
+  },
+  {
+   "step": 3,
+   "part_id": "PE6",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.07082039324993694,
+    0.2791796067500631,
+    1.1875
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#b8b39e",
+   "key": "B/PE6/2"
+  },
+  {
+   "step": 3,
+   "part_id": "PE7",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.1583592135001261,
+    -0.09164078649987374,
+    1.2125
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#b8b39e",
+   "key": "B/PE7/3"
+  },
+  {
+   "step": 3,
+   "part_id": "PE8",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.21246117974981082,
+    0.13753882025018943,
+    1.2375
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#b8b39e",
+   "key": "B/PE8/4"
+  },
+  {
+   "step": 4,
+   "part_id": "D35",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     2.0,
+     2.2,
+     0.08
+    ]
+   },
+   "pos": [
+    0,
+    0.05,
+    0.5
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2.5
+   ],
+   "color": "#7f9160",
+   "key": "p4-bulkhead/D35/0"
+  },
+  {
+   "step": 4,
+   "part_id": "D12",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.7,
+    -0.3,
+    0.60125
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#7f9160",
+   "key": "p4-bulkhead/D12/1"
+  },
+  {
+   "step": 4,
+   "part_id": "D1",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.16524758424985286,
+    0.15835921350012622,
+    0.61375
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#7f9160",
+   "key": "p4-bulkhead/D1/2"
+  },
+  {
+   "step": 4,
+   "part_id": "PE10",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.36950483150029423,
+    -0.5832815729997475,
+    0.62625
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#b8b39e",
+   "key": "p4-bulkhead/PE10/3"
+  },
+  {
+   "step": 4,
+   "part_id": "D61",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.49574275274955854,
+    -0.1249223594996211,
+    0.63875
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#7f9160",
+   "key": "p4-bulkhead/D61/4"
+  },
+  {
+   "step": 5,
+   "part_id": "PE49",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.7,
+    -0.7,
+    0.6333333333333333
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "C/PE49/0"
+  },
+  {
+   "step": 5,
+   "part_id": "PE50",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.16524758424985286,
+    -0.6618033988749894,
+    1.1
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "C/PE50/1"
+  },
+  {
+   "step": 6,
+   "part_id": "D33",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     1.9,
+     0.08,
+     3.6
+    ]
+   },
+   "pos": [
+    0,
+    -0.82,
+    1.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p4-floor/D33/0"
+  },
+  {
+   "step": 6,
+   "part_id": "A17",
+   "kind": "clear",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "clear",
+    "size": 0.2
+   },
+   "pos": [
+    -0.36950483150029423,
+    -0.7236067977499789,
+    1.5666666666666669
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#cfe6ff",
+   "key": "p4-floor/A17/1"
+  },
+  {
+   "step": 6,
+   "part_id": "D8",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.49574275274955854,
+    -0.6854101966249684,
+    2.0333333333333337
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p4-floor/D8/2"
+  },
+  {
+   "step": 6,
+   "part_id": "D55",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.03900966300058854,
+    -0.7472135954999579,
+    2.5
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p4-floor/D55/3"
+  },
+  {
+   "step": 6,
+   "part_id": "D26",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.5737620787507356,
+    -0.7090169943749474,
+    2.966666666666667
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p4-floor/D26/4"
+  },
+  {
+   "step": 7,
+   "part_id": "D36",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     1.9,
+     1.0,
+     0.08
+    ]
+   },
+   "pos": [
+    0,
+    0.35,
+    3.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2.5
+   ],
+   "color": "#7f9160",
+   "key": "D/D36/0"
+  },
+  {
+   "step": 7,
+   "part_id": "PE14",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.7,
+    0.35,
+    3.2854545454545456
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "D/PE14/1"
+  },
+  {
+   "step": 7,
+   "part_id": "PE15",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.16524758424985286,
+    0.6173762078750735,
+    3.2863636363636366
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "D/PE15/2"
+  },
+  {
+   "step": 7,
+   "part_id": "PE25",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.36950483150029423,
+    0.18475241575014728,
+    3.287272727272727
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "D/PE25/3"
+  },
+  {
+   "step": 7,
+   "part_id": "PE40",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.49574275274955854,
+    0.452128623625221,
+    3.288181818181818
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "D/PE40/4"
+  },
+  {
+   "step": 7,
+   "part_id": "PE41",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.03900966300058854,
+    0.019504831500294584,
+    3.289090909090909
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "D/PE41/5"
+  },
+  {
+   "step": 7,
+   "part_id": "PE51",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.5737620787507356,
+    0.28688103937536846,
+    3.29
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "D/PE51/6"
+  },
+  {
+   "step": 7,
+   "part_id": "PE54",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.29148550549911717,
+    0.554257247250442,
+    3.290909090909091
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "D/PE54/7"
+  },
+  {
+   "step": 7,
+   "part_id": "PE55",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.24326691025102995,
+    0.1216334551255156,
+    3.291818181818182
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "D/PE55/8"
+  },
+  {
+   "step": 7,
+   "part_id": "PE62",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.6219806739988228,
+    0.38900966300058915,
+    3.292727272727273
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "D/PE62/9"
+  },
+  {
+   "step": 7,
+   "part_id": "PE64",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.08722825824867576,
+    0.6563858708756627,
+    3.2936363636363635
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "D/PE64/10"
+  },
+  {
+   "step": 9,
+   "part_id": "D34",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.3,
+     0.5,
+     2.0
+    ]
+   },
+   "pos": [
+    0.75,
+    -0.5,
+    2.0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p5-console/D34/0"
+  },
+  {
+   "step": 9,
+   "part_id": "D59",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.62,
+    -0.22,
+    1.2999999999999998
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p5-console/D59/1"
+  },
+  {
+   "step": 9,
+   "part_id": "PE44",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.743606797749979,
+    -0.2123606797749979,
+    1.5
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p5-console/PE44/2"
+  },
+  {
+   "step": 9,
+   "part_id": "PE46",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.667213595499958,
+    -0.22472135954999578,
+    1.7
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p5-console/PE46/3"
+  },
+  {
+   "step": 9,
+   "part_id": "PE2",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.7908203932499369,
+    -0.21708203932499368,
+    1.9
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p5-console/PE2/4"
+  },
+  {
+   "step": 9,
+   "part_id": "PE1",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.7144271909999159,
+    -0.2294427190999916,
+    2.1
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p5-console/PE1/5"
+  },
+  {
+   "step": 9,
+   "part_id": "PE18",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.6380339887498949,
+    -0.22180339887498948,
+    2.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p5-console/PE18/6"
+  },
+  {
+   "step": 9,
+   "part_id": "PE56",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.7616407864998739,
+    -0.21416407864998738,
+    2.5
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p5-console/PE56/7"
+  },
+  {
+   "step": 9,
+   "part_id": "PE60",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.6852475842498529,
+    -0.22652475842498526,
+    2.7
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p5-console/PE60/8"
+  },
+  {
+   "step": 10,
+   "part_id": "D44",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.55,
+     0.6,
+     0.9
+    ]
+   },
+   "pos": [
+    -0.6,
+    -0.45,
+    2.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "E/D44/0"
+  },
+  {
+   "step": 10,
+   "part_id": "D19",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.8,
+    -0.2,
+    2.31875
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "E/D19/1"
+  },
+  {
+   "step": 10,
+   "part_id": "D18",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.552786404500042,
+    -0.009016994374947407,
+    2.35625
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "E/D18/2"
+  },
+  {
+   "step": 10,
+   "part_id": "PE12",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.7055728090000841,
+    -0.3180339887498948,
+    2.3937500000000003
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE12/3"
+  },
+  {
+   "step": 10,
+   "part_id": "PE13",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.4583592135001261,
+    -0.12705098312484214,
+    2.43125
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE13/4"
+  },
+  {
+   "step": 10,
+   "part_id": "PE9",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.6111456180001681,
+    -0.4360679774997896,
+    2.46875
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE9/5"
+  },
+  {
+   "step": 10,
+   "part_id": "PE4",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.7639320225002102,
+    -0.24508497187473682,
+    2.50625
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE4/6"
+  },
+  {
+   "step": 10,
+   "part_id": "PE3",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.5167184270002522,
+    -0.054101966249684275,
+    2.54375
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE3/7"
+  },
+  {
+   "step": 10,
+   "part_id": "PE22",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.6695048315002943,
+    -0.3631189606246317,
+    2.5812500000000003
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE22/8"
+  },
+  {
+   "step": 10,
+   "part_id": "PE23",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.42229123600033625,
+    -0.17213595499957918,
+    2.61875
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE23/9"
+  },
+  {
+   "step": 10,
+   "part_id": "PE26",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.5750776405003784,
+    0.01884705062547337,
+    2.65625
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE26/10"
+  },
+  {
+   "step": 10,
+   "part_id": "PE27",
+   "kind": "photo_etch",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.7278640450004203,
+    -0.29016994374947364,
+    2.69375
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE27/11"
+  },
+  {
+   "step": 10,
+   "part_id": "PE53",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.48065044950046243,
+    -0.09918693812442109,
+    2.73125
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE53/12"
+  },
+  {
+   "step": 10,
+   "part_id": "PE65",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.6334368540005044,
+    -0.40820393249936854,
+    2.7687500000000003
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE65/13"
+  },
+  {
+   "step": 10,
+   "part_id": "PE66",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.7862232585005465,
+    -0.217220926874316,
+    2.80625
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE66/14"
+  },
+  {
+   "step": 10,
+   "part_id": "PE67",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.5390096630005885,
+    -0.02623792124926344,
+    2.84375
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE67/15"
+  },
+  {
+   "step": 10,
+   "part_id": "PE68",
+   "kind": "photo_etch",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.6917960675006306,
+    -0.3352549156242109,
+    2.88125
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "E/PE68/16"
+  },
+  {
+   "step": 12,
+   "part_id": "D29",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     1.4,
+     0.7,
+     0.6
+    ]
+   },
+   "pos": [
+    0,
+    0.6,
+    4.4
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p5-guns/D29/0"
+  },
+  {
+   "step": 12,
+   "part_id": "D17",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.07,
+    "len": 3.6,
+    "axis": "z"
+   },
+   "pos": [
+    0.35,
+    0.95,
+    5.4
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#3a3a3a",
+   "key": "p5-guns/D17/1"
+  },
+  {
+   "step": 12,
+   "part_id": "D14",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.07,
+    "len": 3.6,
+    "axis": "z"
+   },
+   "pos": [
+    -0.35,
+    0.95,
+    5.4
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#3a3a3a",
+   "key": "p5-guns/D14/2"
+  },
+  {
+   "step": 12,
+   "part_id": "D42",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.12,
+    "len": 1.2,
+    "axis": "y"
+   },
+   "pos": [
+    0.55,
+    -0.15,
+    3.8
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p5-guns/D42/3"
+  },
+  {
+   "step": 12,
+   "part_id": "D58",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.12,
+    "len": 1.2,
+    "axis": "y"
+   },
+   "pos": [
+    -0.55,
+    -0.15,
+    3.8
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p5-guns/D58/4"
+  },
+  {
+   "step": 13,
+   "part_id": "D5",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.3,
+     0.2,
+     3.0
+    ]
+   },
+   "pos": [
+    0,
+    -0.05,
+    -6.0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "F/D5/0"
+  },
+  {
+   "step": 13,
+   "part_id": "D22",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.25,
+    0.2,
+    -5.75
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "F/D22/1"
+  },
+  {
+   "step": 14,
+   "part_id": "B1",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "shell",
+   "dims": {
+    "z0": 4.2,
+    "z1": 6.3,
+    "r0": 1.33,
+    "r1": 1.28,
+    "cy": 0.05,
+    "a0": -42,
+    "a1": 42
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    3,
+    0
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    0,
+    1.2,
+    5.2,
+    2
+   ],
+   "key": "p6-fuselage/B1/0"
+  },
+  {
+   "step": 14,
+   "part_id": "B21",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "polygon",
+   "dims": {
+    "pts": [
+     [
+      -9.35,
+      3.42
+     ],
+     [
+      -9.75,
+      3.2
+     ],
+     [
+      -10.3,
+      1.7
+     ],
+     [
+      -10.25,
+      0.5
+     ],
+     [
+      -9.35,
+      0.5
+     ]
+    ],
+    "t": 0.18
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -3
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    0,
+    2,
+    -9.8,
+    2
+   ],
+   "key": "p6-fuselage/B21/1"
+  },
+  {
+   "step": 15,
+   "part_id": "C4",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 12.5,
+    "tip": 11.0,
+    "le": [
+     3.1,
+     -0.06
+    ],
+    "te": [
+     -2.6,
+     0.12
+    ],
+    "y": [
+     -1.15,
+     0.105
+    ],
+    "t": [
+     0.6,
+     -0.032
+    ],
+    "side": 0,
+    "x0": 0,
+    "x1": 12.5,
+    "surface": "lower",
+    "v0": 0.0,
+    "v1": 1.0,
+    "cut": {
+     "x": [
+      6.6,
+      11.2
+     ],
+     "v": 0.78
+    }
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -3,
+    0
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    0,
+    -1,
+    0.3,
+    12
+   ],
+   "key": "p6-lowerwing/C4/0"
+  },
+  {
+   "step": 15,
+   "part_id": "D32",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     7.0,
+     0.45,
+     0.12
+    ]
+   },
+   "pos": [
+    0,
+    -1.05,
+    -0.9
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p6-lowerwing/D32/1"
+  },
+  {
+   "step": 15,
+   "part_id": "C13",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     1.3,
+     0.04,
+     1.1
+    ]
+   },
+   "pos": [
+    4.2,
+    -1.3,
+    0.4
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p6-lowerwing/C13/2"
+  },
+  {
+   "step": 15,
+   "part_id": "C12",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     1.3,
+     0.04,
+     1.1
+    ]
+   },
+   "pos": [
+    -4.2,
+    -1.3,
+    0.4
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p6-lowerwing/C12/3"
+  },
+  {
+   "step": 16,
+   "part_id": "D11",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     3.0,
+     0.4,
+     0.1
+    ]
+   },
+   "pos": [
+    3.2,
+    -1.05,
+    1.9
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p7-wheelwell/D11/0"
+  },
+  {
+   "step": 16,
+   "part_id": "D16",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     3.0,
+     0.4,
+     0.1
+    ]
+   },
+   "pos": [
+    -3.2,
+    -1.05,
+    1.9
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p7-wheelwell/D16/1"
+  },
+  {
+   "step": 16,
+   "part_id": "D20",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.8,
+    -0.95,
+    -0.6799999999999999
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p7-wheelwell/D20/2"
+  },
+  {
+   "step": 16,
+   "part_id": "D21",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.18885438199983184,
+    -0.8354101966249684,
+    -0.44
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p7-wheelwell/D21/3"
+  },
+  {
+   "step": 17,
+   "part_id": "D38",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     1.6,
+     0.05,
+     1.3
+    ]
+   },
+   "pos": [
+    3.0,
+    -0.85,
+    1.2
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p7-upperwing/D38/0"
+  },
+  {
+   "step": 17,
+   "part_id": "D39",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     1.6,
+     0.05,
+     1.3
+    ]
+   },
+   "pos": [
+    -3.0,
+    -0.85,
+    1.2
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p7-upperwing/D39/1"
+  },
+  {
+   "step": 17,
+   "part_id": "C6",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 12.5,
+    "tip": 11.0,
+    "le": [
+     3.1,
+     -0.06
+    ],
+    "te": [
+     -2.6,
+     0.12
+    ],
+    "y": [
+     -1.15,
+     0.105
+    ],
+    "t": [
+     0.6,
+     -0.032
+    ],
+    "side": 1,
+    "x0": 1.0,
+    "x1": 12.5,
+    "surface": "upper",
+    "v0": 0.0,
+    "v1": 1.0,
+    "cut": {
+     "x": [
+      6.6,
+      11.2
+     ],
+     "v": 0.78
+    }
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    3,
+    0
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    6.5,
+    -0.4,
+    0.3,
+    7
+   ],
+   "key": "p7-upperwing/C6/2"
+  },
+  {
+   "step": 17,
+   "part_id": "C5",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 12.5,
+    "tip": 11.0,
+    "le": [
+     3.1,
+     -0.06
+    ],
+    "te": [
+     -2.6,
+     0.12
+    ],
+    "y": [
+     -1.15,
+     0.105
+    ],
+    "t": [
+     0.6,
+     -0.032
+    ],
+    "side": -1,
+    "x0": 1.0,
+    "x1": 12.5,
+    "surface": "upper",
+    "v0": 0.0,
+    "v1": 1.0,
+    "cut": {
+     "x": [
+      6.6,
+      11.2
+     ],
+     "v": 0.78
+    }
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    3,
+    0
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    -6.5,
+    -0.4,
+    0.3,
+    7
+   ],
+   "key": "p7-upperwing/C5/3"
+  },
+  {
+   "step": 18,
+   "part_id": "D60",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.42229123600033636,
+    -1.020820393249937,
+    -0.2
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p7-wingdetail/D60/0"
+  },
+  {
+   "step": 18,
+   "part_id": "D57",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.5665631459994955,
+    -0.9062305898749052,
+    0.039999999999999925
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p7-wingdetail/D57/1"
+  },
+  {
+   "step": 18,
+   "part_id": "D3",
+   "kind": "plastic",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.04458247200067263,
+    -1.0916407864998736,
+    0.27999999999999997
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p7-wingdetail/D3/2"
+  },
+  {
+   "step": 18,
+   "part_id": "C2",
+   "kind": "plastic",
+   "markings": [
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "wing",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 12.5,
+    "tip": 11.0,
+    "le": [
+     3.1,
+     -0.06
+    ],
+    "te": [
+     -2.6,
+     0.12
+    ],
+    "y": [
+     -1.15,
+     0.105
+    ],
+    "t": [
+     0.6,
+     -0.032
+    ],
+    "side": 1,
+    "x0": 6.6,
+    "x1": 11.2,
+    "surface": "both",
+    "v0": 0.78,
+    "v1": 1
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2.5
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    8.9,
+    -0.3,
+    -0.4,
+    3
+   ],
+   "key": "p7-wingdetail/C2/3"
+  },
+  {
+   "step": 18,
+   "part_id": "C10",
+   "kind": "plastic",
+   "markings": [
+    "A"
+   ],
+   "module": "wing",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 12.5,
+    "tip": 11.0,
+    "le": [
+     3.1,
+     -0.06
+    ],
+    "te": [
+     -2.6,
+     0.12
+    ],
+    "y": [
+     -1.15,
+     0.105
+    ],
+    "t": [
+     0.6,
+     -0.032
+    ],
+    "side": 1,
+    "x0": 6.6,
+    "x1": 11.2,
+    "surface": "both",
+    "v0": 0.78,
+    "v1": 1
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2.5
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    8.9,
+    -0.3,
+    -0.4,
+    3
+   ],
+   "key": "p7-wingdetail/C10/4"
+  },
+  {
+   "step": 18,
+   "part_id": "C1",
+   "kind": "plastic",
+   "markings": [
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "wing",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 12.5,
+    "tip": 11.0,
+    "le": [
+     3.1,
+     -0.06
+    ],
+    "te": [
+     -2.6,
+     0.12
+    ],
+    "y": [
+     -1.15,
+     0.105
+    ],
+    "t": [
+     0.6,
+     -0.032
+    ],
+    "side": -1,
+    "x0": 6.6,
+    "x1": 11.2,
+    "surface": "both",
+    "v0": 0.78,
+    "v1": 1
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2.5
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    -8.9,
+    -0.3,
+    -0.4,
+    3
+   ],
+   "key": "p7-wingdetail/C1/5"
+  },
+  {
+   "step": 18,
+   "part_id": "C11",
+   "kind": "plastic",
+   "markings": [
+    "A"
+   ],
+   "module": "wing",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 12.5,
+    "tip": 11.0,
+    "le": [
+     3.1,
+     -0.06
+    ],
+    "te": [
+     -2.6,
+     0.12
+    ],
+    "y": [
+     -1.15,
+     0.105
+    ],
+    "t": [
+     0.6,
+     -0.032
+    ],
+    "side": -1,
+    "x0": 6.6,
+    "x1": 11.2,
+    "surface": "both",
+    "v0": 0.78,
+    "v1": 1
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2.5
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    -8.9,
+    -0.3,
+    -0.4,
+    3
+   ],
+   "key": "p7-wingdetail/C11/6"
+  },
+  {
+   "step": 18,
+   "part_id": "A16",
+   "kind": "clear",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "dome",
+   "dims": {
+    "r": 0.16
+   },
+   "pos": [
+    12.2,
+    0.1762,
+    1.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2,
+    0,
+    0
+   ],
+   "color": "#e24b4b",
+   "key": "p7-wingdetail/A16/7"
+  },
+  {
+   "step": 18,
+   "part_id": "A15",
+   "kind": "clear",
+   "markings": null,
+   "module": "wing",
+   "temp": false,
+   "model": "dome",
+   "dims": {
+    "r": 0.16
+   },
+   "pos": [
+    -12.2,
+    0.1762,
+    1.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#4b8fe2",
+   "key": "p7-wingdetail/A15/8"
+  },
+  {
+   "step": 19,
+   "part_id": "B3",
+   "kind": "plastic",
+   "markings": null,
+   "module": "tail_left",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 5.0,
+    "tip": 4.2,
+    "le": [
+     -7.3,
+     -0.17
+    ],
+    "te": [
+     -9.4,
+     0.05
+    ],
+    "y": [
+     0.45,
+     0.0
+    ],
+    "t": [
+     0.22,
+     -0.024
+    ],
+    "side": 1,
+    "x0": 0.45,
+    "x1": 5.0,
+    "surface": "lower",
+    "v0": 0,
+    "v1": 0.62
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    2.7,
+    0.45,
+    -8.4,
+    3
+   ],
+   "key": "G/B3/0"
+  },
+  {
+   "step": 19,
+   "part_id": "B17",
+   "kind": "plastic",
+   "markings": null,
+   "module": "tail_left",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 5.0,
+    "tip": 4.2,
+    "le": [
+     -7.3,
+     -0.17
+    ],
+    "te": [
+     -9.4,
+     0.05
+    ],
+    "y": [
+     0.45,
+     0.0
+    ],
+    "t": [
+     0.22,
+     -0.024
+    ],
+    "side": 1,
+    "x0": 0.45,
+    "x1": 5.0,
+    "surface": "upper",
+    "v0": 0,
+    "v1": 0.62
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    2.7,
+    0.45,
+    -8.4,
+    3
+   ],
+   "key": "G/B17/1"
+  },
+  {
+   "step": 19,
+   "part_id": "C7",
+   "kind": "plastic",
+   "markings": null,
+   "module": "tail_left",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 5.0,
+    "tip": 4.2,
+    "le": [
+     -7.3,
+     -0.17
+    ],
+    "te": [
+     -9.4,
+     0.05
+    ],
+    "y": [
+     0.45,
+     0.0
+    ],
+    "t": [
+     0.22,
+     -0.024
+    ],
+    "side": 1,
+    "x0": 0.45,
+    "x1": 5.0,
+    "surface": "both",
+    "v0": 0.62,
+    "v1": 1
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    2.7,
+    0.45,
+    -9.1,
+    3
+   ],
+   "key": "G/C7/2"
+  },
+  {
+   "step": 20,
+   "part_id": "B2",
+   "kind": "plastic",
+   "markings": null,
+   "module": "tail_right",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 5.0,
+    "tip": 4.2,
+    "le": [
+     -7.3,
+     -0.17
+    ],
+    "te": [
+     -9.4,
+     0.05
+    ],
+    "y": [
+     0.45,
+     0.0
+    ],
+    "t": [
+     0.22,
+     -0.024
+    ],
+    "side": -1,
+    "x0": 0.45,
+    "x1": 5.0,
+    "surface": "lower",
+    "v0": 0,
+    "v1": 0.62
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    -2.7,
+    0.45,
+    -8.4,
+    3
+   ],
+   "key": "H/B2/0"
+  },
+  {
+   "step": 20,
+   "part_id": "B16",
+   "kind": "plastic",
+   "markings": null,
+   "module": "tail_right",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 5.0,
+    "tip": 4.2,
+    "le": [
+     -7.3,
+     -0.17
+    ],
+    "te": [
+     -9.4,
+     0.05
+    ],
+    "y": [
+     0.45,
+     0.0
+    ],
+    "t": [
+     0.22,
+     -0.024
+    ],
+    "side": -1,
+    "x0": 0.45,
+    "x1": 5.0,
+    "surface": "upper",
+    "v0": 0,
+    "v1": 0.62
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    -2.7,
+    0.45,
+    -8.4,
+    3
+   ],
+   "key": "H/B16/1"
+  },
+  {
+   "step": 20,
+   "part_id": "C3",
+   "kind": "plastic",
+   "markings": null,
+   "module": "tail_right",
+   "temp": false,
+   "model": "wing",
+   "dims": {
+    "span": 5.0,
+    "tip": 4.2,
+    "le": [
+     -7.3,
+     -0.17
+    ],
+    "te": [
+     -9.4,
+     0.05
+    ],
+    "y": [
+     0.45,
+     0.0
+    ],
+    "t": [
+     0.22,
+     -0.024
+    ],
+    "side": -1,
+    "x0": 0.45,
+    "x1": 5.0,
+    "surface": "both",
+    "v0": 0.62,
+    "v1": 1
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#c9c7b2",
+   "focus": [
+    -2.7,
+    0.45,
+    -9.1,
+    3
+   ],
+   "key": "H/C3/2"
+  },
+  {
+   "step": 21,
+   "part_id": "D23",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    2.475,
+    0.5,
+    -8.7
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p8-join/D23/0"
+  },
+  {
+   "step": 21,
+   "part_id": "D23",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -2.475,
+    0.5,
+    -8.7
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p8-join/D23/1"
+  },
+  {
+   "step": 21,
+   "part_id": "D48",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.6,
+     0.5,
+     0.15
+    ]
+   },
+   "pos": [
+    0,
+    1.25,
+    0.45
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#7f9160",
+   "key": "p8-join/D48/2"
+  },
+  {
+   "step": 21,
+   "part_id": "PE33",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.9,
+     0.04,
+     0.5
+    ]
+   },
+   "pos": [
+    0,
+    -1.47,
+    3.4
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p8-join/PE33/3"
+  },
+  {
+   "step": 22,
+   "part_id": "D31",
+   "kind": "plastic",
+   "markings": null,
+   "module": "engine",
+   "temp": false,
+   "model": "radial",
+   "dims": {
+    "n": 7,
+    "r_in": 0.4,
+    "r_out": 1.12,
+    "cyl_r": 0.2,
+    "t": 0.4,
+    "phase": 0
+   },
+   "pos": [
+    0,
+    0,
+    7.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#3a3a3a",
+   "key": "I/D31/0"
+  },
+  {
+   "step": 22,
+   "part_id": "D28",
+   "kind": "plastic",
+   "markings": null,
+   "module": "engine",
+   "temp": false,
+   "model": "radial",
+   "dims": {
+    "n": 7,
+    "r_in": 0.4,
+    "r_out": 1.1,
+    "cyl_r": 0.2,
+    "t": 0.4,
+    "phase": 0.5
+   },
+   "pos": [
+    0,
+    0,
+    7.85
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#3a3a3a",
+   "key": "I/D28/1"
+  },
+  {
+   "step": 22,
+   "part_id": "D37",
+   "kind": "plastic",
+   "markings": null,
+   "module": "engine",
+   "temp": false,
+   "model": "ring",
+   "dims": {
+    "r": 0.6,
+    "tube": 0.06
+   },
+   "pos": [
+    0,
+    0,
+    8.2
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#a7abb2",
+   "key": "I/D37/2"
+  },
+  {
+   "step": 22,
+   "part_id": "D43",
+   "kind": "plastic",
+   "markings": null,
+   "module": "engine",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.55,
+    "r2": 0.3,
+    "len": 0.6,
+    "axis": "z"
+   },
+   "pos": [
+    0,
+    0,
+    8.5
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#a7abb2",
+   "key": "I/D43/3"
+  },
+  {
+   "step": 22,
+   "part_id": "D41",
+   "kind": "plastic",
+   "markings": null,
+   "module": "engine",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.25,
+    0.25,
+    8.45
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#c9c7b2",
+   "key": "I/D41/4"
+  },
+  {
+   "step": 23,
+   "part_id": "D45",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "disc",
+   "dims": {
+    "r": 1.15,
+    "t": 0.1
+   },
+   "pos": [
+    0,
+    0,
+    6.7
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    3
+   ],
+   "color": "#3a3a3a",
+   "key": "p9-engine/D45/0"
+  },
+  {
+   "step": 24,
+   "part_id": "E24",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "capsule",
+   "dims": {
+    "r": 0.38,
+    "len": 3.6,
+    "half": 1,
+    "fins": 1
+   },
+   "pos": [
+    0,
+    -2.15,
+    0.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2,
+    0,
+    0
+   ],
+   "color": "#3a3a3a",
+   "key": "J/E24/0"
+  },
+  {
+   "step": 24,
+   "part_id": "E23",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "capsule",
+   "dims": {
+    "r": 0.38,
+    "len": 3.6,
+    "half": -1,
+    "fins": 1
+   },
+   "pos": [
+    0,
+    -2.15,
+    0.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#3a3a3a",
+   "key": "J/E23/1"
+  },
+  {
+   "step": 24,
+   "part_id": "PE57",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.25,
+    -2.15,
+    -0.6000000000000002
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "J/PE57/2"
+  },
+  {
+   "step": 24,
+   "part_id": "E2",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.05901699437494745,
+    -1.9590169943749474,
+    -1.1102230246251565e-16
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "J/E2/3"
+  },
+  {
+   "step": 24,
+   "part_id": "E5",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.1319660112501051,
+    -2.268033988749895,
+    0.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "J/E5/4"
+  },
+  {
+   "step": 24,
+   "part_id": "E10",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.2,
+     0.25,
+     2.6
+    ]
+   },
+   "pos": [
+    0,
+    -1.65,
+    0.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "J/E10/5"
+  },
+  {
+   "step": 24,
+   "part_id": "E26",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.17705098312484235,
+    -2.077050983124842,
+    1.1999999999999997
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "J/E26/6"
+  },
+  {
+   "step": 24,
+   "part_id": "E25",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.013932022500210195,
+    -2.3860679774997893,
+    1.8000000000000003
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "J/E25/7"
+  },
+  {
+   "step": 25,
+   "part_id": "E27",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "capsule",
+   "dims": {
+    "r": 0.22,
+    "len": 2.0,
+    "half": 0,
+    "fins": 1
+   },
+   "pos": [
+    5.6,
+    -1.3,
+    0.7
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#3a3a3a",
+   "key": "K/E27/0"
+  },
+  {
+   "step": 25,
+   "part_id": "E27",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "capsule",
+   "dims": {
+    "r": 0.22,
+    "len": 2.0,
+    "half": 0,
+    "fins": 1
+   },
+   "pos": [
+    -5.6,
+    -1.3,
+    0.7
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#3a3a3a",
+   "key": "K/E27/1"
+  },
+  {
+   "step": 25,
+   "part_id": "E1",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    5.449999999999999,
+    -1.3,
+    -0.25
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "K/E1/2"
+  },
+  {
+   "step": 25,
+   "part_id": "E1",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -5.449999999999999,
+    -1.3,
+    -0.25
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "K/E1/3"
+  },
+  {
+   "step": 25,
+   "part_id": "PE57",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    5.635410196624968,
+    -1.1854101966249684,
+    -0.15000000000000002
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "K/PE57/4"
+  },
+  {
+   "step": 25,
+   "part_id": "PE57",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -5.635410196624968,
+    -1.1854101966249684,
+    -0.15000000000000002
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "K/PE57/5"
+  },
+  {
+   "step": 26,
+   "part_id": "B9",
+   "kind": "jig",
+   "markings": null,
+   "module": "cowling",
+   "temp": true,
+   "model": "cyl",
+   "dims": {
+    "r": 1.18,
+    "len": 2.4,
+    "axis": "z",
+    "open": true
+   },
+   "pos": [
+    0,
+    0,
+    7.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2.5
+   ],
+   "color": "#8ec9f0",
+   "key": "L/B9/0"
+  },
+  {
+   "step": 26,
+   "part_id": "B10",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cowling",
+   "temp": false,
+   "model": "shell",
+   "dims": {
+    "z0": 8.75,
+    "z1": 9.15,
+    "r0": 1.37,
+    "r1": 1.2,
+    "cy": 0,
+    "a0": -180,
+    "a1": 180
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#2b2f36",
+   "focus": [
+    0,
+    0,
+    8.9,
+    1.6
+   ],
+   "key": "L/B10/1"
+  },
+  {
+   "step": 26,
+   "part_id": "B4",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cowling",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.2,
+    1.38,
+    7.25
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "L/B4/2"
+  },
+  {
+   "step": 26,
+   "part_id": "B15",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cowling",
+   "temp": false,
+   "model": "shell",
+   "dims": {
+    "z0": 6.25,
+    "z1": 8.75,
+    "r0": 1.33,
+    "r1": 1.37,
+    "cy": 0,
+    "a0": -50,
+    "a1": 50
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#2b2f36",
+   "focus": [
+    0,
+    1,
+    7.5,
+    1.8
+   ],
+   "key": "L/B15/3"
+  },
+  {
+   "step": 26,
+   "part_id": "B13",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cowling",
+   "temp": false,
+   "model": "shell",
+   "dims": {
+    "z0": 6.25,
+    "z1": 8.75,
+    "r0": 1.33,
+    "r1": 1.37,
+    "cy": 0,
+    "a0": 50,
+    "a1": 180
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2.5,
+    0,
+    0
+   ],
+   "color": "#2b2f36",
+   "focus": [
+    1,
+    -0.4,
+    7.5,
+    1.8
+   ],
+   "key": "L/B13/4"
+  },
+  {
+   "step": 26,
+   "part_id": "B14",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cowling",
+   "temp": false,
+   "model": "shell",
+   "dims": {
+    "z0": 6.25,
+    "z1": 8.75,
+    "r0": 1.33,
+    "r1": 1.37,
+    "cy": 0,
+    "a0": -180,
+    "a1": -50
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2.5,
+    0,
+    0
+   ],
+   "color": "#2b2f36",
+   "focus": [
+    -1,
+    -0.4,
+    7.5,
+    1.8
+   ],
+   "key": "L/B14/5"
+  },
+  {
+   "step": 26,
+   "part_id": "B19",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cowling",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.25,
+     0.2,
+     0.6
+    ]
+   },
+   "pos": [
+    1.15,
+    -0.8,
+    6.1
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    1.5,
+    0,
+    0
+   ],
+   "color": "#3a3a3a",
+   "key": "L/B19/6"
+  },
+  {
+   "step": 26,
+   "part_id": "B6",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cowling",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    1.4,
+    -0.55,
+    6.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    1.5,
+    0,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "L/B6/7"
+  },
+  {
+   "step": 26,
+   "part_id": "B20",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cowling",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.25,
+     0.2,
+     0.6
+    ]
+   },
+   "pos": [
+    -1.15,
+    -0.8,
+    6.1
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -1.5,
+    0,
+    0
+   ],
+   "color": "#3a3a3a",
+   "key": "L/B20/8"
+  },
+  {
+   "step": 26,
+   "part_id": "B5",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cowling",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -0.8999999999999999,
+    -0.55,
+    6.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -1.5,
+    0,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "L/B5/9"
+  },
+  {
+   "step": 28,
+   "part_id": "E29",
+   "kind": "plastic",
+   "markings": null,
+   "module": "gear_left",
+   "temp": false,
+   "model": "wheel",
+   "dims": {
+    "r": 0.66,
+    "w": 0.32
+   },
+   "pos": [
+    2.95,
+    -4.25,
+    1.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#262626",
+   "key": "p11-wheels/E29/0"
+  },
+  {
+   "step": 28,
+   "part_id": "E13",
+   "kind": "plastic",
+   "markings": null,
+   "module": "gear_left",
+   "temp": false,
+   "model": "hub",
+   "dims": {
+    "r": 0.36,
+    "w": 0.36
+   },
+   "pos": [
+    2.95,
+    -4.25,
+    1.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    1.5,
+    0,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "p11-wheels/E13/1"
+  },
+  {
+   "step": 28,
+   "part_id": "E6",
+   "kind": "plastic",
+   "markings": null,
+   "module": "gear_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    3.2,
+    -4.0,
+    1.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    1.5,
+    0,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p11-wheels/E6/2"
+  },
+  {
+   "step": 28,
+   "part_id": "E28",
+   "kind": "plastic",
+   "markings": null,
+   "module": "gear_right",
+   "temp": false,
+   "model": "wheel",
+   "dims": {
+    "r": 0.66,
+    "w": 0.32
+   },
+   "pos": [
+    -2.95,
+    -4.25,
+    1.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#262626",
+   "key": "p11-wheels/E28/3"
+  },
+  {
+   "step": 28,
+   "part_id": "E31",
+   "kind": "plastic",
+   "markings": null,
+   "module": "gear_right",
+   "temp": false,
+   "model": "hub",
+   "dims": {
+    "r": 0.36,
+    "w": 0.36
+   },
+   "pos": [
+    -2.95,
+    -4.25,
+    1.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -1.5,
+    0,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "p11-wheels/E31/4"
+  },
+  {
+   "step": 28,
+   "part_id": "E11B",
+   "kind": "plastic",
+   "markings": null,
+   "module": "gear_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    -2.7,
+    -4.0,
+    1.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -1.5,
+    0,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p11-wheels/E11B/5"
+  },
+  {
+   "step": 29,
+   "part_id": "E33",
+   "kind": "plastic",
+   "markings": null,
+   "module": "gear_left",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.11,
+    "len": 2.8,
+    "axis": "y"
+   },
+   "pos": [
+    3.25,
+    -2.8,
+    1.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2.5,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "M/E33/0"
+  },
+  {
+   "step": 29,
+   "part_id": "PE35",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "gear_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    3.225,
+    -2.4,
+    1.4633333333333334
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    1.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "M/PE35/1"
+  },
+  {
+   "step": 29,
+   "part_id": "PE48",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "gear_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    3.2559016994374947,
+    -1.827050983124842,
+    1.48
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    1.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "M/PE48/2"
+  },
+  {
+   "step": 29,
+   "part_id": "PE51",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "gear_left",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    3.2368033988749896,
+    -2.754101966249684,
+    1.4966666666666666
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    1.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "M/PE51/3"
+  },
+  {
+   "step": 29,
+   "part_id": "E20",
+   "kind": "plastic",
+   "markings": null,
+   "module": "gear_left",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.05,
+     2.3,
+     1.0
+    ]
+   },
+   "pos": [
+    3.45,
+    -2.7,
+    1.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2,
+    0,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "M/E20/4"
+  },
+  {
+   "step": 30,
+   "part_id": "E30",
+   "kind": "plastic",
+   "markings": null,
+   "module": "gear_right",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.11,
+    "len": 2.8,
+    "axis": "y"
+   },
+   "pos": [
+    -3.25,
+    -2.8,
+    1.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2.5,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "N/E30/0"
+  },
+  {
+   "step": 30,
+   "part_id": "PE36",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "gear_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -3.275,
+    -2.4,
+    1.4633333333333334
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -1.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "N/PE36/1"
+  },
+  {
+   "step": 30,
+   "part_id": "PE51",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "gear_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -3.2440983005625053,
+    -1.827050983124842,
+    1.48
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -1.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "N/PE51/2"
+  },
+  {
+   "step": 30,
+   "part_id": "PE48",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "gear_right",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -3.2631966011250104,
+    -2.754101966249684,
+    1.4966666666666666
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -1.5,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "N/PE48/3"
+  },
+  {
+   "step": 30,
+   "part_id": "E18",
+   "kind": "plastic",
+   "markings": null,
+   "module": "gear_right",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.05,
+     2.3,
+     1.0
+    ]
+   },
+   "pos": [
+    -3.45,
+    -2.7,
+    1.35
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "N/E18/4"
+  },
+  {
+   "step": 31,
+   "part_id": "D46",
+   "kind": "plastic",
+   "markings": null,
+   "module": "tailwheel",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.12,
+     1.7,
+     0.35
+    ]
+   },
+   "pos": [
+    0,
+    -1.35,
+    -8.55
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "O/D46/0"
+  },
+  {
+   "step": 31,
+   "part_id": "D47",
+   "kind": "plastic",
+   "markings": null,
+   "module": "tailwheel",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "plastic",
+    "size": 0.28
+   },
+   "pos": [
+    0.25,
+    -1.1,
+    -8.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "O/D47/1"
+  },
+  {
+   "step": 31,
+   "part_id": "D50",
+   "kind": "plastic",
+   "markings": null,
+   "module": "tailwheel",
+   "temp": false,
+   "model": "wheel",
+   "dims": {
+    "r": 0.28,
+    "w": 0.15
+   },
+   "pos": [
+    0,
+    -2.3,
+    -8.65
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#262626",
+   "key": "O/D50/2"
+  },
+  {
+   "step": 32,
+   "part_id": "E14",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.9,
+     0.05,
+     1.3
+    ]
+   },
+   "pos": [
+    1.0,
+    -1.55,
+    1.4
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p11-gear/E14/0"
+  },
+  {
+   "step": 32,
+   "part_id": "E16",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.9,
+     0.05,
+     1.3
+    ]
+   },
+   "pos": [
+    -1.0,
+    -1.55,
+    1.4
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p11-gear/E16/1"
+  },
+  {
+   "step": 32,
+   "part_id": "D6",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.05,
+    "len": 2.6,
+    "axis": "z"
+   },
+   "pos": [
+    0,
+    -0.75,
+    -6.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -2,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "p11-gear/D6/2"
+  },
+  {
+   "step": 33,
+   "part_id": "E3",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.04,
+     0.6,
+     0.5
+    ]
+   },
+   "pos": [
+    3.65,
+    -1.55,
+    1.0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p12-doors/E3/0"
+  },
+  {
+   "step": 33,
+   "part_id": "E4",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.04,
+     0.6,
+     0.5
+    ]
+   },
+   "pos": [
+    -3.65,
+    -1.55,
+    1.0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p12-doors/E4/1"
+  },
+  {
+   "step": 34,
+   "part_id": "E22",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "capsule",
+   "dims": {
+    "r": 0.62,
+    "len": 6.2,
+    "half": 1
+   },
+   "pos": [
+    0,
+    -2.45,
+    0.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2,
+    0,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "P/E22/0"
+  },
+  {
+   "step": 34,
+   "part_id": "E21",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "capsule",
+   "dims": {
+    "r": 0.62,
+    "len": 6.2,
+    "half": -1
+   },
+   "pos": [
+    0,
+    -2.45,
+    0.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    -2,
+    0,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "P/E21/1"
+  },
+  {
+   "step": 34,
+   "part_id": "E12",
+   "kind": "plastic",
+   "markings": null,
+   "module": "stores",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.12,
+     0.45,
+     1.2
+    ]
+   },
+   "pos": [
+    0,
+    -1.62,
+    0.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "P/E12/2"
+  },
+  {
+   "step": 35,
+   "part_id": "E32",
+   "kind": "plastic",
+   "markings": [
+    "D"
+   ],
+   "module": "airframe",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.15,
+     0.2,
+     1.3
+    ]
+   },
+   "pos": [
+    5.6,
+    -0.95,
+    0.7
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "p12-stores/E32/0"
+  },
+  {
+   "step": 35,
+   "part_id": "E32",
+   "kind": "plastic",
+   "markings": [
+    "D"
+   ],
+   "module": "airframe",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.15,
+     0.2,
+     1.3
+    ]
+   },
+   "pos": [
+    -5.6,
+    -0.95,
+    0.7
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    -1.5,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "p12-stores/E32/1"
+  },
+  {
+   "step": 35,
+   "part_id": "D56",
+   "kind": "plastic",
+   "markings": [
+    "A"
+   ],
+   "module": "airframe",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.04,
+    "len": 0.5,
+    "axis": "y"
+   },
+   "pos": [
+    9.5,
+    0.24550000000000002,
+    0.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    1.5,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "p12-stores/D56/2"
+  },
+  {
+   "step": 35,
+   "part_id": "D56",
+   "kind": "plastic",
+   "markings": [
+    "A"
+   ],
+   "module": "airframe",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.04,
+    "len": 0.5,
+    "axis": "y"
+   },
+   "pos": [
+    -9.5,
+    0.24550000000000002,
+    0.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    1.5,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "p12-stores/D56/3"
+  },
+  {
+   "step": 35,
+   "part_id": "PE34",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.99,
+    0.6,
+    -2.0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    2,
+    0,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p12-stores/PE34/4"
+  },
+  {
+   "step": 35,
+   "part_id": "PE11",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cowling",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.04721359549995796,
+    1.387639320225002,
+    7.949999999999999
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p12-stores/PE11/5"
+  },
+  {
+   "step": 36,
+   "part_id": "E19",
+   "kind": "plastic",
+   "markings": null,
+   "module": "prop",
+   "temp": false,
+   "model": "blades",
+   "dims": {
+    "n": 3,
+    "radius": 2.9,
+    "chord": 0.45
+   },
+   "pos": [
+    0,
+    0,
+    9.75
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#a7abb2",
+   "key": "R/E19/0"
+  },
+  {
+   "step": 36,
+   "part_id": "E17",
+   "kind": "plastic",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "prop",
+   "temp": false,
+   "model": "disc",
+   "dims": {
+    "r": 0.5,
+    "t": 0.12
+   },
+   "pos": [
+    0,
+    0,
+    9.65
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#a7abb2",
+   "key": "R/E17/1"
+  },
+  {
+   "step": 36,
+   "part_id": "E15",
+   "kind": "plastic",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "prop",
+   "temp": false,
+   "model": "disc",
+   "dims": {
+    "r": 0.5,
+    "t": 0.12
+   },
+   "pos": [
+    0,
+    0,
+    9.65
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#a7abb2",
+   "key": "R/E15/2"
+  },
+  {
+   "step": 36,
+   "part_id": "E7",
+   "kind": "plastic",
+   "markings": [
+    "A",
+    "B"
+   ],
+   "module": "prop",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.5,
+    "r2": 0.06,
+    "len": 1.0,
+    "axis": "z"
+   },
+   "pos": [
+    0,
+    0,
+    10.25
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#a7abb2",
+   "key": "R/E7/3"
+  },
+  {
+   "step": 36,
+   "part_id": "E9",
+   "kind": "plastic",
+   "markings": [
+    "C",
+    "D",
+    "E"
+   ],
+   "module": "prop",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.5,
+    "r2": 0.06,
+    "len": 1.0,
+    "axis": "z"
+   },
+   "pos": [
+    0,
+    0,
+    10.25
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2
+   ],
+   "color": "#a7abb2",
+   "key": "R/E9/4"
+  },
+  {
+   "step": 37,
+   "part_id": "A5",
+   "kind": "plastic",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "box",
+   "dims": {
+    "size": [
+     0.25,
+     0.35,
+     0.3
+    ]
+   },
+   "pos": [
+    0,
+    0.98,
+    3.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#3a3a3a",
+   "key": "p13-gunsight/A5/0"
+  },
+  {
+   "step": 37,
+   "part_id": "PE52",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "cockpit",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.44752415750147134,
+    0.22376207875073692,
+    3.2945454545454544
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -2
+   ],
+   "color": "#b8b39e",
+   "key": "p13-gunsight/PE52/1"
+  },
+  {
+   "step": 38,
+   "part_id": "A14",
+   "kind": "clear",
+   "markings": null,
+   "module": "canopy",
+   "temp": false,
+   "model": "canopy",
+   "dims": {
+    "z0": 0.9,
+    "z1": 2.8,
+    "w0": 0.62,
+    "w1": 0.62,
+    "h0": 0.95,
+    "h1": 0.95,
+    "y": 1.2
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#cfe6ff",
+   "focus": [
+    0,
+    1.7,
+    1.85,
+    1.4
+   ],
+   "key": "S/A14/0"
+  },
+  {
+   "step": 38,
+   "part_id": "PE47",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "canopy",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -0.4,
+    1.8,
+    1.5
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    1.5,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "S/PE47/1"
+  },
+  {
+   "step": 38,
+   "part_id": "PE39",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "canopy",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.09442719099991592,
+    1.9145898033750317,
+    2.1
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    1.5,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "S/PE39/2"
+  },
+  {
+   "step": 39,
+   "part_id": "A4",
+   "kind": "clear",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "canopy",
+   "dims": {
+    "z0": 2.8,
+    "z1": 3.55,
+    "w0": 0.62,
+    "w1": 0.45,
+    "h0": 0.95,
+    "h1": 0.5,
+    "y": 1.18
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#cfe6ff",
+   "focus": [
+    0,
+    1.6,
+    3.2,
+    1.2
+   ],
+   "key": "p13-final/A4/0"
+  },
+  {
+   "step": 39,
+   "part_id": "A10",
+   "kind": "clear",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "canopy",
+   "dims": {
+    "z0": -1.1,
+    "z1": 0.9,
+    "w0": 0.25,
+    "w1": 0.62,
+    "h0": 0.25,
+    "h1": 0.95,
+    "y": 1.18
+   },
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#cfe6ff",
+   "focus": [
+    0,
+    1.6,
+    -0.1,
+    1.4
+   ],
+   "key": "p13-final/A10/1"
+  },
+  {
+   "step": 39,
+   "part_id": "D53",
+   "kind": "plastic",
+   "markings": [
+    "A",
+    "C"
+   ],
+   "module": "airframe",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.05,
+    "len": 2.6,
+    "axis": "y"
+   },
+   "pos": [
+    0,
+    2.6,
+    -1.6
+   ],
+   "rot": [
+    -10,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p13-final/D53/2"
+  },
+  {
+   "step": 39,
+   "part_id": "D54",
+   "kind": "plastic",
+   "markings": [
+    "D",
+    "E"
+   ],
+   "module": "airframe",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.05,
+    "len": 2.6,
+    "axis": "y"
+   },
+   "pos": [
+    0,
+    2.6,
+    -1.6
+   ],
+   "rot": [
+    -10,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2.5,
+    0
+   ],
+   "color": "#c9c7b2",
+   "key": "p13-final/D54/3"
+  },
+  {
+   "step": 39,
+   "part_id": "D62",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "dome",
+   "dims": {
+    "r": 0.15
+   },
+   "pos": [
+    0,
+    1.36,
+    4.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#a7abb2",
+   "key": "p13-final/D62/4"
+  },
+  {
+   "step": 39,
+   "part_id": "PE37",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    0.25,
+    1.61,
+    4.85
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p13-final/PE37/5"
+  },
+  {
+   "step": 39,
+   "part_id": "A1",
+   "kind": "clear",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "dome",
+   "dims": {
+    "r": 0.1
+   },
+   "pos": [
+    8.0,
+    -0.13799999999999996,
+    0.5
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#cfe6ff",
+   "key": "p13-final/A1/6"
+  },
+  {
+   "step": 39,
+   "part_id": "A1",
+   "kind": "clear",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "dome",
+   "dims": {
+    "r": 0.1
+   },
+   "pos": [
+    -8.0,
+    -0.13799999999999996,
+    0.5
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#cfe6ff",
+   "key": "p13-final/A1/7"
+  },
+  {
+   "step": 39,
+   "part_id": "D15",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.06,
+    "len": 1.2,
+    "axis": "z"
+   },
+   "pos": [
+    3.6,
+    -1.0,
+    3.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2.5
+   ],
+   "color": "#3a3a3a",
+   "key": "p13-final/D15/8"
+  },
+  {
+   "step": 39,
+   "part_id": "D15",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.06,
+    "len": 1.2,
+    "axis": "z"
+   },
+   "pos": [
+    -3.6,
+    -1.0,
+    3.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    2.5
+   ],
+   "color": "#3a3a3a",
+   "key": "p13-final/D15/9"
+  },
+  {
+   "step": 39,
+   "part_id": "PE42",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    5.35,
+    -0.36049999999999993,
+    -0.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p13-final/PE42/10"
+  },
+  {
+   "step": 39,
+   "part_id": "PE42",
+   "kind": "photo_etch",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "detail",
+   "dims": {
+    "kind": "photo_etch",
+    "size": 0.32
+   },
+   "pos": [
+    -5.35,
+    -0.36049999999999993,
+    -0.3
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    2,
+    0
+   ],
+   "color": "#b8b39e",
+   "key": "p13-final/PE42/11"
+  },
+  {
+   "step": 39,
+   "part_id": "D52",
+   "kind": "plastic",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "cyl",
+   "dims": {
+    "r": 0.04,
+    "len": 1.8,
+    "axis": "z"
+   },
+   "pos": [
+    9.0,
+    -0.4809999999999999,
+    2.6
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    3
+   ],
+   "color": "#a7abb2",
+   "key": "p13-final/D52/12"
+  },
+  {
+   "step": 39,
+   "part_id": "A19",
+   "kind": "clear",
+   "markings": null,
+   "module": "airframe",
+   "temp": false,
+   "model": "dome",
+   "dims": {
+    "r": 0.1
+   },
+   "pos": [
+    0,
+    1.0,
+    -10.25
+   ],
+   "rot": [
+    0,
+    0,
+    0
+   ],
+   "from": [
+    0,
+    0,
+    -1.5
+   ],
+   "color": "#cfe6ff",
+   "key": "p13-final/A19/13"
+  }
+ ],
+ "steps": [
+  {
+   "number": 1,
+   "id": "p3-left",
+   "label": null,
+   "page": 3,
+   "title_ko": "동체 왼쪽 내벽",
+   "caption_ko": "왼쪽 동체 B12 안쪽에 D25와 PE45를 붙이세요.\nD24에 PE24·PE31을 올린 뒤, D24와 D9를 차례로 붙이세요.\n에칭은 마킹 A·B면 PE43, C·D·E면 PE63을 써요.\nPE17은 보통 생략해요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [
+    "내부색: 마킹 A·B 인테리어 그린(H58/C351), C·D·E 필드 그린(H340/C340)"
+   ],
+   "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "B12",
+     "name_ko": "왼쪽 동체",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D25",
+     "name_ko": "왼쪽 내벽 부품",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE45",
+     "name_ko": "동체 왼쪽 내벽 에칭 PE45",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE24",
+     "name_ko": "동체 왼쪽 내벽 에칭 PE24",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE31",
+     "name_ko": "동체 왼쪽 내벽 에칭 PE31",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D24",
+     "name_ko": "왼쪽 내벽 레버 받침",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D9",
+     "name_ko": "왼쪽 내벽 레버",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D27",
+     "name_ko": "왼쪽 내벽 상자",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE43",
+     "name_ko": "동체 왼쪽 내벽 에칭 PE43",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE63",
+     "name_ko": "동체 왼쪽 내벽 에칭 PE63",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE17",
+     "name_ko": "동체 왼쪽 내벽 에칭 PE17",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": true
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    5.286,
+    0.038,
+    0.61,
+    11.192
+   ],
+   "view": [
+    -0.473,
+    0.699,
+    0.536
+   ]
+  },
+  {
+   "number": 2,
+   "id": "p3-right",
+   "label": null,
+   "page": 3,
+   "title_ko": "동체 오른쪽 내벽",
+   "caption_ko": "오른쪽 동체 B11 안쪽에 D51과 PE38을 붙이세요.\n이어서 계기 상자 D4, D10과 PE21, D2·PE28·PE32·D49를 붙이세요.\nD4는 에칭(PE19·PE20 또는 PE58·PE59) 대신 데칼 K6·K9로 꾸며도 돼요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [
+    "내부색: 마킹 A·B 인테리어 그린(H58/C351), C·D·E 필드 그린(H340/C340)"
+   ],
+   "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "B11",
+     "name_ko": "오른쪽 동체",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D51",
+     "name_ko": "오른쪽 내벽 부품",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE38",
+     "name_ko": "동체 오른쪽 내벽 에칭 PE38",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D4",
+     "name_ko": "오른쪽 내벽 상자",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D10",
+     "name_ko": "오른쪽 내벽 레버",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE21",
+     "name_ko": "동체 오른쪽 내벽 에칭 PE21",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D2",
+     "name_ko": "오른쪽 내벽 부품",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE28",
+     "name_ko": "동체 오른쪽 내벽 에칭 PE28",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE32",
+     "name_ko": "동체 오른쪽 내벽 에칭 PE32",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D49",
+     "name_ko": "오른쪽 내벽 손잡이",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE16",
+     "name_ko": "동체 오른쪽 내벽 에칭 PE16",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE19",
+     "name_ko": "동체 오른쪽 내벽 에칭 PE19",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE20",
+     "name_ko": "동체 오른쪽 내벽 에칭 PE20",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE69",
+     "name_ko": "동체 오른쪽 내벽 에칭 PE69",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE59",
+     "name_ko": "동체 오른쪽 내벽 에칭 PE59",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE58",
+     "name_ko": "동체 오른쪽 내벽 에칭 PE58",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -5.287,
+    0.038,
+    0.797,
+    11.372
+   ],
+   "view": [
+    0.85,
+    0.419,
+    0.321
+   ]
+  },
+  {
+   "number": 3,
+   "id": "A",
+   "label": "A",
+   "page": 4,
+   "title_ko": "러더 페달",
+   "caption_ko": "D30에서 빨간 부분을 잘라내세요.\n그 자리에 에칭 페달 PE30·PE29를 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+   "confidence": 0.5,
+   "adds": [
+    {
+     "id": "D30",
+     "name_ko": "방향 페달",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE30",
+     "name_ko": "러더 페달 에칭 PE30",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE29",
+     "name_ko": "러더 페달 에칭 PE29",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -0.172,
+    -0.481,
+    3.156,
+    1.6
+   ],
+   "view": [
+    0.252,
+    0.822,
+    0.51
+   ]
+  },
+  {
+   "number": 4,
+   "id": "B",
+   "label": "B",
+   "page": 4,
+   "title_ko": "조종석 좌석",
+   "caption_ko": "좌석 D40에 에칭 안전벨트 PE5·PE6·PE7·PE8을 구부려 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [
+    "좌석: 마킹 A·B 인테리어 그린(H58/C351), C·D·E 플랫 블랙(H12/C33)"
+   ],
+   "warning_ko": null,
+   "confidence": 0.8,
+   "adds": [
+    {
+     "id": "D40",
+     "name_ko": "조종석 좌석",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE5",
+     "name_ko": "안전벨트(어깨)",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE6",
+     "name_ko": "안전벨트(어깨)",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE7",
+     "name_ko": "안전벨트(허리)",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE8",
+     "name_ko": "안전벨트(허리)",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -0.044,
+    -0.01,
+    1.119,
+    1.6
+   ],
+   "view": [
+    0.264,
+    0.519,
+    0.813
+   ]
+  },
+  {
+   "number": 5,
+   "id": "p4-bulkhead",
+   "label": null,
+   "page": 4,
+   "title_ko": "좌석과 뒤 격벽",
+   "caption_ko": "격벽 D35에 D12와 D1을 붙이세요.\n좌석(B)을 붙인 뒤 PE10과 D61을 다세요.",
+   "uses_steps": [
+    "B"
+   ],
+   "markings": null,
+   "paints_ko": [
+    "격벽 뒷면: 블루 그린(H63/C57)"
+   ],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "D35",
+     "name_ko": "좌석 뒤 격벽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D12",
+     "name_ko": "좌석 받침",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D1",
+     "name_ko": "좌석 높이 레버",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE10",
+     "name_ko": "좌석과 뒤 격벽 에칭 PE10",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D61",
+     "name_ko": "격벽 부품",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -0.102,
+    -0.212,
+    0.569,
+    1.6
+   ],
+   "view": [
+    0.277,
+    0.41,
+    0.869
+   ]
+  },
+  {
+   "number": 6,
+   "id": "C",
+   "label": "C",
+   "page": 4,
+   "title_ko": "바닥 부품",
+   "caption_ko": "작은 상자 부품에 에칭 PE49·PE50을 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [
+    "플랫 블랙(H12/C33)"
+   ],
+   "warning_ko": null,
+   "confidence": 0.4,
+   "adds": [
+    {
+     "id": "PE49",
+     "name_ko": "바닥 부품 에칭 PE49",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE50",
+     "name_ko": "바닥 부품 에칭 PE50",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -0.267,
+    -0.681,
+    0.867,
+    1.6
+   ],
+   "view": [
+    0.264,
+    0.917,
+    0.299
+   ]
+  },
+  {
+   "number": 7,
+   "id": "p4-floor",
+   "label": null,
+   "page": 4,
+   "title_ko": "조종석 바닥",
+   "caption_ko": "바닥판 D33에 A17을 붙이세요.\n조종간 D8은 그림의 1, 2 순서대로 붙이세요.\nD55·D26과 러더 페달(A), 바닥 부품(C)을 다세요.",
+   "uses_steps": [
+    "A",
+    "C"
+   ],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "D33",
+     "name_ko": "조종석 바닥",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "A17",
+     "name_ko": "바닥 투명창",
+     "kind": "clear",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D8",
+     "name_ko": "조종간 받침",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D55",
+     "name_ko": "바닥 부품",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D26",
+     "name_ko": "조종간",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -0.039,
+    -0.753,
+    2.267,
+    2.471
+   ],
+   "view": [
+    0.264,
+    0.917,
+    0.299
+   ]
+  },
+  {
+   "number": 8,
+   "id": "D",
+   "label": "D",
+   "page": 4,
+   "title_ko": "계기판",
+   "caption_ko": "계기판 D36에서 빨간 부분을 잘라내고 에칭 계기판을 겹쳐 붙이세요.\n마킹 A·B는 PE14·PE15·PE25·PE40·PE41을 써요.\n마킹 C·D·E는 PE51·PE54·PE55·PE62·PE64를 써요.\n에칭 대신 데칼 K8을 붙여도 돼요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "D36",
+     "name_ko": "계기판",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE14",
+     "name_ko": "계기판 에칭 PE14",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE15",
+     "name_ko": "계기판 에칭 PE15",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE25",
+     "name_ko": "계기판 에칭 PE25",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE40",
+     "name_ko": "계기판 에칭 PE40",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE41",
+     "name_ko": "계기판 에칭 PE41",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE51",
+     "name_ko": "계기판 에칭 PE51",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE54",
+     "name_ko": "계기판 에칭 PE54",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE55",
+     "name_ko": "계기판 에칭 PE55",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE62",
+     "name_ko": "계기판 에칭 PE62",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE64",
+     "name_ko": "계기판 에칭 PE64",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -0.039,
+    0.338,
+    3.318,
+    1.6
+   ],
+   "view": [
+    0.504,
+    0.745,
+    -0.437
+   ]
+  },
+  {
+   "number": 9,
+   "id": "p5-cockpit",
+   "label": null,
+   "page": 5,
+   "title_ko": "조종석 결합",
+   "caption_ko": "바닥판에 격벽·좌석 조립품을 세우세요.\n계기판(D)과 양옆 프레임을 붙여 조종석을 완성하세요.",
+   "uses_steps": [
+    "p4-bulkhead",
+    "p4-floor",
+    "D"
+   ],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.5,
+   "adds": [],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -0.039,
+    -0.082,
+    1.925,
+    2.608
+   ],
+   "view": [
+    0.473,
+    0.699,
+    0.536
+   ]
+  },
+  {
+   "number": 10,
+   "id": "p5-console",
+   "label": null,
+   "page": 5,
+   "title_ko": "측면 콘솔",
+   "caption_ko": "프레임 D34에 D59를 붙이세요.\n에칭으로 꾸미려면 D59의 빨간 부분을 깎고 PE44·PE46·PE2를 붙이세요.\n마킹 A·B는 PE1·PE18, C·D·E는 PE56·PE60을 더 붙여요.\n데칼 K10·K7로 대신해도 돼요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "D34",
+     "name_ko": "왼쪽 측면 콘솔 틀",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D59",
+     "name_ko": "스로틀 상자",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE44",
+     "name_ko": "측면 콘솔 에칭 PE44",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE46",
+     "name_ko": "측면 콘솔 에칭 PE46",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE2",
+     "name_ko": "측면 콘솔 에칭 PE2",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE1",
+     "name_ko": "측면 콘솔 에칭 PE1",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE18",
+     "name_ko": "측면 콘솔 에칭 PE18",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE56",
+     "name_ko": "측면 콘솔 에칭 PE56",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE60",
+     "name_ko": "측면 콘솔 에칭 PE60",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.705,
+    -0.356,
+    2.0,
+    1.6
+   ],
+   "view": [
+    0.324,
+    0.899,
+    0.294
+   ]
+  },
+  {
+   "number": 11,
+   "id": "E",
+   "label": "E",
+   "page": 5,
+   "title_ko": "무전기",
+   "caption_ko": "무전기 D44·D19·D18에 에칭 패널을 붙이세요.\n마킹 A·B는 PE3·PE22·PE23·PE26·PE27을 써요.\n마킹 C·D·E는 PE53·PE65·PE66·PE67·PE68을 써요.\n데칼 K1~K5로 대신해도 돼요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": "빨간 표시는 에칭 부품을 쓸 때 잘라내는 부분이에요.",
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "D44",
+     "name_ko": "무전기 틀",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D19",
+     "name_ko": "무전기 앞판",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D18",
+     "name_ko": "무전기 옆판",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE12",
+     "name_ko": "무전기 에칭 PE12",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE13",
+     "name_ko": "무전기 에칭 PE13",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE9",
+     "name_ko": "무전기 에칭 PE9",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE4",
+     "name_ko": "무전기 에칭 PE4",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE3",
+     "name_ko": "무전기 에칭 PE3",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE22",
+     "name_ko": "무전기 에칭 PE22",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE23",
+     "name_ko": "무전기 에칭 PE23",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE26",
+     "name_ko": "무전기 에칭 PE26",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE27",
+     "name_ko": "무전기 에칭 PE27",
+     "kind": "photo_etch",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE53",
+     "name_ko": "무전기 에칭 PE53",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE65",
+     "name_ko": "무전기 에칭 PE65",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE66",
+     "name_ko": "무전기 에칭 PE66",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE67",
+     "name_ko": "무전기 에칭 PE67",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE68",
+     "name_ko": "무전기 에칭 PE68",
+     "kind": "photo_etch",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -0.611,
+    -0.216,
+    2.6,
+    1.6
+   ],
+   "view": [
+    -0.473,
+    0.699,
+    0.536
+   ]
+  },
+  {
+   "number": 12,
+   "id": "p5-install-E",
+   "label": null,
+   "page": 5,
+   "title_ko": "무전기·콘솔 장착",
+   "caption_ko": "조종석 뒤에 무전기(E)를, 옆에 측면 콘솔을 붙이세요.",
+   "uses_steps": [
+    "E",
+    "p5-console",
+    "p5-cockpit"
+   ],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.5,
+   "adds": [],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -0.005,
+    -0.082,
+    1.925,
+    2.607
+   ],
+   "view": [
+    0.473,
+    0.699,
+    0.536
+   ]
+  },
+  {
+   "number": 13,
+   "id": "p5-guns",
+   "label": null,
+   "page": 5,
+   "title_ko": "기관총과 탱크",
+   "caption_ko": "7.7mm 기관총 D17·D14를 받침 D29에 붙이세요.\n탱크 D42·D58과 함께 조종석 앞에 다세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [
+    "총: 번트 아이언(H76/C61)",
+    "탱크: 블루 그린(H63/C57)"
+   ],
+   "warning_ko": null,
+   "confidence": 0.5,
+   "adds": [
+    {
+     "id": "D29",
+     "name_ko": "기관총 받침",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D17",
+     "name_ko": "왼쪽 7.7mm 기관총",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D14",
+     "name_ko": "오른쪽 7.7mm 기관총",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D42",
+     "name_ko": "산소통(2개)",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D58",
+     "name_ko": "산소통",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.0,
+    0.4,
+    4.6,
+    2.832
+   ],
+   "view": [
+    0.264,
+    0.917,
+    0.299
+   ]
+  },
+  {
+   "number": 14,
+   "id": "F",
+   "label": "F",
+   "page": 6,
+   "title_ko": "꼬리 내부 받침",
+   "caption_ko": "D22와 D5를 맞붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.4,
+   "adds": [
+    {
+     "id": "D5",
+     "name_ko": "꼬리 안쪽 받침",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D22",
+     "name_ko": "꼬리 안쪽 받침 덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.125,
+    0.075,
+    -5.875,
+    1.717
+   ],
+   "view": [
+    0.264,
+    0.917,
+    0.299
+   ]
+  },
+  {
+   "number": 15,
+   "id": "p6-fuselage",
+   "label": null,
+   "page": 6,
+   "title_ko": "동체 결합",
+   "caption_ko": "조종석 조립품을 넣고 동체 B12·B11을 맞붙이세요.\n윗면 패널 B1, 꼬리 B21, 꼬리 내부 받침(F)을 붙이세요.",
+   "uses_steps": [
+    "F",
+    "p3-left",
+    "p3-right",
+    "p5-install-E",
+    "p5-guns"
+   ],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "B1",
+     "name_ko": "기수 윗덮개(기관총 덮개)",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B21",
+     "name_ko": "방향타",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [
+    "fuse_left",
+    "fuse_right"
+   ],
+   "pose": "bench",
+   "focus": [
+    -0.001,
+    0.738,
+    -2.3,
+    10.01
+   ],
+   "view": [
+    0.325,
+    0.941,
+    -0.091
+   ]
+  },
+  {
+   "number": 16,
+   "id": "p6-lowerwing",
+   "label": null,
+   "page": 6,
+   "title_ko": "아래 날개 안쪽",
+   "caption_ko": "아래 날개 C4 안쪽에 D32, C13, C12를 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": "마킹 D만: 표시된 두 곳에 지름 0.6mm 구멍을 뚫으세요.",
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "C4",
+     "name_ko": "아래 주날개(한 장)",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D32",
+     "name_ko": "날개 뒤 날개보",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "C13",
+     "name_ko": "왼쪽 아래 점검창",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "C12",
+     "name_ko": "오른쪽 아래 점검창",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.0,
+    -6.15,
+    -0.25,
+    12.57
+   ],
+   "view": [
+    0.625,
+    -0.327,
+    0.709
+   ]
+  },
+  {
+   "number": 17,
+   "id": "p7-wheelwell",
+   "label": null,
+   "page": 7,
+   "title_ko": "주바퀴 격납고",
+   "caption_ko": "아래 날개 C4에 격납고 벽 D11·D20·D21·D16을 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "D11",
+     "name_ko": "왼쪽 바퀴 격납고 벽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D16",
+     "name_ko": "오른쪽 바퀴 격납고 벽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D20",
+     "name_ko": "격납고 가운데 벽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D21",
+     "name_ko": "격납고 가운데 칸막이",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.0,
+    -5.943,
+    0.61,
+    4.952
+   ],
+   "view": [
+    0.264,
+    0.917,
+    0.299
+   ]
+  },
+  {
+   "number": 18,
+   "id": "p7-upperwing",
+   "label": null,
+   "page": 7,
+   "title_ko": "날개 윗면 결합",
+   "caption_ko": "윗날개 C6·C5 안쪽에 D38·D39를 붙이세요.\n그다음 아래 날개와 맞붙이세요.",
+   "uses_steps": [
+    "p6-lowerwing",
+    "p7-wheelwell"
+   ],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "D38",
+     "name_ko": "왼쪽 격납고 천장",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D39",
+     "name_ko": "오른쪽 격납고 천장",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "C6",
+     "name_ko": "왼쪽 위 주날개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "C5",
+     "name_ko": "오른쪽 위 주날개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.0,
+    -5.625,
+    0.75,
+    13.519
+   ],
+   "view": [
+    0.264,
+    0.917,
+    0.299
+   ]
+  },
+  {
+   "number": 19,
+   "id": "p7-wingdetail",
+   "label": null,
+   "page": 7,
+   "title_ko": "날개 마무리",
+   "caption_ko": "날개 끝에 항법등 A15(투명 파랑)와 A16(투명 빨강)을 붙이세요.\n보조익은 마킹 B~E면 C1·C2, 마킹 A면 C11·C10을 쓰세요.\nD57·D60·D3도 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "D60",
+     "name_ko": "탄창 받침",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D57",
+     "name_ko": "날개 안 기관총 탄창",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D3",
+     "name_ko": "날개 안 상자",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "C2",
+     "name_ko": "왼쪽 보조날개",
+     "kind": "plastic",
+     "markings": [
+      "B",
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "C10",
+     "name_ko": "왼쪽 보조날개(마킹 A형)",
+     "kind": "plastic",
+     "markings": [
+      "A"
+     ],
+     "optional": false
+    },
+    {
+     "id": "C1",
+     "name_ko": "오른쪽 보조날개",
+     "kind": "plastic",
+     "markings": [
+      "B",
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "C11",
+     "name_ko": "오른쪽 보조날개(마킹 A형)",
+     "kind": "plastic",
+     "markings": [
+      "A"
+     ],
+     "optional": false
+    },
+    {
+     "id": "A16",
+     "name_ko": "왼쪽 날개끝 등(빨강)",
+     "kind": "clear",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "A15",
+     "name_ko": "오른쪽 날개끝 등(파랑)",
+     "kind": "clear",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.0,
+    -5.458,
+    0.45,
+    12.546
+   ],
+   "view": [
+    0.345,
+    0.925,
+    -0.161
+   ]
+  },
+  {
+   "number": 20,
+   "id": "G",
+   "label": "G",
+   "page": 8,
+   "title_ko": "왼쪽 수평 꼬리날개",
+   "caption_ko": "B17과 B3을 맞붙이고 승강타 C7을 다세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "B3",
+     "name_ko": "왼쪽 수평꼬리날개 아랫면",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B17",
+     "name_ko": "왼쪽 수평꼬리날개 윗면",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "C7",
+     "name_ko": "왼쪽 승강타",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    6.7,
+    0.45,
+    -11.75,
+    3.35
+   ],
+   "view": [
+    0.504,
+    0.745,
+    -0.437
+   ]
+  },
+  {
+   "number": 21,
+   "id": "H",
+   "label": "H",
+   "page": 8,
+   "title_ko": "오른쪽 수평 꼬리날개",
+   "caption_ko": "B16과 B2를 맞붙이고 승강타 C3을 다세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "B2",
+     "name_ko": "오른쪽 수평꼬리날개 아랫면",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B16",
+     "name_ko": "오른쪽 수평꼬리날개 윗면",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "C3",
+     "name_ko": "오른쪽 승강타",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -6.7,
+    0.45,
+    -11.75,
+    3.35
+   ],
+   "view": [
+    0.504,
+    0.745,
+    -0.437
+   ]
+  },
+  {
+   "number": 22,
+   "id": "p8-join",
+   "label": null,
+   "page": 8,
+   "title_ko": "날개·꼬리날개 결합",
+   "caption_ko": "동체에 날개를 붙이고, 꼬리에 수평 꼬리날개 G·H를 끼우세요.\nD48, 발판 D23, PE33을 붙이세요.",
+   "uses_steps": [
+    "G",
+    "H",
+    "p6-fuselage",
+    "p7-upperwing",
+    "p7-wingdetail"
+   ],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "D23",
+     "name_ko": "승강타 힌지",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D48",
+     "name_ko": "좌석 뒤 머리받이",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE33",
+     "name_ko": "흡기구 망",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [
+    "tail_left",
+    "tail_right",
+    "wing"
+   ],
+   "pose": "bench",
+   "focus": [
+    0.0,
+    -0.11,
+    -2.85,
+    15.273
+   ],
+   "view": [
+    0.264,
+    0.917,
+    0.299
+   ]
+  },
+  {
+   "number": 23,
+   "id": "I",
+   "label": "I",
+   "page": 9,
+   "title_ko": "엔진(사카에 12형)",
+   "caption_ko": "실린더 D28·D31, 푸시로드 D37 두 장, 기어 케이스 D41·D43을 겹쳐 엔진을 만드세요.\n데칼 S21을 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [
+    "실린더: 블랙(H2/C2)",
+    "기어 케이스: 라이트 블루(H417/C117)"
+   ],
+   "warning_ko": null,
+   "confidence": 0.7,
+   "adds": [
+    {
+     "id": "D31",
+     "name_ko": "뒷줄 실린더(7기통)",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D28",
+     "name_ko": "앞줄 실린더(7기통)",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D37",
+     "name_ko": "점화 배선 고리",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D43",
+     "name_ko": "엔진 앞 기어 덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D41",
+     "name_ko": "엔진 앞 기어 덮개 고리",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.125,
+    0.125,
+    13.925,
+    1.722
+   ],
+   "view": [
+    0.277,
+    0.41,
+    0.869
+   ]
+  },
+  {
+   "number": 24,
+   "id": "p9-engine",
+   "label": null,
+   "page": 9,
+   "title_ko": "엔진 장착",
+   "caption_ko": "방화벽에 D45를 붙이고 엔진(I)을 다세요.",
+   "uses_steps": [
+    "I",
+    "p8-join"
+   ],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.7,
+   "adds": [
+    {
+     "id": "D45",
+     "name_ko": "엔진 받침판",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [
+    "engine"
+   ],
+   "pose": "bench",
+   "focus": [
+    0.125,
+    0.125,
+    7.6,
+    2.067
+   ],
+   "view": [
+    0.277,
+    0.41,
+    0.869
+   ]
+  },
+  {
+   "number": 25,
+   "id": "J",
+   "label": "J",
+   "page": 9,
+   "title_ko": "폭탄 (마킹 E)",
+   "caption_ko": "폭탄 E23·E24(또는 E2·E5)를 맞붙이세요.\n꼬리날개와 거치대 E25·E26·E10, PE57을 붙이세요.",
+   "uses_steps": [],
+   "markings": [
+    "E"
+   ],
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.5,
+   "adds": [
+    {
+     "id": "E24",
+     "name_ko": "250kg 폭탄 왼쪽 반쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E23",
+     "name_ko": "250kg 폭탄 오른쪽 반쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE57",
+     "name_ko": "폭탄 (마킹 E) 에칭 PE57",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E2",
+     "name_ko": "폭탄 꼬리 고리",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E5",
+     "name_ko": "폭탄 신관 막대",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E10",
+     "name_ko": "가운데 폭탄 걸이",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E26",
+     "name_ko": "폭탄 걸이 고정쇠",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E25",
+     "name_ko": "폭탄 걸이 고정쇠",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -0.036,
+    -5.018,
+    0.6,
+    1.937
+   ],
+   "view": [
+    0.625,
+    -0.327,
+    0.709
+   ]
+  },
+  {
+   "number": 26,
+   "id": "K",
+   "label": "K",
+   "page": 9,
+   "title_ko": "소형 폭탄 (마킹 D)",
+   "caption_ko": "E27에 꼬리 E1과 PE57을 붙이세요.",
+   "uses_steps": [],
+   "markings": [
+    "D"
+   ],
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.4,
+   "adds": [
+    {
+     "id": "E27",
+     "name_ko": "60kg 소형 폭탄",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E1",
+     "name_ko": "소형 폭탄 꼬리날개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE57",
+     "name_ko": "폭탄 (마킹 E) 에칭 PE57",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.0,
+    -4.243,
+    0.225,
+    6.62
+   ],
+   "view": [
+    0.625,
+    -0.327,
+    0.709
+   ]
+  },
+  {
+   "number": 27,
+   "id": "L",
+   "label": "L",
+   "page": 10,
+   "title_ko": "엔진 카울링",
+   "caption_ko": "지그 B9에 B10을 끼우세요.\n카울링 판 B4·B15·B13·B14를 둘러 붙이세요.\n마지막으로 배기구 B19·B6, B20·B5를 다세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": "파란색 B9는 모양을 잡는 지그예요.\n접착하지 말고 다 마르면 빼내세요.",
+   "confidence": 0.7,
+   "adds": [
+    {
+     "id": "B9",
+     "name_ko": "카울링 조립 지그(붙이지 않음)",
+     "kind": "jig",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B10",
+     "name_ko": "카울링 앞 고리",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B4",
+     "name_ko": "카울링 윗덮개 앞쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B15",
+     "name_ko": "카울링 윗덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B13",
+     "name_ko": "카울링 왼쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B14",
+     "name_ko": "카울링 오른쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B19",
+     "name_ko": "왼쪽 배기관",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B6",
+     "name_ko": "왼쪽 배기관 덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B20",
+     "name_ko": "오른쪽 배기관",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "B5",
+     "name_ko": "오른쪽 배기관 덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.125,
+    0.29,
+    18.5,
+    3.12
+   ],
+   "view": [
+    0.264,
+    0.917,
+    0.299
+   ]
+  },
+  {
+   "number": 28,
+   "id": "p10-cowl",
+   "label": null,
+   "page": 10,
+   "title_ko": "카울링 장착",
+   "caption_ko": "완성한 카울링(L)을 엔진 위에 씌우세요.",
+   "uses_steps": [
+    "L",
+    "p9-engine"
+   ],
+   "markings": null,
+   "paints_ko": [
+    "카울링: 카울링 컬러(C125)"
+   ],
+   "warning_ko": null,
+   "confidence": 0.8,
+   "adds": [],
+   "joins": [
+    "cowling"
+   ],
+   "pose": "bench",
+   "focus": [
+    0.125,
+    0.29,
+    7.5,
+    3.12
+   ],
+   "view": [
+    0.277,
+    0.41,
+    0.869
+   ]
+  },
+  {
+   "number": 29,
+   "id": "p11-wheels",
+   "label": null,
+   "page": 11,
+   "title_ko": "주바퀴",
+   "caption_ko": "휠과 타이어를 조립하세요.\n휠은 두 가지 모양 중 하나를 고르세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [
+    "휠: 알루미늄(SM212)",
+    "타이어: 타이어 블랙(H77/C137)"
+   ],
+   "warning_ko": null,
+   "confidence": 0.5,
+   "adds": [
+    {
+     "id": "E29",
+     "name_ko": "왼쪽 주바퀴 타이어",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E13",
+     "name_ko": "왼쪽 바퀴 휠 바깥",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E6",
+     "name_ko": "왼쪽 바퀴 휠 안쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E8",
+     "name_ko": "왼쪽 바퀴 휠(다른 형)",
+     "kind": "plastic",
+     "markings": null,
+     "optional": true
+    },
+    {
+     "id": "E28",
+     "name_ko": "오른쪽 주바퀴 타이어",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E31",
+     "name_ko": "오른쪽 바퀴 휠 바깥",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E11B",
+     "name_ko": "오른쪽 바퀴 휠 안쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E11A",
+     "name_ko": "오른쪽 바퀴 휠(다른 형)",
+     "kind": "plastic",
+     "markings": null,
+     "optional": true
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.125,
+    -5.625,
+    1.475,
+    7.737
+   ],
+   "view": [
+    0.277,
+    0.41,
+    0.869
+   ]
+  },
+  {
+   "number": 30,
+   "id": "M",
+   "label": "M",
+   "page": 11,
+   "title_ko": "왼쪽 주다리",
+   "caption_ko": "다리 E33에 바퀴와 덮개 E20, 에칭 PE35·PE48·PE51을 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "E33",
+     "name_ko": "왼쪽 주다리",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE35",
+     "name_ko": "왼쪽 주다리 에칭 PE35",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE48",
+     "name_ko": "왼쪽 주다리 에칭 PE48",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE51",
+     "name_ko": "계기판 에칭 PE51",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E20",
+     "name_ko": "왼쪽 주다리 덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    7.338,
+    -3.814,
+    1.423,
+    1.9
+   ],
+   "view": [
+    0.89,
+    0.3,
+    0.343
+   ]
+  },
+  {
+   "number": 31,
+   "id": "N",
+   "label": "N",
+   "page": 11,
+   "title_ko": "오른쪽 주다리",
+   "caption_ko": "다리 E30에 바퀴와 덮개 E18, 에칭 PE36·PE48·PE51을 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "E30",
+     "name_ko": "오른쪽 주다리",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE36",
+     "name_ko": "오른쪽 주다리 에칭 PE36",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE51",
+     "name_ko": "계기판 에칭 PE51",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE48",
+     "name_ko": "왼쪽 주다리 에칭 PE48",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E18",
+     "name_ko": "오른쪽 주다리 덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    -7.347,
+    -3.814,
+    1.423,
+    1.901
+   ],
+   "view": [
+    -0.529,
+    0.559,
+    0.638
+   ]
+  },
+  {
+   "number": 32,
+   "id": "O",
+   "label": "O",
+   "page": 11,
+   "title_ko": "꼬리바퀴",
+   "caption_ko": "D46에 바퀴 D50과 D47을 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "D46",
+     "name_ko": "꼬리바퀴 다리 왼쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D47",
+     "name_ko": "꼬리바퀴 다리 오른쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D50",
+     "name_ko": "꼬리바퀴",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "bench",
+   "focus": [
+    0.125,
+    -3.2,
+    -11.475,
+    1.6
+   ],
+   "view": [
+    0.625,
+    -0.327,
+    0.709
+   ]
+  },
+  {
+   "number": 33,
+   "id": "p11-gear",
+   "label": null,
+   "page": 11,
+   "title_ko": "랜딩기어 장착",
+   "caption_ko": "주다리 M·N과 꼬리바퀴 O를 끼우세요.\nE14·E16, D6·D7을 붙이고 데칼 S25를 붙이세요.",
+   "uses_steps": [
+    "M",
+    "N",
+    "O",
+    "p11-wheels",
+    "p10-cowl"
+   ],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "E14",
+     "name_ko": "왼쪽 안쪽 바퀴 덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E16",
+     "name_ko": "오른쪽 안쪽 바퀴 덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D6",
+     "name_ko": "착함 갈고리",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D7",
+     "name_ko": "착함 갈고리(다른 형)",
+     "kind": "plastic",
+     "markings": null,
+     "optional": true
+    }
+   ],
+   "joins": [
+    "gear_left",
+    "gear_right",
+    "tailwheel"
+   ],
+   "pose": "on_gear",
+   "focus": [
+    0.0,
+    -2.5,
+    -3.525,
+    7.267
+   ],
+   "view": [
+    0.625,
+    -0.327,
+    0.709
+   ]
+  },
+  {
+   "number": 34,
+   "id": "p12-doors",
+   "label": null,
+   "page": 12,
+   "title_ko": "주바퀴 안쪽 덮개",
+   "caption_ko": "오른쪽에 E4, 왼쪽에 E3을 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "E3",
+     "name_ko": "왼쪽 작은 다리 덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E4",
+     "name_ko": "오른쪽 작은 다리 덮개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "on_gear",
+   "focus": [
+    0.0,
+    -1.55,
+    1.0,
+    3.95
+   ],
+   "view": [
+    0.625,
+    -0.327,
+    0.709
+   ]
+  },
+  {
+   "number": 35,
+   "id": "P",
+   "label": "P",
+   "page": 12,
+   "title_ko": "보조연료탱크 (마킹 A·B·C)",
+   "caption_ko": "E21·E22를 맞붙이고 E12를 다세요.",
+   "uses_steps": [],
+   "markings": [
+    "A",
+    "B",
+    "C"
+   ],
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "E22",
+     "name_ko": "보조연료탱크 왼쪽 반쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E21",
+     "name_ko": "보조연료탱크 오른쪽 반쪽",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E12",
+     "name_ko": "보조연료탱크 받침",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "on_gear",
+   "focus": [
+    0.0,
+    -5.035,
+    0.3,
+    3.515
+   ],
+   "view": [
+    0.625,
+    -0.327,
+    0.709
+   ]
+  },
+  {
+   "number": 36,
+   "id": "p12-stores",
+   "label": null,
+   "page": 12,
+   "title_ko": "외부 장착물",
+   "caption_ko": "마킹에 맞는 장착물을 다세요.\n· 마킹 A·B·C: 보조연료탱크(P)\n· 마킹 D: 소형 폭탄(K)\n· 마킹 E: 폭탄(J)\n안테나 PE34와 PE11을 붙이세요.\nE32는 마킹 D, D56은 마킹 A에서만 써요.",
+   "uses_steps": [
+    "J",
+    "K",
+    "P",
+    "p11-gear",
+    "p12-doors"
+   ],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.5,
+   "adds": [
+    {
+     "id": "E32",
+     "name_ko": "날개 아래 폭탄 걸이",
+     "kind": "plastic",
+     "markings": [
+      "D"
+     ],
+     "optional": false
+    },
+    {
+     "id": "D56",
+     "name_ko": "날개 위 표시 막대",
+     "kind": "plastic",
+     "markings": [
+      "A"
+     ],
+     "optional": false
+    },
+    {
+     "id": "PE34",
+     "name_ko": "외부 장착물 에칭 PE34",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE11",
+     "name_ko": "외부 장착물 에칭 PE11",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [
+    "stores"
+   ],
+   "pose": "on_gear",
+   "focus": [
+    0.0,
+    -0.531,
+    2.975,
+    10.123
+   ],
+   "view": [
+    0.614,
+    0.735,
+    0.288
+   ]
+  },
+  {
+   "number": 37,
+   "id": "R",
+   "label": "R",
+   "page": 12,
+   "title_ko": "프로펠러",
+   "caption_ko": "프로펠러 E19에 허브와 스피너를 붙이세요.\n마킹 A·B는 E7·E17, C·D·E는 E9·E15를 써요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [
+    "프로펠러: 레드 브라운(C131), 앞면 실버(SM201)"
+   ],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "E19",
+     "name_ko": "프로펠러(3날)",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "E17",
+     "name_ko": "스피너 뒤판(마킹 A·B)",
+     "kind": "plastic",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "E15",
+     "name_ko": "스피너 뒤판(마킹 C·D·E)",
+     "kind": "plastic",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "E7",
+     "name_ko": "스피너(마킹 A·B)",
+     "kind": "plastic",
+     "markings": [
+      "A",
+      "B"
+     ],
+     "optional": false
+    },
+    {
+     "id": "E9",
+     "name_ko": "스피너(마킹 C·D·E)",
+     "kind": "plastic",
+     "markings": [
+      "C",
+      "D",
+      "E"
+     ],
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "on_gear",
+   "focus": [
+    0.0,
+    0.0,
+    18.95,
+    3.1
+   ],
+   "view": [
+    0.277,
+    0.41,
+    0.869
+   ]
+  },
+  {
+   "number": 38,
+   "id": "p13-gunsight",
+   "label": null,
+   "page": 13,
+   "title_ko": "조준기",
+   "caption_ko": "조종석 앞에 조준기 A5와 PE52를 다세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "A5",
+     "name_ko": "조준기",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE52",
+     "name_ko": "조준기 에칭 PE52",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "on_gear",
+   "focus": [
+    -0.224,
+    0.602,
+    3.297,
+    1.6
+   ],
+   "view": [
+    0.325,
+    0.941,
+    -0.091
+   ]
+  },
+  {
+   "number": 39,
+   "id": "S",
+   "label": "S",
+   "page": 13,
+   "title_ko": "열린 캐노피",
+   "caption_ko": "캐노피를 열어 두려면 A12에 PE47·PE39를 붙이세요.",
+   "uses_steps": [],
+   "markings": null,
+   "paints_ko": [],
+   "warning_ko": null,
+   "confidence": 0.5,
+   "adds": [
+    {
+     "id": "A14",
+     "name_ko": "닫힌 미끄럼 캐노피",
+     "kind": "clear",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "A12",
+     "name_ko": "열린 미끄럼 캐노피",
+     "kind": "clear",
+     "markings": null,
+     "optional": true
+    },
+    {
+     "id": "PE47",
+     "name_ko": "열린 캐노피 에칭 PE47",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE39",
+     "name_ko": "열린 캐노피 에칭 PE39",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [],
+   "pose": "on_gear",
+   "focus": [
+    -0.153,
+    5.307,
+    1.8,
+    1.6
+   ],
+   "view": [
+    0.264,
+    0.917,
+    0.299
+   ]
+  },
+  {
+   "number": 40,
+   "id": "p13-final",
+   "label": null,
+   "page": 13,
+   "title_ko": "캐노피와 마무리",
+   "caption_ko": "앞유리 A4와 뒤 캐노피 A10을 붙이세요.\n가운데에는 닫힌 캐노피 A14나 열린 캐노피(S)를 붙이세요.\n항법등 A1·A19와 D62·PE37을 다세요.\n안테나 기둥 D53/D54, 피토관 D52, 배기관 D15, PE42를 붙이세요.\n마지막으로 프로펠러(R)를 다세요.",
+   "uses_steps": [
+    "S",
+    "R",
+    "p12-stores",
+    "p13-gunsight"
+   ],
+   "markings": null,
+   "paints_ko": [
+    "캐노피 틀: 카울링 컬러(C125)"
+   ],
+   "warning_ko": null,
+   "confidence": 0.6,
+   "adds": [
+    {
+     "id": "A4",
+     "name_ko": "앞유리",
+     "kind": "clear",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "A10",
+     "name_ko": "뒤 캐노피",
+     "kind": "clear",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D53",
+     "name_ko": "안테나 기둥(마킹 A·C)",
+     "kind": "plastic",
+     "markings": [
+      "A",
+      "C"
+     ],
+     "optional": false
+    },
+    {
+     "id": "D54",
+     "name_ko": "안테나 기둥(마킹 D·E)",
+     "kind": "plastic",
+     "markings": [
+      "D",
+      "E"
+     ],
+     "optional": false
+    },
+    {
+     "id": "D62",
+     "name_ko": "연료 주입구 마개",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE37",
+     "name_ko": "캐노피와 마무리 에칭 PE37",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "A1",
+     "name_ko": "날개 위 표시등",
+     "kind": "clear",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D15",
+     "name_ko": "20mm 기관포 총구",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "PE42",
+     "name_ko": "캐노피와 마무리 에칭 PE42",
+     "kind": "photo_etch",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "D52",
+     "name_ko": "피토관",
+     "kind": "plastic",
+     "markings": null,
+     "optional": false
+    },
+    {
+     "id": "A19",
+     "name_ko": "꼬리 등",
+     "kind": "clear",
+     "markings": null,
+     "optional": false
+    }
+   ],
+   "joins": [
+    "canopy",
+    "prop"
+   ],
+   "pose": "on_gear",
+   "focus": [
+    0.5,
+    0.8,
+    0.0,
+    12.696
+   ],
+   "view": [
+    0.257,
+    0.883,
+    0.392
+   ]
+  }
+ ],
+ "notes_ko": [
+  "작은 부품과 에칭(PE) 부품을 삼키지 않도록 어린이 손에 닿지 않게 하세요.",
+  "접착제와 도료는 환기가 잘 되는 곳에서 쓰고 불꽃 가까이 두지 마세요.",
+  "빨간 표시는 잘라낼 부분, 파란 표시는 접착하지 않는 부분이에요.",
+  "?가 붙은 번호는 둘 중 하나를 고르는 선택 부품이에요."
+ ],
+ "extracted_by": "Claude Code 세션에서 Claude Opus 5.5가 페이지 이미지를 직접 읽음 (API 키 없음, 수동 실행)",
+ "issues": []
+}

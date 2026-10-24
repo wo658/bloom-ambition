@@ -6,7 +6,6 @@ data/**/*.jpg
 .venv/
 node_modules/
 data/out/
-web/public/demo/
 web/dist/
 __pycache__/
 *.tsbuildinfo

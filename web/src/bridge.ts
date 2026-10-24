@@ -53,3 +53,49 @@ export function goToStep(stepNumber: number) {
 export function canGoToStep() {
   return goToHandlers.size > 0;
 }
+
+// 부품 조립 모션: 채팅(액션·AI 도구)이 부품 하나를 고르면 뷰어가 그 부품이 들어가는 단계로 가서
+// 카메라를 그 부품에 맞추고 강조한 채로 조립 애니메이션을 다시 튼다.
+export type MotionTarget = { kind: "panel" | "hardware"; id: string; instance?: string };
+const motionHandlers = new Set<(target: MotionTarget) => number | null>();
+
+export function onPlayPartMotion(handler: (target: MotionTarget) => number | null) {
+  motionHandlers.add(handler);
+  return () => { motionHandlers.delete(handler); };
+}
+
+// 보여 줄 단계 번호를 돌려준다. 뷰어가 없거나 그 부품이 쓰이는 단계가 없으면 null.
+export function playPartMotion(target: MotionTarget): number | null {
+  let shown: number | null = null;
+  motionHandlers.forEach((h) => { shown = h(target) ?? shown; });
+  return shown;
+}
+
+// 단계 다시 보기: n단계로 가서 조립 애니메이션을 처음부터 다시 튼다(예: 단계를 합친 직후 합친 동작 보여 주기).
+// 뷰어가 onReplayStep으로 받으면 그것을 쓰고, 아직 받지 않으면 옆 단계에 한 프레임 들렀다 돌아와 같은 효과를 낸다.
+const replayHandlers = new Set<(stepNumber: number) => void>();
+
+export function onReplayStep(handler: (stepNumber: number) => void) {
+  replayHandlers.add(handler);
+  return () => { replayHandlers.delete(handler); };
+}
+
+export function replayStep(stepNumber: number) {
+  if (replayHandlers.size) return replayHandlers.forEach((h) => h(stepNumber));
+  goToStep(stepNumber > 1 ? stepNumber - 1 : stepNumber + 1);
+  requestAnimationFrame(() => goToStep(stepNumber));
+}
+
+// 분해도: 완성된 가구를 판마다 바깥쪽으로 펼쳤다가 다시 맞물리게 조립하는 연출. 뷰어가 없으면 false.
+const explodeHandlers = new Set<() => boolean>();
+
+export function onPlayExplode(handler: () => boolean) {
+  explodeHandlers.add(handler);
+  return () => { explodeHandlers.delete(handler); };
+}
+
+export function playExplode(): boolean {
+  let ok = false;
+  explodeHandlers.forEach((h) => { ok = h() || ok; });
+  return ok;
+}

@@ -117,7 +117,7 @@ export const FINDS: Find[] = [
   { page: 9, box: [344, 292, 418, 428], label: "100372 · 4x", name: "짧은 나사", code: "100372", qty: "4x", partId: "100372" },
   { page: 9, box: [476, 226, 588, 428], label: "103693 · 2x", name: "벽걸이 고리 브래킷", code: "103693", qty: "2x", partId: "103693" },
   { page: 9, box: [36, 524, 178, 772], label: "100001 · 1x", name: "육각 렌치", code: "100001", qty: "1x", partId: "100001" },
-  { page: 9, box: [198, 568, 612, 772], label: "10002300 · 1x", name: "펠트 패드", code: "10002300", qty: "1x", partId: "10002300" },
+  { page: 9, box: [198, 568, 612, 772], label: "10002300 · 4x (1장)", name: "펠트 패드", code: "10002300", qty: "4x", partId: "10002300" },
   { page: 10, box: [36, 36, 296, 292], label: "115753 · 2x", name: "벽 고정 브래킷", code: "115753", qty: "2x", partId: "115753" },
   { page: 10, box: [300, 250, 578, 566], label: "115754 · 2x", name: "브래킷 커버", code: "115754", qty: "2x", partId: "115754" },
   { page: 10, box: [42, 588, 604, 834], label: "판재 · 7장", name: "판재", code: "바닥·윗·옆판·칸막이·선반", qty: "7장" },

@@ -10,7 +10,7 @@ import type { Scene } from "../types";
 import Stage, { findRects } from "./Stage";
 import { LogoMark } from "../Logo";
 import {
-  END, FINDS, PAGE_PX, STATUS, T, cardLand, cardStart, clock, pageUrl, play, stop, useClock, type Find,
+  END, FINDS, KINDS, PAGE_PX, STATUS, T, cardLand, cardStart, clock, kindsOf, pageUrl, play, stop, useClock, type Find,
 } from "./timeline";
 import "./opening.css";
 
@@ -205,6 +205,7 @@ function Hero({ onDropped, leaving }: { onDropped: () => void; leaving: boolean 
 function FoundParts({ live }: { live: boolean }) {
   const shown = useClock((t) => t >= T.cards - 0.4);
   const landed = useClock((t) => FINDS.filter((_, i) => t >= cardLand(i)).length);
+  const landedKinds = useClock((t) => FINDS.reduce((n, f, i) => n + (t >= cardLand(i) ? kindsOf(f) : 0), 0));
   const flying = useClock((t) => t >= T.cards);
   const gone = useClock((t) => t >= T.checklist);
   const thumbs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -239,7 +240,7 @@ function FoundParts({ live }: { live: boolean }) {
       <section className={`card op-list ${gone ? "gone" : ""}`}>
         <div className="op-list-head">
           <h2>필요한 부품</h2>
-          <span className="op-count">{landed} / {FINDS.length}</span>
+          <span className="op-count">{landedKinds} / {KINDS}종</span>
         </div>
         <ul>
           {FINDS.map((f, i) => (
